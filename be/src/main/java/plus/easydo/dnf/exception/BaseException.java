@@ -4,7 +4,7 @@ package plus.easydo.dnf.exception;
 /**
  * 基础异常
  *
- * @author ruoyi
+ * @author laoyu
  */
 public class BaseException extends RuntimeException {
 

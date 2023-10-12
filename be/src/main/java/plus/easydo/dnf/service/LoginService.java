@@ -1,22 +1,21 @@
 package plus.easydo.dnf.service;
 
-import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.jwt.JWTUtil;
-import cn.hutool.jwt.signers.JWTSigner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.exception.BaseException;
-import plus.easydo.dnf.service.AccountsService;
 import plus.easydo.dnf.vo.LoginResultVo;
 
 import java.util.Map;
 import java.util.Objects;
+
+import static plus.easydo.dnf.config.SystemCache.ACCOUNTS_CACHE;
+import static plus.easydo.dnf.config.SystemCache.TOKEN_CACHE;
 
 /**
  * @author laoyu
@@ -30,8 +29,6 @@ public class LoginService {
 
     private final AccountsService accountsService;
 
-   private static final TimedCache<Integer, String> TOKEN_CACHE = CacheUtil.newTimedCache(1800000L);
-
 
     public LoginResultVo login(LoginDto loginDto){
         Accounts accounts = accountsService.getByUserName(loginDto.getUserName());
@@ -39,8 +36,15 @@ public class LoginService {
             throw new BaseException("账号不存在");
         }
         String md5Password = SecureUtil.md5().digestHex(loginDto.getPassword());
-        if(StrUtil.equals(md5Password,accounts.getPassword())){
+        if(CharSequenceUtil.equals(md5Password,accounts.getPassword())){
             String token = generateToken(accounts);
+            if(TOKEN_CACHE.containsKey(accounts.getUid())){
+                String cacheToken = TOKEN_CACHE.get(accounts.getUid());
+                ACCOUNTS_CACHE.remove(cacheToken);
+                TOKEN_CACHE.remove(accounts.getUid());
+            }
+            TOKEN_CACHE.put(accounts.getUid(),token);
+            ACCOUNTS_CACHE.put(token,accounts);
             LoginResultVo vo = new LoginResultVo();
             vo.setUserName(accounts.getAccountname());
             vo.setToken(token);

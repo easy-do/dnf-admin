@@ -18,7 +18,7 @@ import plus.easydo.dnf.vo.R;
  * @date 2023/10/11
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
