@@ -1,55 +1,40 @@
 package plus.easydo.dnf.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
+import com.mybatisflex.annotation.Table;
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * 
- * @TableName accounts
+ *  实体类。
+ *
+ * @author yuzhanfeng
+ * @since 2023-10-14
  */
-@TableName(value ="accounts")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(value = "accounts", dataSource = "d_taiwan")
 public class Accounts implements Serializable {
-    /**
-     * 
-     */
-    @TableId(type = IdType.AUTO)
+
+    @Id(keyType = KeyType.Auto)
     private Integer uid;
 
-    /**
-     * 
-     */
     private String accountname;
 
-    /**
-     * 
-     */
     private String password;
 
-    /**
-     * 
-     */
     private String qq;
 
-    /**
-     * 
-     */
     private Integer dzuid;
 
-    /**
-     * 
-     */
     private Integer billing;
 
-    /**
-     * 
-     */
     private String vip;
 
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
 }

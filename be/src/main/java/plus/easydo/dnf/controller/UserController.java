@@ -13,6 +13,7 @@ import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.manager.CacheManager;
+import plus.easydo.dnf.security.CurrentUserContextHolder;
 import plus.easydo.dnf.service.LoginService;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
@@ -44,16 +45,8 @@ public class UserController {
     }
 
     @GetMapping("/currentUser")
-    public R<Accounts> currentUser(@RequestHeader("Authorization")String token){
-        if(CharSequenceUtil.isBlank(token)){
-            throw new BaseException("无效凭证");
-        }
-        Accounts accounts = CacheManager.getCurrentUser(token);
-        if(Objects.isNull(accounts)){
-            throw new BaseException("无效凭证或登陆过期");
-        }
-        accounts.setPassword(null);
-        return DataResult.ok(accounts);
+    public R<Accounts> currentUser(){
+        return DataResult.ok(CurrentUserContextHolder.getCurrentUser());
     }
 
 }

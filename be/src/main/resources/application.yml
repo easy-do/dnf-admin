@@ -2,25 +2,19 @@
 server:
   port: 8080
 
-#spring:
-#  datasource:
-#    dynamic:
-#      primary: master
-#      strict: false
-#      datasource:
-#        master:
-#          url: jdbc:mysql://192.168.123.88:3000/d_taiwan
-#          username: root
-#          password: 8888888
-#          driver-class-name: com.mysql.jdbc.Driver
-#        slave_1:
-#          url: jdbc:mysql://xx.xx.xx.xx:3307/dynamic
-#          username: root
-#          password: 8888888
-#          driver-class-name: com.mysql.jdbc.Driver
 spring:
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+
+mybatis-flex:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/${MYSQL_DATA_BASE:d_taiwan}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
-    username: ${MYSQL_USER:root}
-    password: ${MYSQL_PASS:88888888}
+    d_taiwan:
+      url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/d_taiwan?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+      username: ${MYSQL_USER:root}
+      password: ${MYSQL_PASS:88888888}
+    taiwan_cain:
+      url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/taiwan_cain?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+      username: ${MYSQL_USER:root}
+      password: ${MYSQL_PASS:88888888}

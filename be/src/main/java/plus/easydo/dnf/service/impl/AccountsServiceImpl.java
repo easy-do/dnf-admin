@@ -1,10 +1,13 @@
 package plus.easydo.dnf.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mybatisflex.core.query.QueryChain;
+import lombok.RequiredArgsConstructor;
 import plus.easydo.dnf.entity.Accounts;
-import plus.easydo.dnf.service.AccountsService;
 import plus.easydo.dnf.mapper.AccountsMapper;
+import plus.easydo.dnf.service.AccountsService;
 import org.springframework.stereotype.Service;
+
+import static plus.easydo.dnf.entity.table.AccountsTableDef.ACCOUNTS;
 
 /**
 * @author yuzhanfeng
@@ -12,12 +15,18 @@ import org.springframework.stereotype.Service;
 * @createDate 2023-10-11 22:29:54
 */
 @Service
-public class AccountsServiceImpl extends ServiceImpl<AccountsMapper, Accounts>
-    implements AccountsService{
+@RequiredArgsConstructor
+public class AccountsServiceImpl implements AccountsService{
+
+    private final AccountsMapper accountsMapper;
 
     @Override
     public Accounts getByUserName(String userName) {
-        return lambdaQuery().eq(Accounts::getAccountname,userName).one();
+       return QueryChain.of(accountsMapper)
+                .select(ACCOUNTS.ALL_COLUMNS)
+                .from(ACCOUNTS)
+                .where(ACCOUNTS.ACCOUNTNAME.ge(userName))
+                .one();
     }
 }
 
