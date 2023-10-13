@@ -9,13 +9,11 @@ import org.springframework.stereotype.Component;
 import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.exception.BaseException;
-import plus.easydo.dnf.vo.LoginResultVo;
+import plus.easydo.dnf.manager.CacheManager;
 
 import java.util.Map;
 import java.util.Objects;
 
-import static plus.easydo.dnf.config.SystemCache.ACCOUNTS_CACHE;
-import static plus.easydo.dnf.config.SystemCache.TOKEN_CACHE;
 
 /**
  * @author laoyu
@@ -30,7 +28,15 @@ public class LoginService {
     private final AccountsService accountsService;
 
 
-    public LoginResultVo login(LoginDto loginDto){
+    /**
+     * 登录
+     *
+     * @param loginDto loginDto
+     * @return java.lang.String
+     * @author laoyu
+     * @date 2023/10/14
+     */
+    public String login(LoginDto loginDto){
         Accounts accounts = accountsService.getByUserName(loginDto.getUserName());
         if(Objects.isNull(accounts)){
             throw new BaseException("账号不存在");
@@ -38,19 +44,25 @@ public class LoginService {
         String md5Password = SecureUtil.md5().digestHex(loginDto.getPassword());
         if(CharSequenceUtil.equals(md5Password,accounts.getPassword())){
             String token = generateToken(accounts);
-            if(TOKEN_CACHE.containsKey(accounts.getUid())){
-                String cacheToken = TOKEN_CACHE.get(accounts.getUid());
-                ACCOUNTS_CACHE.remove(cacheToken);
-                TOKEN_CACHE.remove(accounts.getUid());
+            if(CacheManager.isLogin(accounts.getUid())){
+                CacheManager.cleanToken(accounts.getUid());
             }
-            TOKEN_CACHE.put(accounts.getUid(),token);
-            ACCOUNTS_CACHE.put(token,accounts);
-            LoginResultVo vo = new LoginResultVo();
-            vo.setUserName(accounts.getAccountname());
-            vo.setToken(token);
-            return vo;
+            CacheManager.cacheUser(accounts,token);
+            return token;
         }
         throw new BaseException("密码错误");
+    }
+
+    /**
+     * 退出
+     *
+     * @param token token
+     * @return java.lang.String
+     * @author laoyu
+     * @date 2023/10/14
+     */
+    public void logout(String token) {
+        CacheManager.cleanToken(token);
     }
 
     /**

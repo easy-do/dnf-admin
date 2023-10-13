@@ -40,13 +40,10 @@ public class R<T> implements Serializable {
 
     protected T data;
 
-    protected String msg;
+    protected String message;
 
     protected boolean success;
 
-    protected int errorCode;
-
-    protected String errorMessage;
 
     public int getCode() {
         return code;
@@ -56,12 +53,12 @@ public class R<T> implements Serializable {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public T getData() {
@@ -84,19 +81,4 @@ public class R<T> implements Serializable {
         return success;
     }
 
-    public int getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
 }

@@ -23,7 +23,7 @@ public class DataResult<T> extends R<T> {
      */
     public DataResult(int code, String message) {
         this.code = code;
-        this.msg = message;
+        this.message = message;
     }
 
 
@@ -42,7 +42,7 @@ public class DataResult<T> extends R<T> {
         DataResult<T> r = initResult();
         r.setSuccess(true);
         r.setCode(SUCCESS_CODE);
-        r.setMsg(SUCCESS_MSG);
+        r.setMessage(SUCCESS_MSG);
         return r;
     }
 
@@ -59,7 +59,7 @@ public class DataResult<T> extends R<T> {
         r.setData(data);
         r.setSuccess(true);
         r.setCode(SUCCESS_CODE);
-        r.setMsg(SUCCESS_MSG);
+        r.setMessage(SUCCESS_MSG);
         return r;
     }
 
@@ -74,7 +74,7 @@ public class DataResult<T> extends R<T> {
         DataResult<T> r = initResult();
         r.setSuccess(true);
         r.setCode(SUCCESS_CODE);
-        r.setMsg(msg);
+        r.setMessage(msg);
         return r;
     }
 
@@ -91,7 +91,7 @@ public class DataResult<T> extends R<T> {
         r.setData(data);
         r.setSuccess(true);
         r.setCode(SUCCESS_CODE);
-        r.setMsg(msg);
+        r.setMessage(msg);
         return r;
     }
 
@@ -104,9 +104,7 @@ public class DataResult<T> extends R<T> {
     public static <T> DataResult<T> fail() {
         DataResult<T> r = initResult();
         r.setCode(ERROR_CODE);
-        r.setErrorCode(ERROR_CODE);
-        r.setMsg(FAIL_MSG);
-        r.setErrorMessage(FAIL_MSG);
+        r.setMessage(FAIL_MSG);
         r.setSuccess(false);
         return r;
     }
@@ -121,9 +119,7 @@ public class DataResult<T> extends R<T> {
     public static <T> DataResult<T> fail(String msg) {
         DataResult<T> r = initResult();
         r.setCode(ERROR_CODE);
-        r.setErrorCode(ERROR_CODE);
-        r.setMsg(msg);
-        r.setErrorMessage(msg);
+        r.setMessage(msg);
         r.setSuccess(false);
         return r;
     }
@@ -140,9 +136,7 @@ public class DataResult<T> extends R<T> {
         r.setData(data);
         r.setSuccess(false);
         r.setCode(ERROR_CODE);
-        r.setErrorCode(ERROR_CODE);
-        r.setMsg(FAIL_MSG);
-        r.setErrorMessage(FAIL_MSG);
+        r.setMessage(FAIL_MSG);
         return r;
     }
 
@@ -159,9 +153,7 @@ public class DataResult<T> extends R<T> {
         r.setSuccess(false);
         r.setData(data);
         r.setCode(ERROR_CODE);
-        r.setErrorCode(ERROR_CODE);
-        r.setMsg(msg);
-        r.setErrorMessage(msg);
+        r.setMessage(msg);
         return r;
     }
 
@@ -177,9 +169,7 @@ public class DataResult<T> extends R<T> {
         DataResult<T> r = initResult();
         r.setSuccess(false);
         r.setCode(code);
-        r.setErrorCode(code);
-        r.setMsg(msg);
-        r.setErrorMessage(msg);
+        r.setMessage(msg);
         return r;
     }
 
@@ -198,9 +188,7 @@ public class DataResult<T> extends R<T> {
         r.setData(data);
         r.setSuccess(success);
         r.setCode(code);
-        r.setErrorCode(code);
-        r.setMsg(msg);
-        r.setErrorMessage(msg);
+        r.setMessage(msg);
         return r;
     }
     /**
@@ -216,9 +204,7 @@ public class DataResult<T> extends R<T> {
         DataResult<T> r = initResult();
         r.setCode(code);
         r.setSuccess(success);
-        r.setErrorCode(code);
-        r.setMsg(msg);
-        r.setErrorMessage(msg);
+        r.setMessage(msg);
         return r;
     }
 
