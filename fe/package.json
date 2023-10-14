@@ -17,6 +17,7 @@
   "dependencies": {
     "@douyinfe/semi-ui": "^2.44.0",
     "axios": "^0.24.0",
+    "dayjs": "^1.11.10",
     "driver.js": "^0.9.8",
     "echarts": "^5.4.3",
     "echarts-for-react": "^3.0.0",

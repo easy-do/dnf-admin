@@ -17,7 +17,8 @@ public class Codegen {
     public static void main(String[] args) {
         //配置数据源
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl("jdbc:mysql://121.36.64.134:3306/taiwan_cain?characterEncoding=utf-8");
+//        dataSource.setJdbcUrl("jdbc:mysql://121.36.64.134:3306/taiwan_cain?characterEncoding=utf-8");
+        dataSource.setJdbcUrl("jdbc:mysql://121.36.64.134:3306/d_taiwan?characterEncoding=utf-8");
         dataSource.setUsername("root");
         dataSource.setPassword("88888888");
 
@@ -41,7 +42,7 @@ public class Codegen {
 
         //设置表前缀和只生成哪些表
 //        globalConfig.setTablePrefix("tb_");
-        globalConfig.setGenerateTable("charac_info");
+        globalConfig.setGenerateTable("da_sign_in_conf", "da_sign_in_log");
 
         //设置生成 entity 并启用 Lombok
         globalConfig.setEntityGenerateEnable(true);
