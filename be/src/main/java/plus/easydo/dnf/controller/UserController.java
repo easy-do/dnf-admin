@@ -39,8 +39,8 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public R<String> logout(@RequestHeader("Authorization")String token){
-        loginService.logout(token);
+    public R<String> logout(){
+        loginService.logout();
         return DataResult.ok();
     }
 

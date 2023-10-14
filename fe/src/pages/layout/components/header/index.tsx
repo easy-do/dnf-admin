@@ -26,13 +26,11 @@ const Index: FC = () => {
 	}
 
 	const logout = async () => {
-		const res = await logoutRequest(); 
-		if(res.success){
-			removeLocalStorage(systemConfig.authKey)
-			const location = useLocation()
-			const { pathname } = location
-			pathname === '/login'
-		}
+		logoutRequest()
+		removeLocalStorage(systemConfig.authKey)
+		const location = useLocation()
+		const { pathname } = location
+		pathname === '/login'
 	}
 
 

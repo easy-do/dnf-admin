@@ -11,6 +11,7 @@ import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.manager.CacheManager;
 
 import java.io.IOException;
+import java.util.Objects;
 
 
 /**
@@ -27,8 +28,10 @@ public class TokenHeaderAuthenticationFilter extends OncePerRequestFilter {
         String token = request.getHeader("Authorization");
         if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             Accounts accounts = CacheManager.getCurrentUser(token);
-            Authentication authentication = new MyAuthentication(accounts,token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            if(Objects.nonNull(accounts)){
+                Authentication authentication = new MyAuthentication(accounts,token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
         filterChain.doFilter(request, response);
     }

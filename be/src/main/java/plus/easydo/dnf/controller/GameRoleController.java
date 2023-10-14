@@ -2,12 +2,14 @@ package plus.easydo.dnf.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import plus.easydo.dnf.entity.CharacInfo;
 import plus.easydo.dnf.service.GameRoleService;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
+
+import java.util.List;
 
 /**
  * @author laoyu
@@ -16,14 +18,13 @@ import plus.easydo.dnf.vo.R;
  * @date 2023/10/14
  */
 @RestController
-@RequestMapping("/api/game/role")
+@RequestMapping("/api/gameRole")
 @RequiredArgsConstructor
 public class GameRoleController {
 
     private final GameRoleService gameRoleService;
-    @GetMapping("/roleList")
-    public R<String> roleList(){
-        gameRoleService.roleList();
-        return DataResult.ok();
+    @GetMapping("/list")
+    public R<List<CharacInfo>> roleList(){
+        return DataResult.ok(gameRoleService.roleList());
     }
 }

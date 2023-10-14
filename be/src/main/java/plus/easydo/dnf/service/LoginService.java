@@ -10,6 +10,7 @@ import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.manager.CacheManager;
+import plus.easydo.dnf.security.CurrentUserContextHolder;
 
 import java.util.Map;
 import java.util.Objects;
@@ -56,13 +57,15 @@ public class LoginService {
     /**
      * 退出
      *
-     * @param token token
      * @return java.lang.String
      * @author laoyu
      * @date 2023/10/14
      */
-    public void logout(String token) {
-        CacheManager.cleanToken(token);
+    public void logout() {
+        Accounts user = CurrentUserContextHolder.getCurrentUser();
+        if(Objects.isNull(user)){
+            CacheManager.cleanToken(user.getUid());
+        }
     }
 
     /**

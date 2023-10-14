@@ -1,5 +1,6 @@
 import create from 'zustand'
-import request from '@src/utils/request'
+
+import { getCurrentUserRequest } from '@src/api/userApi'
 
 export interface userState {
 	uid
@@ -19,22 +20,9 @@ const useStore = create<userState>((set, get) => ({
     billing:undefined,
     vip:undefined,
 	getCurrentUser: async () => {
-		const res = await request({
-			url: `/user/currentUser`,
-			method: 'get'
-		})
-		const {success} = res.data.success;
-		
-		const { uid, accountname, qq, dzuid, billing, vip } = res.data.data
-		set({
-			uid,
-			accountname,
-			qq,
-			dzuid,
-			billing,
-			vip
-		})
-		return success;
+		const data = await getCurrentUserRequest();
+		set(data)
+		return data !== undefined;
 	}
 }))
 

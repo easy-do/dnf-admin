@@ -1,5 +1,9 @@
 package plus.easydo.dnf.service;
 
+import plus.easydo.dnf.entity.CharacInfo;
+
+import java.util.List;
+
 /**
  * @author laoyu
  * @version 1.0
@@ -8,5 +12,5 @@ package plus.easydo.dnf.service;
  */
 
 public interface GameRoleService {
-    void roleList();
+    List<CharacInfo> roleList();
 }

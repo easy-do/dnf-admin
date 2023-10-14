@@ -1,19 +1,14 @@
-import request from '@src/utils/request'
+import { postRequest, getRequest } from '@src/utils/request'
 
-export async function loginRequest(body) {
-    const res = await request({
-        url: `/user/login`,
-        method: 'post',
-        body
-    });
-    return res.data;
+export const loginRequest = (body) => {
+	return postRequest(`/user/login`, body)
 }
 
-export async function logoutRequest() {
-    const res = await request({
-        url: `/user/logout`,
-        method: 'get'
-    });
-    return res.data;
+export const logoutRequest = () => {
+	return getRequest(`/user/logout`)
+}
+
+export const getCurrentUserRequest = async () => {
+	return await getRequest(`/user/currentUser`)
 }
 

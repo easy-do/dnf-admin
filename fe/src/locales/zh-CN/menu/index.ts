@@ -1,8 +1,9 @@
 export const zhCN_menu = {
-	'app.menu.dashboard': 'Dashboard',
+	'app.menu.dashboard': '仪表板',
 	'app.menu.dashboard.workbeach': '工作台',
 	'app.menu.dashboard.anlyanis': '分析页',
 	'app.menu.dashboard.monitor': '监控页',
+	'app.menu.dashboard.signin': '签到',
 
 	'app.menu.form': '表单页',
 	'app.menu.form.basic': '基础表单',

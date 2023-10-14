@@ -9,6 +9,7 @@ import Empty from '@components/empty'
 const DashboardWorkbeach = lazy(() => import('@src/pages/dashboard/workbeach'))
 const DashboardAnlyanis = lazy(() => import('@src/pages/dashboard/anlyanis'))
 const DashboardMonitor = lazy(() => import('@src/pages/dashboard/monitor'))
+const Signin = lazy(() => import('@src/pages/dashboard/signin'))
 
 const FormBasic = lazy(() => import('@src/pages/form/basic'))
 const FormStep = lazy(() => import('@src/pages/form/step'))
@@ -48,6 +49,10 @@ const routeList: RouteObject[] = [
 			{
 				path: 'dashboard/monitor',
 				element: <WrapperRouteComponent element={<DashboardMonitor />} titleId="监控页" auth />
+			},
+			{
+				path: 'dashboard/signin',
+				element: <WrapperRouteComponent element={<Signin />} titleId="监控页" auth />
 			},
 			{
 				path: 'form/basic',

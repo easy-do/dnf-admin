@@ -2,10 +2,9 @@ import systemConfig from '@src/config'
 import axios, { AxiosRequestConfig } from 'axios'
 import { errorMsg, handleCommonError, handleNoCommontError } from './errorHandle'
 import qs from 'qs'
-import { getLocalStorage, removeLocalStorage } from '../storage'
+import { getLocalStorage } from '../storage'
 import { getState } from '@src/store/common/global'
-import useStore from '@src/store/user'
-import { useLocation } from 'react-router-dom'
+
 
 type requestOptions = AxiosRequestConfig & {
 	url: string
@@ -27,10 +26,8 @@ axios.interceptors.response.use(
 		const { success, message, code } = response.data
 		if(!success && code == 401){
 			handleNoCommontError(message)
-			removeLocalStorage(systemConfig.authKey)
-			const location = useLocation()
-			const { pathname } = location
-			pathname === '/login'
+			localStorage.clear()
+			window.location.reload()
 			return;
 		}
 		if(!success || code != 200){
@@ -66,6 +63,26 @@ axios.interceptors.response.use(
 		return Promise.reject(networkErrorMsg)
 	}
 )
+
+// post request
+export async function postRequest(url, body) {
+	const res = await request({
+		url,
+		method: 'post',
+		body
+	});
+	return res.data;
+}
+
+// get requet
+export async function getRequest(url) {
+	const res = await request({
+		url,
+		method: 'get'
+	});
+	return res.data;
+}
+
 
 // request
 export default async function request(options: requestOptions) {

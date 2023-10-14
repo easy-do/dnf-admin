@@ -5,54 +5,57 @@ import { chinaNumChar } from '@src/common'
 import echarts from '@src/common/echarts'
 import ReactEChartsCore from 'echarts-for-react/lib/core'
 import { IconArrowUp, IconArrowDown } from '@douyinfe/semi-icons'
-import useStore from '@src/store/dashboard/workbeach'
+import userStore from '@src/store/user'
+import ganmeRoleStore from '@src/store/ganmeRole'
 import { useLoading } from '@src/hooks/useLoading'
 import { workbeachOption } from '@src/common/echart-option'
 import './index.scss'
+
 
 const { Meta } = Card
 const { Text } = Typography
 
 const Index: React.FC = () => {
+
 	const { loading } = useLoading()
-	const headerData = useStore((state) => state.headerData)
-	const inProcessData = useStore((state) => state.inProcessData)
-	const recentActivityData = useStore((state) => state.recentActivityData)
 
-	const getWorkBeachData = useStore((state) => state.getWorkBeachData)
+	const getCurrentUser = userStore((state) => state.getCurrentUser)
+	const accountname = userStore((state) => state.accountname)
+	const qq = userStore((state) => state.qq)
 
-	const formatHeaderData = useMemo(() => {
-		return headerData.map((e) => {
-			if (e.key === '团队内排名')
-				return {
-					key: e.key,
-					value: (
-						<span>
-							{e.value}
-							<span style={{ fontSize: '12px', fontWeight: 'normal', paddingLeft: '5px' }}>较昨天</span>
-							<IconArrowDown size="small" style={{ color: 'rgb(59,179,70)', marginLeft: '4px' }} />
-							<span style={{ fontSize: '12px', color: 'rgb(59,179,70)' }}>3</span>
-						</span>
-					)
-				}
-			else if (e.key === '项目访问')
-				return {
-					ey: e.key,
-					value: (
-						<span>
-							{e.value}
-							<span style={{ fontSize: '12px', fontWeight: 'normal', paddingLeft: '5px' }}>较昨天</span>
-							<IconArrowUp size="small" style={{ color: 'rgb(255,79,38)', marginLeft: '4px' }} />
-							<span style={{ fontSize: '12px', color: 'rgb(255,79,38)' }}>43.23%</span>
-						</span>
-					)
-				}
-			return e
-		})
-	}, [headerData])
+	const getRoleList = ganmeRoleStore((state) => state.getRoleList)
+	const roleList = ganmeRoleStore((state) => state.roleList)
+
+	const inProcessData = [
+		{
+			key: '充值排名',
+			value: (
+				<span>
+					123
+					<span style={{ fontSize: '12px', fontWeight: 'normal', paddingLeft: '5px' }}>较昨天</span>
+					<IconArrowDown size="small" style={{ color: 'rgb(59,179,70)', marginLeft: '4px' }} />
+					<span style={{ fontSize: '12px', color: 'rgb(59,179,70)' }}>3</span>
+				</span>
+			)
+		},
+		{
+			key: '战力排名',
+			value: (
+				<span>
+					123
+					<span style={{ fontSize: '12px', fontWeight: 'normal', paddingLeft: '5px' }}>较昨天</span>
+					<IconArrowUp size="small" style={{ color: 'rgb(255,79,38)', marginLeft: '4px' }} />
+					<span style={{ fontSize: '12px', color: 'rgb(255,79,38)' }}>43.23%</span>
+				</span>
+			)
+		}
+
+	]
+
 
 	useEffect(() => {
-		getWorkBeachData()
+		getCurrentUser()
+		getRoleList()
 	}, [])
 
 	return (
@@ -67,46 +70,49 @@ const Index: React.FC = () => {
 							size="large"
 						/>
 						<div className="workbeach-container-header-content-left-user">
-							<p className="workbeach-container-header-content-left-username">早安，胡歌，祝你开心每一天！</p>
+							<p className="workbeach-container-header-content-left-username">账号:{accountname}</p>
 							<p className="workbeach-container-header-content-left-user-profile">
-								前端专家 | 字节跳动－某某某事业群－某某平台部
+								QQ | {qq}
 							</p>
 						</div>
 					</div>
 					<div className="workbeach-container-header-content-right">
-						<Descriptions data={formatHeaderData} row />
+						<Descriptions data={inProcessData} row />
 					</div>
 				</div>
 			</div>
 			<div className="workbeach-container-content">
 				<Row gutter={24}>
-					<Col span={16}>
+					<Col span={24}>
 						<div className="workbeach-container-content-left1">
 							<Card
-								title="进行中的项目"
+								title="角色列表"
 								className={loading ? '' : 'workbeach-container-content-left1-card'}
 								bordered={false}
 								loading={loading}
-								headerExtraContent={<Text link>全部项目</Text>}
+								
 							>
 								<CardGroup type="grid">
-									{inProcessData.map((v, idx) => (
+									{roleList? roleList.map((v, idx) => (
 										<Card
 											key={idx}
 											shadows="hover"
 											headerLine={false}
 											className="workbeach-container-content-left1-card-item"
-											title={<Meta title={v.title} avatar={<Avatar size="default" src={v.icon} />} />}
-											footer={
-												<div className="workbeach-container-content-left1-card-item-footer">
-													<span>{v.group}</span>
-													<span>{v.time}</span>
-												</div>
-											}
+											title={<Meta 
+												title={v.characName} 
+												description={v.jobName} 
+												avatar={<Avatar size="default"/>} />}
 										>
-											{v.description}
+											<Descriptions align="center" data={[
+												{ key: '名称', value: v.characName },
+												{ key: '等级', value: v.lev },
+												{ key: '职业', value: v.jobName },
+												{ key: '副职业', value: v.expertJobName },
+												{ key: 'VIP', value: v.vip },
+											]}/>
 										</Card>
-									))}
+									)):undefined}
 								</CardGroup>
 							</Card>
 						</div>
@@ -115,7 +121,7 @@ const Index: React.FC = () => {
 							<Card title="最近动态" headerExtraContent={<Text link>更多</Text>} loading={loading} bordered={false}>
 								<List
 									size="default"
-									dataSource={recentActivityData}
+									dataSource={[]}
 									renderItem={(item) => (
 										<List.Item
 											header={
@@ -141,7 +147,8 @@ const Index: React.FC = () => {
 							</Card>
 						</div>
 					</Col>
-					<Col span={8}>
+					
+					{/* <Col span={8}>
 						<div>
 							<Card title="快捷导航" loading={loading}>
 								<Row>
@@ -179,7 +186,8 @@ const Index: React.FC = () => {
 								</Row>
 							</Card>
 						</div>
-					</Col>
+					</Col> */}
+
 				</Row>
 			</div>
 		</div>

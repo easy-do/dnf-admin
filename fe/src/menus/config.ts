@@ -37,6 +37,11 @@ const MENU_CONFIG: MenuItem[] = [
 				itemKey: '1-3',
 				text: 'app.menu.dashboard.monitor',
 				path: '/dashboard/monitor'
+			},
+			{
+				itemKey: '1-4',
+				text: 'app.menu.dashboard.signin',
+				path: '/dashboard/signin'
 			}
 		]
 	},
