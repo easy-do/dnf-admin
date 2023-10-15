@@ -59,7 +59,7 @@ const Index: React.FC = () => {
 			  <Form.Input
 				label={{ text: '用户名' }}
 				field='input'
-				defaultValue={userName}
+				defaultValue={'123456789'}
 				onChange={setUserName}
 				placeholder='输入用户名'
 				style={{ width: '100%' }}
@@ -72,7 +72,7 @@ const Index: React.FC = () => {
 				label={{ text: '密码' }}
 				type='password'
 				field='field1'
-				defaultValue={password}
+				defaultValue={'123456789'}
 				onChange={setPassword}
 				placeholder='输入密码'
 				style={{ width: '100%' }}

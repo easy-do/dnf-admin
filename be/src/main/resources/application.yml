@@ -6,7 +6,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
-
+  web:
+    resources:
+      static-locations: classpath:/static/
 
 mybatis-flex:
   datasource:
@@ -16,5 +18,9 @@ mybatis-flex:
       password: ${MYSQL_PASS:88888888}
     taiwan_cain:
       url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/taiwan_cain?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+      username: ${MYSQL_USER:root}
+      password: ${MYSQL_PASS:88888888}
+    taiwan_cain_2nd:
+      url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/taiwan_cain_2nd?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
       username: ${MYSQL_USER:root}
       password: ${MYSQL_PASS:88888888}

@@ -31,7 +31,7 @@ const Result: FC<Iprops> = ({ title, description, type }) => {
 				onClick={
 					type === '403'
 						? () => navigate(`/login${'?from=' + encodeURIComponent(location.pathname)}`, { replace: true })
-						: () => navigate(`/dashboard/workbeach`, { replace: true })
+						: () => navigate(`/home`, { replace: true })
 				}
 			>
 				{type === '403' ? '去登录' : '回到首页'}

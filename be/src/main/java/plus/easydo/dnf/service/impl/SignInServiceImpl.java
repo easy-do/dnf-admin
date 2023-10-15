@@ -2,21 +2,30 @@ package plus.easydo.dnf.service.impl;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import plus.easydo.dnf.dto.SignInConfigDate;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.entity.CharacInfo;
 import plus.easydo.dnf.entity.DaSignInConf;
 import plus.easydo.dnf.entity.DaSignInLog;
+import plus.easydo.dnf.entity.Letter;
+import plus.easydo.dnf.entity.Postal;
+import plus.easydo.dnf.enums.AmplifyEnum;
 import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.mapper.DaSignInConfMapper;
 import plus.easydo.dnf.mapper.DaSignInLogMapper;
+import plus.easydo.dnf.mapper.LetterMapper;
 import plus.easydo.dnf.security.CurrentUserContextHolder;
+import plus.easydo.dnf.service.GamePostalService;
 import plus.easydo.dnf.service.GameRoleService;
 import plus.easydo.dnf.service.SignInService;
 import plus.easydo.dnf.util.LocalDateTimeUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +49,8 @@ public class SignInServiceImpl implements SignInService {
 
     private final GameRoleService gameRoleService;
 
+    private final GamePostalService gamePostalService;
+
     @Override
     public List<DaSignInConf> signList(Integer roleId) {
         Accounts user = CurrentUserContextHolder.getCurrentUser();
@@ -56,11 +67,17 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
+    @Transactional
     public boolean roleSign(Integer roleId) {
         Accounts user = CurrentUserContextHolder.getCurrentUser();
         List<CharacInfo> roleList = gameRoleService.roleList();
-        List<CharacInfo> roles = roleList.stream().filter(role -> role.getCharacNo() != roleId).toList();
-        if (roles.isEmpty()) {
+        CharacInfo currentRole = null;
+        for (CharacInfo characInfo: roleList) {
+            if(roleId.equals(characInfo.getCharacNo())){
+                currentRole = characInfo;
+            }
+        }
+        if (Objects.isNull(currentRole)) {
             throw new BaseException("没有找到对应角色");
         }
         String date = LocalDateTimeUtil.format(LocalDateTimeUtil.now(), DatePattern.NORM_DATE_FORMATTER);
@@ -81,6 +98,12 @@ public class SignInServiceImpl implements SignInService {
         entity.setSignInUserId(user.getUid());
         entity.setSignInRoleId(roleId);
         entity.setCreateTime(LocalDateTimeUtil.now());
-        return daSignInLogMapper.insert(entity) == 1;
+        boolean signInFlag = daSignInLogMapper.insert(entity) == 1;
+        String configJsonStr = signInConf.getConfigJson();
+        SignInConfigDate configData = JSONUtil.toBean(configJsonStr, SignInConfigDate.class);
+        if(signInFlag){
+            gamePostalService.sendSignInRoleMail(currentRole.getCharacNo(),configData);
+        }
+        return signInFlag;
     }
 }

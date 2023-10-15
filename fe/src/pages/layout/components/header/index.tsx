@@ -22,7 +22,7 @@ const Index: FC = () => {
 	}
 
 	const question = () => {
-		window.open('https://github.com/xieyezi/semi-design-pro/issues')
+		window.open('https://gitee.com/yuzhanfeng/dnf-admin')
 	}
 
 	const logout = async () => {

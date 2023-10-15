@@ -100,14 +100,4 @@ public class DictUtil {
                 "5": "魔法師"
               }
             }""";
-
-
-    public static String expertJobDict = """
-            {
-                0:'无职业',
-                1:'附魔师',
-                2:'炼金术师',
-                3:'分解师',
-                4:'控偶师'
-            }""";
 }

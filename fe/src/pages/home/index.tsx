@@ -31,10 +31,10 @@ const Index: React.FC = () => {
 			key: '充值排名',
 			value: (
 				<span>
-					123
+					1
 					<span style={{ fontSize: '12px', fontWeight: 'normal', paddingLeft: '5px' }}>较昨天</span>
-					<IconArrowDown size="small" style={{ color: 'rgb(59,179,70)', marginLeft: '4px' }} />
-					<span style={{ fontSize: '12px', color: 'rgb(59,179,70)' }}>3</span>
+					<IconArrowUp size="small" style={{ color: 'rgb(59,179,70)', marginLeft: '4px' }} />
+					<span style={{ fontSize: '12px', color: 'rgb(59,179,70)' }}>88</span>
 				</span>
 			)
 		},
@@ -42,10 +42,10 @@ const Index: React.FC = () => {
 			key: '战力排名',
 			value: (
 				<span>
-					123
+					1
 					<span style={{ fontSize: '12px', fontWeight: 'normal', paddingLeft: '5px' }}>较昨天</span>
 					<IconArrowUp size="small" style={{ color: 'rgb(255,79,38)', marginLeft: '4px' }} />
-					<span style={{ fontSize: '12px', color: 'rgb(255,79,38)' }}>43.23%</span>
+					<span style={{ fontSize: '12px', color: 'rgb(255,79,38)' }}>88.88%</span>
 				</span>
 			)
 		}
@@ -61,7 +61,7 @@ const Index: React.FC = () => {
 	return (
 		<div className="workbeach-container">
 			<div className="workbeach-container-header">
-				<div className="workbeach-container-header-title">工作台</div>
+				<div className="workbeach-container-header-title">欢迎回来!</div>
 				<div className="workbeach-container-header-content">
 					<div className="workbeach-container-header-content-left">
 						<Avatar
@@ -86,7 +86,7 @@ const Index: React.FC = () => {
 					<Col span={24}>
 						<div className="workbeach-container-content-left1">
 							<Card
-								title="角色列表"
+								title="我的角色列表"
 								className={loading ? '' : 'workbeach-container-content-left1-card'}
 								bordered={false}
 								loading={loading}

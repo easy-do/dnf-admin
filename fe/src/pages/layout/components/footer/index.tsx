@@ -22,10 +22,10 @@ const Index: FC = () => {
 				}}
 			>
 				<IconSemiLogo size="large" style={{ marginRight: '8px' }} />
-				<span>Copyright ©2021 xieyezi. All Rights Reserved. </span>
+				<span>Copyright ©2023 laoyu. All Rights Reserved. </span>
 			</span>
 			<span>
-				<span style={{ marginRight: '24px' }}>Github地址</span>
+				{/* <span style={{ marginRight: '24px' }} >Github地址</span> */}
 				<span>反馈建议</span>
 			</span>
 		</Footer>

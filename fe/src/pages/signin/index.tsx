@@ -47,7 +47,7 @@ const Index: React.FC = () => {
 	const signIn = async () => {
 		const res = await roleSign(getCureentRole)
 		if(res){
-			Toast.success("签到成功")
+			Toast.success("签到成功,小退查看邮箱.")
 			getSgnInList(getCureentRole)
 		}
 	}
@@ -75,7 +75,7 @@ const Index: React.FC = () => {
 
 		const conf = importDateMap.get(ymdDate)
 		if (conf) {
-			const { configJson, signInTime } = conf
+			const { configName,configJson, signInTime } = conf
 			const configJson1 = JSON.parse(configJson)
 			const { type, data } = configJson1
 			const listDataSource: any[] = []
@@ -89,7 +89,7 @@ const Index: React.FC = () => {
 						<List
 							header={
 								<div>
-									奖励:{' '}
+									{configName}:{' '}
 									{
 										<>
 											<Tag

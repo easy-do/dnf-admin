@@ -5,7 +5,7 @@ import Empty from '@components/empty'
 import systemConfig from '@src/config'
 import { getLocalStorage } from '../utils/storage'
 
-const PrivateRoute: FC<RouteProps> = (props) => {
+const PrivateRoute = (props) => {
 
 	const location = useLocation()
 	const { pathname } = location
@@ -14,7 +14,7 @@ const PrivateRoute: FC<RouteProps> = (props) => {
 
 	return logged ? (
 		pathname === '/' ? (
-			<Navigate to={{ pathname: `/dashboard/workbeach` }} replace />
+			<Navigate to={{ pathname: `/home` }} replace />
 		) : (
 			props.element
 		)
