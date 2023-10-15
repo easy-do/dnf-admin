@@ -5,6 +5,7 @@ export interface gameRoleState {
 	roleList: any
 	getRoleList: () => void
 	currentRole: any
+	setCurrentRole: (role) => void
 }
 
 const gameRoleState = create<gameRoleState>((set) => ({
@@ -13,6 +14,9 @@ const gameRoleState = create<gameRoleState>((set) => ({
 	getRoleList: async () => {
 		const data = await roleList();
 		set({ roleList: data })
+	},
+	setCurrentRole: (role) =>{
+		set({ currentRole: role })
 	}
 }))
 

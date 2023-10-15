@@ -32,4 +32,10 @@ public class CurrentUserContextHolder {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth != null && !(auth instanceof AnonymousAuthenticationToken) && auth.isAuthenticated() ? (Set)auth.getAuthorities() : null;
     }
+
+    public static void checkAdmin() {
+        if(!getCurrentUser().isAdmin()){
+            throw new AuthException("没有管理权限");
+        }
+    }
 }

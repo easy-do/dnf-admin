@@ -5,6 +5,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.jwt.JWTUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.entity.Accounts;
@@ -28,6 +29,9 @@ public class LoginService {
 
     private final AccountsService accountsService;
 
+    @Value("${admin:admin}")
+    private String adminUser;
+
 
     /**
      * 登录
@@ -47,6 +51,9 @@ public class LoginService {
             String token = generateToken(accounts);
             if(CacheManager.isLogin(accounts.getUid())){
                 CacheManager.cleanToken(accounts.getUid());
+            }
+            if(accounts.getAccountname().equals(adminUser)){
+                accounts.setAdmin(true);
             }
             CacheManager.cacheUser(accounts,token);
             return token;

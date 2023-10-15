@@ -1,6 +1,8 @@
 package plus.easydo.dnf.service;
 
+import com.mybatisflex.core.paginate.Page;
 import plus.easydo.dnf.entity.DaSignInConf;
+import plus.easydo.dnf.qo.DaSignInConfQo;
 
 import java.util.List;
 
@@ -32,4 +34,10 @@ public interface SignInService {
      * @date 2023/10/14
      */
     boolean roleSign(Integer roleId);
+
+    Page<DaSignInConf> signInPage(DaSignInConfQo daSignInConfQo);
+
+    DaSignInConf info(Long id);
+
+    boolean update(DaSignInConf daSignInConf);
 }

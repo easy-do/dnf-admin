@@ -3,6 +3,7 @@ package plus.easydo.dnf.service.impl;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.json.JSONUtil;
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,24 +13,19 @@ import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.entity.CharacInfo;
 import plus.easydo.dnf.entity.DaSignInConf;
 import plus.easydo.dnf.entity.DaSignInLog;
-import plus.easydo.dnf.entity.Letter;
-import plus.easydo.dnf.entity.Postal;
-import plus.easydo.dnf.enums.AmplifyEnum;
 import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.mapper.DaSignInConfMapper;
 import plus.easydo.dnf.mapper.DaSignInLogMapper;
-import plus.easydo.dnf.mapper.LetterMapper;
+import plus.easydo.dnf.qo.DaSignInConfQo;
 import plus.easydo.dnf.security.CurrentUserContextHolder;
 import plus.easydo.dnf.service.GamePostalService;
 import plus.easydo.dnf.service.GameRoleService;
 import plus.easydo.dnf.service.SignInService;
 import plus.easydo.dnf.util.LocalDateTimeUtils;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static cn.hutool.json.XMLTokener.entity;
 import static plus.easydo.dnf.entity.table.DaSignInConfTableDef.DA_SIGN_IN_CONF;
 import static plus.easydo.dnf.entity.table.DaSignInLogTableDef.DA_SIGN_IN_LOG;
 
@@ -105,5 +101,23 @@ public class SignInServiceImpl implements SignInService {
             gamePostalService.sendSignInRoleMail(currentRole.getCharacNo(),configData);
         }
         return signInFlag;
+    }
+
+    @Override
+    public Page<DaSignInConf> signInPage(DaSignInConfQo daSignInConfQo) {
+        Page<DaSignInConf> page = new Page<>(daSignInConfQo.getCurrentPage(),daSignInConfQo.getPageSize());
+        QueryWrapper query = QueryWrapper.create()
+                .from(DA_SIGN_IN_CONF).where(DA_SIGN_IN_CONF.CONFIG_NAME.like(daSignInConfQo.getConfigName()));
+        return daSignInConfMapper.paginate(page, query);
+    }
+
+    @Override
+    public DaSignInConf info(Long id) {
+        return daSignInConfMapper.selectOneById(id);
+    }
+
+    @Override
+    public boolean update(DaSignInConf daSignInConf) {
+        return daSignInConfMapper.update(daSignInConf) > 0;
     }
 }

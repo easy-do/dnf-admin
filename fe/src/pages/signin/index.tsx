@@ -1,31 +1,40 @@
 import Calendar from '@douyinfe/semi-ui/lib/es/calendar'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Popover from '@douyinfe/semi-ui/lib/es/popover'
 import Tag from '@douyinfe/semi-ui/lib/es/tag'
-import { Card, List, Select, Space, Toast } from '@douyinfe/semi-ui'
+import { Button, Card, List, Select, Space, Toast } from '@douyinfe/semi-ui'
 
 import ganmeRoleStore from '@src/store/ganmeRole'
+
+import userStore from '@src/store/user'
 
 import signInStore from '@src/store/signIn'
 
 import dayjs from 'dayjs'
 import { roleSign } from '@src/api/signInApi'
+import SingInConfig from '../singInconfig'
 
 const Index: React.FC = () => {
+
+
+	const isAdmin = userStore((state) => state.admin)
+
+	const getCurrentUser = userStore((state) => state.getCurrentUser)
 
 	const getRoleList = ganmeRoleStore((state) => state.getRoleList)
 
 	const roleList = ganmeRoleStore((state) => state.roleList)
 
-	const [getCureentRole,setCureentRole] = useState(1);
+	const currentRole = ganmeRoleStore((state) => state.currentRole)
 
+	const setCurrentRole = ganmeRoleStore((state) => state.setCurrentRole)
 	
 
 	const roleSelect = []
 	if (roleList) {
 		roleList.map((value, index) => {
 			roleSelect.push(
-				<Select.Option value={value.characNo}>
+				<Select.Option key={index} value={value.characNo}>
 					{value.characName + '-' + value.jobName + '-' + value.mid + '-' + value.characNo}
 				</Select.Option>
 			)
@@ -37,24 +46,28 @@ const Index: React.FC = () => {
 
 	const signInList = signInStore((state) => state.signInList)
 	const getSgnInList = signInStore((state) => state.getSgnInList)
+	const listShow = signInStore((state) => state.listShow)
+	const setListShow = signInStore((state) => state.setListShow)
 
 
 	const roleOnSelect = (value, option) => {
-		setCureentRole(value)
+		setCurrentRole(value)
 		getSgnInList(value)
 	}
 
 	const signIn = async () => {
-		const res = await roleSign(getCureentRole)
+		const res = await roleSign(currentRole)
 		if(res){
 			Toast.success("签到成功,小退查看邮箱.")
-			getSgnInList(getCureentRole)
+			getSgnInList(currentRole)
 		}
 	}
+	
 
 	
 
 	useEffect(() => {
+		getCurrentUser()
 		getRoleList()
 	}, [])
 
@@ -153,17 +166,21 @@ const Index: React.FC = () => {
 		return null
 	}
 
+
 	return (
 		<Card
 			header={
 				<Space>
+					
 					<div>选择角色:</div> <Select placeholder={'请先选择角色'} onSelect={roleOnSelect}>
 						{roleSelect}
 					</Select>
+					{isAdmin ? <Button type='primary' onClick={()=>setListShow(true)}>签到配置</Button>:null}
 				</Space>
 			}
 		>
 			<Calendar mode="month" dateGridRender={dateRender}></Calendar>
+			<SingInConfig visible={listShow} setVisible={setListShow} />
 		</Card>
 	)
 }

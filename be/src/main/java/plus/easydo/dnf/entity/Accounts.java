@@ -1,5 +1,6 @@
 package plus.easydo.dnf.entity;
 
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
@@ -36,5 +37,8 @@ public class Accounts implements Serializable {
     private Integer billing;
 
     private String vip;
+
+    @Column(ignore = true)
+    private boolean isAdmin = false;
 
 }
