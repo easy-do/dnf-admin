@@ -47,7 +47,7 @@ public class GamePostalServiceImpl implements GamePostalService {
         letter.setLetterText("每日签到奖励");
         letter.setRegDate(LocalDateTimeUtil.now());
         letter.setStat(0);
-        if(letterManager.save(letter)){
+        if(!letterManager.save(letter)){
             throw new BaseException("信件发送失败");
         }
         return letter;
@@ -93,7 +93,7 @@ public class GamePostalServiceImpl implements GamePostalService {
         //设置收件角色
         postal.setReceiveCharacNo(roleId);
         postal.setSendCharacNo(0);
-        postal.setSendCharacName("DNF-ADMIN");
+        postal.setSendCharacName("dnf-admin");
         //增幅
         postal.setAmplifyOption(AmplifyEnum.EMPTY.getCode());
         postal.setAmplifyValue(0);
