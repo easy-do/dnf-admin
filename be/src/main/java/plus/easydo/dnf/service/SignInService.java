@@ -1,6 +1,7 @@
 package plus.easydo.dnf.service;
 
 import com.mybatisflex.core.paginate.Page;
+import plus.easydo.dnf.dto.DaSignInConfDto;
 import plus.easydo.dnf.entity.DaSignInConf;
 import plus.easydo.dnf.qo.DaSignInConfQo;
 
@@ -39,5 +40,7 @@ public interface SignInService {
 
     DaSignInConf info(Long id);
 
-    boolean update(DaSignInConf daSignInConf);
+    boolean update(DaSignInConfDto daSignInConf);
+
+    boolean insert(DaSignInConfDto daSignInConf);
 }

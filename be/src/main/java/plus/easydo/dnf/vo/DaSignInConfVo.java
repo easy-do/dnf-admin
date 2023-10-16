@@ -1,9 +1,7 @@
-package plus.easydo.dnf.entity;
+package plus.easydo.dnf.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
-import com.mybatisflex.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,10 +21,8 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "da_sign_in_conf", dataSource = "d_taiwan")
-public class DaSignInConf implements Serializable {
+public class DaSignInConfVo implements Serializable {
 
-    @Id(keyType = KeyType.Auto)
     private Long id;
 
     private String configName;
@@ -37,13 +33,14 @@ public class DaSignInConf implements Serializable {
 
     private String remark;
 
-    private Integer createId;
-
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     @Column(ignore = true)
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime signInTime;
 
 }

@@ -4,12 +4,16 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import plus.easydo.dnf.config.MyInsertListener;
+import plus.easydo.dnf.config.MySetListener;
+import plus.easydo.dnf.config.MyUpdateListener;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  *  角色信息。
@@ -21,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "charac_info", dataSource = "taiwan_cain")
+@Table(value = "charac_info",  dataSource = "taiwan_cain" ,onSet = MySetListener.class, onInsert = MyInsertListener.class, onUpdate = MyUpdateListener.class)
 public class CharacInfo implements Serializable {
 
     private Integer mId;

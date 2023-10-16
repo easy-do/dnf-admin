@@ -1,6 +1,5 @@
 package plus.easydo.dnf.config;
 
-import cn.hutool.core.lang.Validator;
 import cn.hutool.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

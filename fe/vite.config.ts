@@ -26,10 +26,14 @@ export default defineConfig({
 			plugins: []
 		}
 	},
-	server: {
+	server: {	
+	    host: '0.0.0.0',//自定义主机名
+		port: 8989,//自定义端口
+		// 是否开启 https
+		https: false,
 		proxy: {
 			'/api': {
-				target: 'http://localhost:8080/api',
+				target: 'http://localhost:8888/api',
 				changeOrigin: true,
 				rewrite: (path: string) => path.replace(/^\/api/, '')
 			}

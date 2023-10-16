@@ -2,21 +2,18 @@ package plus.easydo.dnf.service.impl;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.mybatisflex.core.query.QueryChain;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.entity.CharacInfo;
 import plus.easydo.dnf.enums.ExpertJobJobEnum;
-import plus.easydo.dnf.mapper.CharacInfoMapper;
+import plus.easydo.dnf.manager.CharacInfoManager;
 import plus.easydo.dnf.security.CurrentUserContextHolder;
 import plus.easydo.dnf.service.GameRoleService;
-import plus.easydo.dnf.util.CharsetEncodingUtils;
 import plus.easydo.dnf.util.DictUtil;
 
 import java.util.List;
 
-import static plus.easydo.dnf.entity.table.CharacInfoTableDef.CHARAC_INFO;
 
 /**
  * @author laoyu
@@ -30,18 +27,18 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     private static JSONObject jobDictJson = JSONUtil.parseObj(DictUtil.jobDict);
 
-    private final CharacInfoMapper characInfoMapper;
+    private final CharacInfoManager characInfoManager;
 
     @Override
     public List<CharacInfo> roleList() {
         Accounts user = CurrentUserContextHolder.getCurrentUser();
-        List<CharacInfo> list = QueryChain.of(characInfoMapper)
-                .select(CHARAC_INFO.ALL_COLUMNS)
-                .from(CHARAC_INFO)
-                .where(CHARAC_INFO.M_ID.ge(user.getUid()))
-                .list();
+        List<CharacInfo> list = characInfoManager.listByUid(user.getUid());
         list.forEach(characInfo -> {
-            characInfo.setCharacName(CharsetEncodingUtils.converter(characInfo.getCharacName()));
+//            try {
+//                characInfo.setCharacName(new String(characInfo.getCharacName().getBytes("latin1"),"utf8"));
+//            } catch (UnsupportedEncodingException e) {
+//                throw new RuntimeException(e);
+//            }
             Integer job = characInfo.getJob();
             Integer growType = characInfo.getGrowType();
             Object jobName = jobDictJson.getByPath(job + "." + growType);

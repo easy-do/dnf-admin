@@ -4,11 +4,13 @@ import { configInfoReuet, configPageRequest, signInList } from '@src/api/signInA
 export interface signInState {
 	signInList: any
 	getSgnInList: (roleId) => void
-	editShow:false
 	listShow:false
 	editId:undefined
 	setEditId: (data) => void
+	editShow:false
 	setEditShow: (data) => void
+	addShow:false
+	setAddShow: (data) => void
 	setListShow: (data) => void
 	getConfigPage: (param) => void
 	cureentSignIn:any
@@ -23,8 +25,18 @@ const signInState = create<signInState>((set, get) => ({
 		const data = await signInList(roleId);
 		set({ signInList: data })
 	},
-	editShow:false,
 	editId:undefined,
+	setEditId: (data) => {
+		set({ editId: data })
+	},
+	editShow:false,
+	setEditShow: (data) => {
+		set({ editShow: data })
+	},
+	addShow:false,
+	setAddShow: (data) => {
+		set({ addShow: data })
+	},
 	listShow:false,
 	cureentSignIn:{
 		configName:undefined,
@@ -50,14 +62,8 @@ const signInState = create<signInState>((set, get) => ({
 		const data = await configPageRequest(param);
 		set({ signInPageData: data.records })
 	},
-	setEditShow: (data) => {
-		set({ editShow: data })
-	},
 	setListShow: (data) => {
 		set({ listShow: data })
-	},
-	setEditId: (data) => {
-		set({ editId: data })
 	}
 }))
 

@@ -19,6 +19,9 @@ import java.util.Set;
 
 public class CurrentUserContextHolder {
 
+    private CurrentUserContextHolder() {
+    }
+
     public static Accounts getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Accounts accounts = auth != null && !(auth instanceof AnonymousAuthenticationToken) && auth.isAuthenticated() ? (Accounts) auth.getDetails() : null;

@@ -1,6 +1,6 @@
 
 server:
-  port: 8080
+  port: 8888
 
 spring:
   main:
@@ -10,19 +10,22 @@ spring:
     resources:
       static-locations: classpath:/static/
 
+
 mybatis-flex:
   datasource:
     d_taiwan:
-      url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/d_taiwan?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+      url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/d_taiwan?useUnicode=true&characterEncoding=latin1&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
       username: ${MYSQL_USER:root}
       password: ${MYSQL_PASS:88888888}
     taiwan_cain:
-      url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/taiwan_cain?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+      url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/taiwan_cain?useUnicode=true&characterEncoding=latin1&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
       username: ${MYSQL_USER:root}
       password: ${MYSQL_PASS:88888888}
     taiwan_cain_2nd:
-      url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/taiwan_cain_2nd?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+      url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/taiwan_cain_2nd?useUnicode=true&characterEncoding=latin1&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
       username: ${MYSQL_USER:root}
       password: ${MYSQL_PASS:88888888}
+  configuration:
+    call-setters-on-nulls:
 
 admin: ${ADMIN_USER:123456789}

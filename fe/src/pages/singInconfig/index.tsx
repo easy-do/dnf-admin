@@ -2,6 +2,7 @@ import { Button, Card, Form, Modal, Table, useFormApi } from '@douyinfe/semi-ui'
 import React, { useEffect, useState } from 'react'
 import signInStore from '@src/store/signIn'
 import SingInConfigEdit from './signConfigEdit'
+import SingInConfigAdd from './signConfigAdd'
 
 
 const SingInConfig = (props) => {
@@ -15,6 +16,7 @@ const SingInConfig = (props) => {
 
 	const setEditShow = signInStore((state) => state.setEditShow)
 
+	const setAddShow = signInStore((state) => state.setAddShow)
 
 
 	const columns = [
@@ -42,7 +44,7 @@ const SingInConfig = (props) => {
 			title: '',
 			dataIndex: 'operate',
 			render: (text, record) => (
-				<Button type="primary" onClick={() => editconfig(record.id)}>
+				<Button type="primary" onClick={() => editConfig(record.id)}>
 					配置
 				</Button>
 			)
@@ -50,9 +52,13 @@ const SingInConfig = (props) => {
 	]
     
     
-	const editconfig = (id) => {
+	const editConfig = (id) => {
 		setEditId(id)
 		setEditShow(true)
+	}
+
+	const addConfig = () => {
+		setAddShow(true)
 	}
 
     useEffect(() => {
@@ -71,10 +77,12 @@ const SingInConfig = (props) => {
 				onCancel={() => props.setVisible(false)}
 			>
 				<Card>
+					<Button onClick={addConfig}>新增配置</Button>
 					<Table columns={columns} pagination={true} dataSource={signInPageData} />
 				</Card>
 			</Modal>
 			<SingInConfigEdit/>
+			<SingInConfigAdd/>
 		</>
 	)
 }

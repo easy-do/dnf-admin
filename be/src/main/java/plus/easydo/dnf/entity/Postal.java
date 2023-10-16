@@ -3,12 +3,16 @@ package plus.easydo.dnf.entity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import plus.easydo.dnf.config.MyInsertListener;
+import plus.easydo.dnf.config.MySetListener;
+import plus.easydo.dnf.config.MyUpdateListener;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  *  邮箱。
@@ -20,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "postal", dataSource = "taiwan_cain_2nd")
+@Table(value = "postal", dataSource = "taiwan_cain_2nd" ,onSet = MySetListener.class, onInsert = MyInsertListener.class, onUpdate = MyUpdateListener.class)
 public class Postal implements Serializable {
 
     @Id(keyType = KeyType.Auto)

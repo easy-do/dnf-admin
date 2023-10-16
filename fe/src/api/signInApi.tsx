@@ -19,3 +19,7 @@ export const configInfoReuet = (id) => {
 export const updateConfigRequest = (param) => {
 	return postRequest('/signIn/update', param)
 }
+
+export const inertConfigRequest = (param) => {
+	return postRequest('/signIn/insert', param)
+}

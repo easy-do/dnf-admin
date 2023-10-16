@@ -9,8 +9,8 @@ import plus.easydo.dnf.entity.Postal;
 import plus.easydo.dnf.enums.AmplifyEnum;
 import plus.easydo.dnf.enums.ItemTypeEnum;
 import plus.easydo.dnf.exception.BaseException;
-import plus.easydo.dnf.mapper.LetterMapper;
-import plus.easydo.dnf.mapper.PostalMapper;
+import plus.easydo.dnf.manager.LetterManager;
+import plus.easydo.dnf.manager.PostalManager;
 import plus.easydo.dnf.service.GamePostalService;
 
 import java.util.List;
@@ -26,9 +26,9 @@ import java.util.List;
 public class GamePostalServiceImpl implements GamePostalService {
 
 
-    private final LetterMapper letterMapper;
+    private final LetterManager letterManager;
 
-    private final PostalMapper postalMapper;
+    private final PostalManager postalManager;
 
     /**
      * 创建信件
@@ -47,7 +47,7 @@ public class GamePostalServiceImpl implements GamePostalService {
         letter.setLetterText("每日签到奖励");
         letter.setRegDate(LocalDateTimeUtil.now());
         letter.setStat(0);
-        if(letterMapper.insert(letter) == 0){
+        if(letterManager.save(letter)){
             throw new BaseException("信件发送失败");
         }
         return letter;
@@ -111,7 +111,7 @@ public class GamePostalServiceImpl implements GamePostalService {
         checkAndSetCreatureFlag(postal,itemType);
         //邮件发送时间
         postal.setOccTime(letter.getRegDate());
-        postalMapper.insert(postal);
+        postalManager.save(postal);
     }
 
     private void checkAndSetCreatureFlag(Postal postal, Integer itemType) {
