@@ -2,16 +2,23 @@ package plus.easydo.dnf.service.impl;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.druid.pool.DruidDataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.entity.CharacInfo;
 import plus.easydo.dnf.enums.ExpertJobJobEnum;
-import plus.easydo.dnf.manager.CharacInfoManager;
 import plus.easydo.dnf.security.CurrentUserContextHolder;
 import plus.easydo.dnf.service.GameRoleService;
 import plus.easydo.dnf.util.DictUtil;
+import plus.easydo.dnf.util.FlexDataSourceUtil;
+import plus.easydo.dnf.util.ResultSetUtil;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -27,18 +34,25 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     private static JSONObject jobDictJson = JSONUtil.parseObj(DictUtil.jobDict);
 
-    private final CharacInfoManager characInfoManager;
+    private final FlexDataSourceUtil flexDataSourceUtil;
 
     @Override
     public List<CharacInfo> roleList() {
         Accounts user = CurrentUserContextHolder.getCurrentUser();
-        List<CharacInfo> list = characInfoManager.listByUid(user.getUid());
+        List<CharacInfo> list;
+        try {
+            DruidDataSource ds = flexDataSourceUtil.getDataSource("taiwan_cain");
+            Connection conn = ds.getConnection();
+            Statement stat =  conn.createStatement();
+            conn.prepareStatement("SET NAMES latin1").execute();
+            String sql = "SELECT * FROM charac_info where m_id = "+user.getUid();
+            ResultSet rs  = stat.executeQuery(sql);
+            list = ResultSetUtil.reToBeanList(rs,CharacInfo.class, Collections.singletonList("charac_name"));
+            stat.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         list.forEach(characInfo -> {
-//            try {
-//                characInfo.setCharacName(new String(characInfo.getCharacName().getBytes("latin1"),"utf8"));
-//            } catch (UnsupportedEncodingException e) {
-//                throw new RuntimeException(e);
-//            }
             Integer job = characInfo.getJob();
             Integer growType = characInfo.getGrowType();
             Object jobName = jobDictJson.getByPath(job + "." + growType);

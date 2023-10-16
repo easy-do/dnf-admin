@@ -1,9 +1,12 @@
 package plus.easydo.dnf.gen;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.ColumnConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
-import com.zaxxer.hikari.HikariDataSource;
+
+import java.util.Collections;
 
 /**
  * @author laoyu
@@ -16,11 +19,15 @@ public class Codegen {
 
     public static void main(String[] args) {
         //配置数据源
-        HikariDataSource dataSource = new HikariDataSource();
+        DruidDataSource dataSource =
+        DruidDataSourceBuilder.create().build();
 //        dataSource.setJdbcUrl("jdbc:mysql://121.36.64.134:3306/taiwan_cain?characterEncoding=utf-8");
-        dataSource.setJdbcUrl("jdbc:mysql://121.36.64.134:3306/taiwan_cain_2nd?characterEncoding=utf-8");
+        dataSource.setUrl("jdbc:mysql://121.36.64.134:3306/taiwan_cain_2nd?characterEncoding=utf-8");
         dataSource.setUsername("root");
         dataSource.setPassword("88888888");
+        dataSource.setConnectionInitSqls(Collections.singleton("set names latin1"));
+
+
 
         //创建配置内容，两种风格都可以。
         GlobalConfig globalConfig = createGlobalConfigUseStyle1();

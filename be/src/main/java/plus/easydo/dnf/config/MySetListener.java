@@ -3,6 +3,8 @@ package plus.easydo.dnf.config;
 import com.mybatisflex.annotation.SetListener;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Objects;
+
 /**
  * @author laoyu
  * @version 1.0
@@ -13,10 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 public class MySetListener implements SetListener {
     @Override
     public Object onSet(Object entity, String property, Object value) {
-//        if(Objects.nonNull(value) && value instanceof String){
-//            log.info("SetListener,property:{},value:{}",property,value);
+        if(Objects.nonNull(value) && value instanceof String){
+            log.info("SetListener,property:{},value:{}",property,value);
 //            return CharsetUtil.convert( value.toString(), CharsetUtil.ISO_8859_1, CharsetUtil.UTF_8);
-//        }
+        }
         return value;
     }
 }

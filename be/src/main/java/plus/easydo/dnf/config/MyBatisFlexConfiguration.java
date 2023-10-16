@@ -1,6 +1,8 @@
 package plus.easydo.dnf.config;
 
+import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.audit.AuditManager;
+import com.mybatisflex.spring.boot.MyBatisFlexCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-public class MyBatisFlexConfiguration {
+public class MyBatisFlexConfiguration implements MyBatisFlexCustomizer {
 
     private static final Logger logger = LoggerFactory
             .getLogger("mybatis-flex-sql");
@@ -28,5 +30,10 @@ public class MyBatisFlexConfiguration {
                 logger.info("{},{}ms", auditMessage.getFullSql()
                         , auditMessage.getElapsedTime())
         );
+    }
+
+    @Override
+    public void customize(FlexGlobalConfig globalConfig) {
+
     }
 }

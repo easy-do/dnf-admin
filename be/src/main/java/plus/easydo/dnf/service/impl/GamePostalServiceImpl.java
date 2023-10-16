@@ -12,6 +12,7 @@ import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.manager.LetterManager;
 import plus.easydo.dnf.manager.PostalManager;
 import plus.easydo.dnf.service.GamePostalService;
+import plus.easydo.dnf.util.Latin1ConvertUtil;
 
 import java.util.List;
 
@@ -43,8 +44,8 @@ public class GamePostalServiceImpl implements GamePostalService {
         Letter letter = new Letter();
         letter.setCharacNo(characNo);
         letter.setSendCharacNo(1);
-        letter.setSendCharacName("admin");
-        letter.setLetterText("每日签到奖励");
+        letter.setSendCharacName(Latin1ConvertUtil.convertLatin1("dnf-admin后台"));
+        letter.setLetterText(Latin1ConvertUtil.convertLatin1("每日签到奖励,请查收。"));
         letter.setRegDate(LocalDateTimeUtil.now());
         letter.setStat(0);
         if(!letterManager.save(letter)){
@@ -93,7 +94,8 @@ public class GamePostalServiceImpl implements GamePostalService {
         //设置收件角色
         postal.setReceiveCharacNo(roleId);
         postal.setSendCharacNo(0);
-        postal.setSendCharacName("dnf-admin");
+        //发件人的姓名
+        postal.setSendCharacName(Latin1ConvertUtil.convertLatin1("dnf-admin后台"));
         //增幅
         postal.setAmplifyOption(AmplifyEnum.EMPTY.getCode());
         postal.setAmplifyValue(0);

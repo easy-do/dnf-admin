@@ -14,17 +14,26 @@ spring:
 mybatis-flex:
   datasource:
     d_taiwan:
+      type: druid
       url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/d_taiwan?useUnicode=true&characterEncoding=latin1&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
       username: ${MYSQL_USER:root}
       password: ${MYSQL_PASS:88888888}
+      connectionInitSqls:
+        - SET NAMES latin1
     taiwan_cain:
+      type: druid
       url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/taiwan_cain?useUnicode=true&characterEncoding=latin1&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
       username: ${MYSQL_USER:root}
       password: ${MYSQL_PASS:88888888}
+      connectionInitSqls:
+        - SET NAMES latin1
     taiwan_cain_2nd:
+      type: druid
       url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/taiwan_cain_2nd?useUnicode=true&characterEncoding=latin1&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
       username: ${MYSQL_USER:root}
       password: ${MYSQL_PASS:88888888}
+      connectionInitSqls:
+        - SET NAMES latin1
   configuration:
     call-setters-on-nulls:
 
