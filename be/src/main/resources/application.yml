@@ -15,11 +15,11 @@ mybatis-flex:
   datasource:
     d_taiwan:
       type: druid
-      url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/d_taiwan?useUnicode=true&characterEncoding=latin1&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+      url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/d_taiwan?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
       username: ${MYSQL_USER:root}
       password: ${MYSQL_PASS:88888888}
       connectionInitSqls:
-        - SET NAMES latin1
+        - SET NAMES utf8
     taiwan_cain:
       type: druid
       url: jdbc:mysql://${MYSQL_HOST:121.36.64.134}:${MYSQL_PORT:3306}/taiwan_cain?useUnicode=true&characterEncoding=latin1&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8

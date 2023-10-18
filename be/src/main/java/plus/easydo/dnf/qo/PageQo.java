@@ -13,7 +13,7 @@ public class PageQo {
     /**
      * 当前页
      */
-    protected Integer currentPage = 1;
+    protected Integer pageNumber = 1;
     /**
      * 每页显示条数
      */
