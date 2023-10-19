@@ -1,5 +1,6 @@
 package plus.easydo.dnf.config;
 
+import cn.dev33.satoken.exception.SaTokenException;
 import cn.hutool.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +8,6 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import plus.easydo.dnf.exception.AuthException;
 import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
@@ -84,8 +84,8 @@ public class GlobalExceptionHandler {
      * @return java.lang.Object
      * @author laoyu
      */
-    @ExceptionHandler(AuthException.class)
-    public Object authException(AuthException e) {
+    @ExceptionHandler(SaTokenException.class)
+    public Object authException(SaTokenException e) {
         log.error(e.getMessage(), e);
         return DataResult.fail(HttpStatus.HTTP_UNAUTHORIZED,e.getMessage());
     }

@@ -1,5 +1,7 @@
 package plus.easydo.dnf.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.hutool.core.bean.BeanUtil;
 import com.mybatisflex.core.paginate.Page;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.dnf.dto.DaSignInConfDto;
 import plus.easydo.dnf.entity.DaSignInConf;
 import plus.easydo.dnf.qo.DaSignInConfQo;
-import plus.easydo.dnf.security.CurrentUserContextHolder;
 import plus.easydo.dnf.service.SignInService;
 import plus.easydo.dnf.vo.DaSignInConfVo;
 import plus.easydo.dnf.vo.DataResult;
@@ -33,36 +34,39 @@ public class SignInController {
 
     private final SignInService signInService;
 
+    @SaCheckLogin
     @GetMapping("/signInList/{roleId}")
     public R<List<DaSignInConfVo>> signList(@PathVariable("roleId")Integer roleId){
         return DataResult.ok(BeanUtil.copyToList(signInService.signList(roleId), DaSignInConfVo.class));
     }
 
+    @SaCheckLogin
     @GetMapping("/roleSign/{roleId}")
     public R<Object> roleSign(@PathVariable("roleId")Integer roleId){
         return DataResult.ok(signInService.roleSign(roleId));
     }
 
+    @SaCheckRole("admin")
     @PostMapping("/page")
     public R<Page<DaSignInConf>> signInPage(@RequestBody DaSignInConfQo daSignInConfQo){
-        CurrentUserContextHolder.checkAdmin();
         return DataResult.ok(signInService.signInPage(daSignInConfQo));
     }
 
+    @SaCheckRole("admin")
     @GetMapping("/info/{id}")
     public R<DaSignInConfVo> info(@PathVariable("id")Long id){
         return DataResult.ok(BeanUtil.copyProperties(signInService.info(id), DaSignInConfVo.class));
     }
 
+    @SaCheckRole("admin")
     @PostMapping("/insert")
     public R<Boolean> insert(@RequestBody DaSignInConfDto daSignInConf){
-        CurrentUserContextHolder.checkAdmin();
         return DataResult.ok(signInService.insert(daSignInConf));
     }
 
+    @SaCheckRole("admin")
     @PostMapping("/update")
     public R<Boolean> update(@RequestBody DaSignInConfDto daSignInConf){
-        CurrentUserContextHolder.checkAdmin();
         return DataResult.ok(signInService.update(daSignInConf));
     }
 

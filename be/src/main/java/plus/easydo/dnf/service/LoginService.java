@@ -1,19 +1,18 @@
 package plus.easydo.dnf.service;
 
-import cn.hutool.core.map.MapUtil;
+import cn.dev33.satoken.stp.SaLoginConfig;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.SecureUtil;
-import cn.hutool.jwt.JWTUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.exception.BaseException;
-import plus.easydo.dnf.manager.CacheManager;
-import plus.easydo.dnf.security.CurrentUserContextHolder;
 
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -44,21 +43,17 @@ public class LoginService {
     public String login(LoginDto loginDto){
         Accounts accounts = accountsService.getByUserName(loginDto.getUserName());
         if(Objects.isNull(accounts)){
-            throw new BaseException("账号不存在");
+            throw new BaseException("账号不存在或密码错误");
         }
         String md5Password = SecureUtil.md5().digestHex(loginDto.getPassword());
         if(CharSequenceUtil.equals(md5Password,accounts.getPassword())){
-            String token = generateToken(accounts);
-            if(CacheManager.isLogin(accounts.getUid())){
-                CacheManager.cleanToken(accounts.getUid());
-            }
-            if(accounts.getAccountname().equals(adminUser)){
-                accounts.setAdmin(true);
-            }
-            CacheManager.cacheUser(accounts,token);
-            return token;
+            boolean isAdmin = accounts.getAccountname().equals(adminUser);
+            accounts.setAdmin(isAdmin);
+            StpUtil.login(accounts.getUid(), SaLoginConfig
+                    .setExtra("userInfo", JSONUtil.toJsonPrettyStr(accounts)).setExtra("admin",isAdmin));
+            return StpUtil.getTokenValue();
         }
-        throw new BaseException("密码错误");
+        throw new BaseException("账号不存在或密码错误");
     }
 
     /**
@@ -69,26 +64,14 @@ public class LoginService {
      * @date 2023/10/14
      */
     public void logout() {
-        Accounts user = CurrentUserContextHolder.getCurrentUser();
-        if(Objects.isNull(user)){
-            CacheManager.cleanToken(user.getUid());
-        }
+        StpUtil.logout();
     }
 
-    /**
-     * 生成一个简易token
-     *
-     * @param accounts accounts
-     * @return java.lang.String
-     * @author laoyu
-     * @date 2023/10/11
-     */
-    private String generateToken(Accounts accounts){
-        Map<String,Object> map = MapUtil.newHashMap(2);
-        map.put("uid",accounts.getUid());
-        map.put("userName",accounts.getAccountname());
-        map.put("timestamp",System.currentTimeMillis());
-        return JWTUtil.createToken(map, "123456".getBytes());
-    }
 
+    public JSONObject currentUser() {
+        Object userInfo = StpUtil.getExtra("userInfo");
+        JSONObject userJson = JSONUtil.parseObj(userInfo);
+        userJson.remove("password");
+        return userJson;
+    }
 }

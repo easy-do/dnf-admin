@@ -1,4 +1,4 @@
-import { Button, Card, Form, Modal, Table, useFormApi } from '@douyinfe/semi-ui'
+import { Button, ButtonGroup, Card, Form, Modal, Table, useFormApi } from '@douyinfe/semi-ui'
 import React, { useEffect, useState } from 'react'
 import signInStore from '@src/store/signIn'
 import SingInConfigEdit from './signConfigEdit'
@@ -17,6 +17,11 @@ const SingInConfig = (props) => {
 	const setEditShow = signInStore((state) => state.setEditShow)
 
 	const setAddShow = signInStore((state) => state.setAddShow)
+
+
+	const handlePageChange = (pageNumber) => {
+		getConfigPage({pageNumber:pageNumber})
+	}
 
 
 	const columns = [
@@ -77,8 +82,17 @@ const SingInConfig = (props) => {
 				onCancel={() => props.setVisible(false)}
 			>
 				<Card>
-					<Button onClick={addConfig}>新增配置</Button>
-					<Table columns={columns} pagination={true} dataSource={signInPageData} />
+					<ButtonGroup>
+						<Button onClick={addConfig}>新增配置</Button>
+						<Button onClick={()=>getConfigPage({})}>刷新</Button>
+					</ButtonGroup>
+
+					<Table columns={columns} pagination={{
+						                currentPage:signInPageData.pageNumber,
+										pageSize:signInPageData.pageSize,
+										total:signInPageData.totalRow,
+										onPageChange: handlePageChange,
+					}} dataSource={signInPageData.records} />
 				</Card>
 			</Modal>
 			<SingInConfigEdit/>

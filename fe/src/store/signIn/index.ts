@@ -16,7 +16,13 @@ export interface signInState {
 	cureentSignIn:any
 	getSignInInfo: (id) => any
 	setSignInInfo: (data) => void
-	signInPageData:[]
+	signInPageData:{
+		records:[],
+		pageNumber:1,
+		pageSize:10,
+		totalRow:0,
+		totalPage:1
+	}
 }
 
 const signInState = create<signInState>((set, get) => ({
@@ -57,10 +63,16 @@ const signInState = create<signInState>((set, get) => ({
 	setSignInInfo: (data) => {
 		set({ cureentSignIn: data })
 	},
-	signInPageData:[],
+	signInPageData:{
+		records:[],
+		pageNumber:1,
+		pageSize:10,
+		totalRow:0,
+		totalPage:1
+	},
 	getConfigPage: async (param) => {
 		const data = await configPageRequest(param);
-		set({ signInPageData: data.records })
+		set({ signInPageData: data })
 	},
 	setListShow: (data) => {
 		set({ listShow: data })

@@ -1,5 +1,6 @@
 package plus.easydo.dnf.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,8 @@ import java.util.List;
 public class GameRoleController {
 
     private final GameRoleService gameRoleService;
+
+    @SaCheckLogin
     @GetMapping("/list")
     public R<List<CharacInfo>> roleList(){
         return DataResult.ok(gameRoleService.roleList());

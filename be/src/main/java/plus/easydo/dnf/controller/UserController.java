@@ -1,5 +1,8 @@
 package plus.easydo.dnf.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaIgnore;
+import cn.hutool.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.entity.Accounts;
-import plus.easydo.dnf.security.CurrentUserContextHolder;
 import plus.easydo.dnf.service.LoginService;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
@@ -27,6 +29,7 @@ public class UserController {
 
     private final LoginService loginService;
 
+    @SaIgnore
     @PostMapping("/login")
     public R<String> login(@Validated @RequestBody LoginDto loginDto){
         return DataResult.ok(loginService.login(loginDto));
@@ -38,9 +41,10 @@ public class UserController {
         return DataResult.ok();
     }
 
+    @SaCheckLogin
     @GetMapping("/currentUser")
-    public R<Accounts> currentUser(){
-        return DataResult.ok(CurrentUserContextHolder.getCurrentUser());
+    public R<JSONObject> currentUser(){
+        return DataResult.ok(loginService.currentUser());
     }
 
 }

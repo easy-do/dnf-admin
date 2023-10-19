@@ -1,5 +1,6 @@
 package plus.easydo.dnf.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.json.JSONUtil;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import plus.easydo.dnf.dto.DaSignInConfDto;
 import plus.easydo.dnf.dto.SignInConfigDate;
-import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.entity.CharacInfo;
 import plus.easydo.dnf.entity.DaSignInConf;
 import plus.easydo.dnf.entity.DaSignInLog;
@@ -17,7 +17,6 @@ import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.manager.DaSignInConfManager;
 import plus.easydo.dnf.manager.DaSignInLogManager;
 import plus.easydo.dnf.qo.DaSignInConfQo;
-import plus.easydo.dnf.security.CurrentUserContextHolder;
 import plus.easydo.dnf.service.GamePostalService;
 import plus.easydo.dnf.service.GameRoleService;
 import plus.easydo.dnf.service.SignInService;
@@ -46,14 +45,12 @@ public class SignInServiceImpl implements SignInService {
 
     @Override
     public List<DaSignInConf> signList(Integer roleId) {
-        Accounts user = CurrentUserContextHolder.getCurrentUser();
-        return daSignInConfManager.getRoleSignList(user.getUid(),roleId);
+        return daSignInConfManager.getRoleSignList(StpUtil.getLoginIdAsInt(),roleId);
     }
 
     @Override
     @Transactional
     public boolean roleSign(Integer roleId) {
-        Accounts user = CurrentUserContextHolder.getCurrentUser();
         List<CharacInfo> roleList = gameRoleService.roleList();
         CharacInfo currentRole = null;
         for (CharacInfo characInfo: roleList) {
@@ -70,12 +67,12 @@ public class SignInServiceImpl implements SignInService {
             throw new BaseException("没有找到今日的签到配置");
         }
 
-        if (daSignInLogManager.existRoleConfigLog(user.getUid(),roleId,signInConf.getId())) {
+        if (daSignInLogManager.existRoleConfigLog(StpUtil.getLoginIdAsInt(),roleId,signInConf.getId())) {
             throw new BaseException("已经签到过了");
         }
         DaSignInLog entity = new DaSignInLog();
         entity.setConfigId(signInConf.getId());
-        entity.setSignInUserId(user.getUid());
+        entity.setSignInUserId(StpUtil.getLoginIdAsInt());
         entity.setSignInRoleId(roleId);
         entity.setCreateTime(LocalDateTimeUtil.now());
         boolean signInFlag = daSignInLogManager.save(entity);
