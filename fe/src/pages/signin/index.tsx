@@ -17,7 +17,7 @@ import SingInConfig from '../singInconfig'
 const Index: React.FC = () => {
 
 
-	const isAdmin = userStore((state) => state.admin)
+	const isAdmin = userStore((state) => state.isAdmin)
 
 	const getCurrentUser = userStore((state) => state.getCurrentUser)
 

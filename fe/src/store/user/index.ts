@@ -9,7 +9,7 @@ export interface userState {
     dzuid
     billing
     vip
-    admin
+    isAdmin
 	getCurrentUser: () => any
 }
 
@@ -20,7 +20,7 @@ const useStore = create<userState>((set, get) => ({
     dzuid:undefined,
     billing:undefined,
     vip:undefined,
-    admin:false,
+    isAdmin:false,
 	getCurrentUser: async () => {
 		const data = await getCurrentUserRequest();
 		set(data)
