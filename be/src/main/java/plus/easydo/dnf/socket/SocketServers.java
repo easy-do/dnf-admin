@@ -46,7 +46,6 @@ public class SocketServers {
             Socket socket = serverSocket.accept();
             log.info("socket链接成功");
             OutputStream os = socket.getOutputStream();
-            IoUtil.write(os,false, JSONUtil.toJsonPrettyStr(DataResult.ok()).getBytes());
             InputStream inputStream = socket.getInputStream();
             //保持长连接
             while (true) {
@@ -54,6 +53,7 @@ public class SocketServers {
                 byte[] bytes = new byte[1024];
                 int length = inputStream.read(bytes);
                 log.info("读取客户端消息成功:" + new String(bytes, 0, length));
+                IoUtil.write(os,false, bytes);
             }
         } catch (Exception e) {
             log.info("socket链接关闭,重新开启连接");
