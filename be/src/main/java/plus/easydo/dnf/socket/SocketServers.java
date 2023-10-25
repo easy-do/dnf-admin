@@ -36,7 +36,8 @@ public class SocketServers {
     @PostConstruct
     public void socketStart() {
         //开启一个线程启动Socket服务
-        socketServer();
+        Thread th = new Thread(this::socketServer);
+        th.start();
     }
 
 
