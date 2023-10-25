@@ -2,14 +2,13 @@ package plus.easydo.dnf.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
 
-import java.util.Map;
 
 /**
  * @author laoyu
@@ -23,12 +22,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TestController {
 
-    @RequestMapping("/test")
+    @GetMapping("/test")
     public R<Object> roleList(
-            @RequestBody(required = false) Map<String,String> param,
             @RequestParam("type")String type,
             @RequestParam("value")String value){
-        log.info("param:{}",param);
         log.info("type:{}",type);
         log.info("value:{}",value);
         return DataResult.ok();
