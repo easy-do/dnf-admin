@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <a exe="df_game_r">
+        <deps>
+            <a><![CDATA[/dp2/lib/libuv.so]]></a>
+            <a><![CDATA[/dp2/lib/libffi.so.8]]></a>
+            <a><![CDATA[/dp2/lib/liblua53.so]]></a>
+
+            <a><![CDATA[/dp2/lua/luv.so]]></a>
+        </deps>
+        <script><![CDATA[/dp2/df_game_r.lua]]></script>
+        <plugin><![CDATA[/dp2/lib/libdp2game.so]]></plugin>
+    </a>
+</root>
