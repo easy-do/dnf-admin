@@ -29,10 +29,10 @@ public class AdminController {
 
     @GetMapping("/get")
     public R<Object> roleList(
-            @RequestParam("gmKey")String gmkey,
+            @RequestParam("gmKey")String gmKey,
             @RequestParam("type")String type,
             @RequestParam("value")String value){
-        if(!gmKey.equals(gmkey)){
+        if(!gmKey.equals(gmKey)){
             return DataResult.fail("gmKey错误,请检查配置.");
         }
         log.info("type:{},value:{}",type,value);

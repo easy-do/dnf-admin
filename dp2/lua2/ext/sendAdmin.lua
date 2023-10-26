@@ -16,23 +16,23 @@ local _M = {}
 function _M:run(type, value)
      -- 为了通讯安全请与服务端同步设置负责的密钥
      local gmKey = "123456789";
-     local res = http.request(string.format("http://172.20.0.4:8888/api/test/test?gmkey=%s&type=%s&value=%s",gmKey,type,value))
-     logger.info("send admin result: %s",b)
-     if not nil then
+     local res = http.request(string.format("http://172.20.0.2:8888/api/admin/get?gmKey=%s&type=%s&value=%s",gmKey,type,value))
+     logger.info("send admin result: %s",res)
+     if res ~= nil then
          local ok, resJson = pcall(json.decode, res)
-         if ok then  
+         if ok then
              local code = resJson.code
-             if code == 200 then
+             if code == 200 and resJson.success then
                  return resJson.data
              else
                  logger.info("send admin error: %s", resJson.message)
                  return nil
              end
-		else  
-		  logger.info("json.decode error: %s", resJson) 
+		else
+		  logger.info("json.decode error: %s", resJson)
 		end
      else
-         return nil 
+         return nil
      end
 end
 

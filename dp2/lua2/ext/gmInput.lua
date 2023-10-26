@@ -23,14 +23,14 @@ function _M:run(_user, input, onlineUser)
             end
         end
     end
-    
-    if input =="//web" then
-        -- 测试websocket
-	  local key = "ext.webSocket";
-	  local websocket = require(key)
-	websocket:run(_user, input)
+
+    if input =="//test" then
+        -- 测试http
+        local key = "ext.sendAdmin";
+        local sendAdmin = require(key)
+        sendAdmin:run('test', 'test')
     end
-    
+
 end
 
 return _M
