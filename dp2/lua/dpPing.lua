@@ -10,25 +10,32 @@ local logger = require("df.logger")
 
 local dpPing = {}
 
-
 local function pingAdmin()
     local adminValue = dpReport.run('ping', 'ping');
     if adminValue ~= nil then
-        --将获得的信息交给frida处理,解决热重载冲突
-        local ok, jsonStr = pcall(json.encode, adminValue)
+        --将获得的信息交给frida处理
+        local ok, jsonStr = pcall(json.encode, adminValue.arg2)
         if ok then
-            local arg0 = 9
-            local arg1 = 9999
-            local callOk, callResult = pcall(dp.frida.call, arg0,arg1,jsonStr)
-            if callOk then
-                logger.info("frida.call success: %d", callResult)
-            else
-                logger.info("frida.call fail: %s", callResult)
+            local debug = adminValue.debug and true or false
+            if debug then
+                logger.info("adminValue debug : %s", adminValue)
+            end
+            local callDp = adminValue.callDp and true or false
+            if callDp then
+                if debug then
+                    logger.info("callDp debug : %s", adminValue)
+                end
+            end
+            local callFrida = adminValue.callFrida and true or false
+            if callFrida then
+                local callOk, callResult = pcall(dp.frida.call, tonumber(adminValue.arg0),tonumber(adminValue.arg1),jsonStr)
+                if not callOk then
+                    logger.info("frida.call fail: %s", callResult)
+                end       
             end
         else
             logger.info("adminValue encode fail : %s", adminValue)
         end
-
     else
         logger.info("adminValue is nil")
     end

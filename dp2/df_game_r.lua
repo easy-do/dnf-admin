@@ -6,6 +6,8 @@ local dpx = _DPX
 local game = require("df.game")
 local logger = require("df.logger")
 local json = require("json")
+local dpPing = require("dpPing")
+local dpReport = require("dpReport")
 
 logger.info("opt: %s", dpx.opt())
 -- see dp2/lua/df/doc for more information !
@@ -29,11 +31,8 @@ frida.load("load args!", on_frida_call)
 
 
 ------------------------------------------------ 开启dnf-admin通信----------------------------------------------------------------------
-local dpPing = require("dpPing")
-local dpReport = require("dpReport")
 dpPing.run()
 ------------------------------------------------ 开启dnf-admin通信----------------------------------------------------------------------
-
 
 ------------------------------------------------ 记录在线账号----------------------------------------------------------------------
 local online = {}
@@ -64,7 +63,6 @@ local function onLogout(_user)
 end
 dpx.hook(game.HookType.Leave_GameWord, onLogout)
 ------------------------------------------------ 记录在线账号----------------------------------------------------------------------
-
 
 
 -------------------------------------------------玩家指令监听----------------------------------------------------------------------
