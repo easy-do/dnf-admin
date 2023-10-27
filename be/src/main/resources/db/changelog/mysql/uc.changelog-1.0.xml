@@ -5,6 +5,7 @@
 
     <changeSet author="yuzhanfeng" id="20231028" dbms="mysql" failOnError="true">
         <sql dbms="mysql">
+
             -- d_taiwan.da_item definition
 
             CREATE TABLE `da_item`
@@ -12,12 +13,13 @@
                 `id`     bigint(20)  NOT NULL COMMENT '装备id',
                 `name`   varchar(64) NOT NULL COMMENT '名称',
                 `type`   varchar(12) DEFAULT NULL COMMENT '类型',
-                `rarity` varchar(6)  DEFAULT NULL COMMENT '稀有度'
+                `rarity` varchar(6)  DEFAULT NULL COMMENT '稀有度',
+                PRIMARY KEY (`id`)
             ) ENGINE = InnoDB
               DEFAULT CHARSET = utf8 COMMENT ='物品缓存';
 
 
--- d_taiwan.da_sign_in_conf definition
+            -- d_taiwan.da_sign_in_conf definition
 
             CREATE TABLE `da_sign_in_conf`
             (
@@ -34,9 +36,35 @@
               AUTO_INCREMENT = 14
               DEFAULT CHARSET = utf8mb4 COMMENT ='签到配置';
 
+            -- d_taiwan.da_sign_in_log definition
 
--- d_taiwan.da_sign_in_log definition
+            CREATE TABLE `da_sign_in_log`
+            (
+                `id`              bigint(20) NOT NULL AUTO_INCREMENT,
+                `config_id`       bigint(20) NOT NULL,
+                `data_json`       text COMMENT '签到信息',
+                `sign_in_user_id` int(11)  DEFAULT NULL COMMENT '签到账号',
+                `sign_in_role_id` int(11)  DEFAULT NULL COMMENT '签到角色',
+                `create_time`     datetime DEFAULT NULL COMMENT '签到时间',
+                `update_time`     datetime DEFAULT NULL,
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              AUTO_INCREMENT = 17
+              DEFAULT CHARSET = utf8mb4 COMMENT ='签到记录';
 
+            -- d_taiwan.da_game_config definition
+
+            CREATE TABLE `da_game_config`
+            (
+                `id`        bigint(20)  NOT NULL COMMENT 'id',
+                `conf_name` varchar(64) NOT NULL COMMENT '配置名称',
+                `conf_type` int(2)      NOT NULL DEFAULT '0' COMMENT '配置类型',
+                `conf_data` text        NOT NULL COMMENT '配置信息',
+                `conf_key`  varchar(64) NOT NULL COMMENT '配置标签',
+                `remark`      varchar(100) DEFAULT NULL COMMENT '备注',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8 COMMENT ='游戏配置';
         </sql>
     </changeSet>
 </databaseChangeLog>
