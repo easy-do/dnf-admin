@@ -1,5 +1,6 @@
 package plus.easydo.dnf.controller;
 
+import cn.hutool.core.util.URLUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class DpController {
         if(!this.gmKey.equals(gmKey)){
             return DataResult.fail("gmKey错误,请检查配置.");
         }
+        value = URLUtil.decode(value);
         log.info("type:{},value:{}",type,value);
         DpReportHandler handler = reportHandlerMap.get(type);
         if(Objects.nonNull(handler)){
