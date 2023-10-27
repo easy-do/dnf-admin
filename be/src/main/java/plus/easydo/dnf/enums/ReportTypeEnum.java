@@ -1,4 +1,6 @@
-package plus.easydo.dnf.constant;
+package plus.easydo.dnf.enums;
+
+import plus.easydo.dnf.constant.ReportTypeConstant;
 
 /**
  * @author laoyu
@@ -9,7 +11,8 @@ package plus.easydo.dnf.constant;
 
 public enum ReportTypeEnum {
 
-    GET_CONF(1,ReportTypeConstant.GET_CONF,"获取配置"),
+    PING(0, ReportTypeConstant.PING,"ping"),
+    GET_CONF(1, ReportTypeConstant.GET_CONF,"获取配置"),
     LOGIN(2,ReportTypeConstant.LOGIN,"登录"),
     LOGOUT(3,ReportTypeConstant.LOGOUT,"退出");
 

@@ -2,6 +2,7 @@
 local http = require("socket.http")
 local url = require("socket.url")
 local json = require("json")
+local logger = require("df.logger")
 
 local dpReport = {}
 

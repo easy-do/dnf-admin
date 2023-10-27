@@ -6,13 +6,14 @@ local dpx = _DPX
 local json = require("json")
 local luv = require("luv")
 local dpReport = require("dpReport")
+local logger = require("df.logger")
 
 local dpPing = {}
 
 
 local function pingAdmin()
     local adminValue = dpReport.run('ping', 'ping');
-    if not nil then
+    if adminValue ~= nil then
         --将获得的信息交给frida处理,解决热重载冲突
         local ok, jsonStr = pcall(json.encode, adminValue)
         if ok then

@@ -1,6 +1,8 @@
 package plus.easydo.dnf.manager;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,5 +19,5 @@ public class CacheManager {
     /**游戏在线账号信息*/
     public static final Map<Integer, String> GAME_ONLINE_USER = new ConcurrentHashMap<>();
 
-
+    public static final List<String> DP_PING_CACHE = new ArrayList<>();
 }
