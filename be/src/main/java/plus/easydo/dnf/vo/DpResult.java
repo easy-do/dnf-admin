@@ -11,15 +11,15 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class DpResult<T> {
+public class DpResult {
 
     private String type;
 
-    private T value;
+    private Object value;
 
 
-    public static <T> DpResult<T> build(String type,T value){
-        return DpResult.<T>builder().type(type).value(value).build();
+    public static <T> DpResult build(String type, T value){
+        return DpResult.builder().type(type).value(value).build();
     }
 
 }

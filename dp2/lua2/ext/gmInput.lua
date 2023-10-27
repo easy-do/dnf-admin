@@ -24,13 +24,6 @@ function _M:run(_user, input, onlineUser)
         end
     end
 
-    if input =="//test" then
-        -- 测试http
-        local key = "ext.sendAdmin";
-        local sendAdmin = require(key)
-        sendAdmin:run('test', 'test')
-    end
-
 end
 
 return _M
