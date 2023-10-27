@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CacheManager {
 
     /**游戏在线账号信息*/
-    public static final Map<Integer, Boolean> GAME_ONLINE_USER = new ConcurrentHashMap<>();
+    public static final Map<Integer, String> GAME_ONLINE_USER = new ConcurrentHashMap<>();
 
 
 }
