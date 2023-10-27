@@ -48,7 +48,7 @@ public class DpController {
         if(Objects.nonNull(handler)){
             DataResult.ok(handler.handler(type,value));
         }
-        return DataResult.ok(DpResult.build(type,value));
+        return DataResult.fail(type + " handler not found");
     }
 
 }

@@ -28,64 +28,8 @@ frida.load("load args!", on_frida_call)
 
 
 ------------------------------------------------ 开启dnf-admin通信----------------------------------------------------------------------
-
-local http = require("socket.http")
-local json = require("json")
-local luv = require("luv")
-local dpReport = function(type, value)
-    -- gmKey:为了通讯安全请与服务端同步设置复杂的密钥
-    local gmKey = "123456789"
-    --改为dnf-admin的ip和端口
-    local adminAddr = "http://dnf-admin:8888"
-    -- 开始通信
-    local res = http.request(string.format("%s/api/dp/report?gmKey=%s&type=%s&value=%s", adminAddr, gmKey, type, value))
-    --    logger.info("send admin result: %s", res)
-    if res ~= nil then
-        local ok, resJson = pcall(json.decode, res)
-        if ok then
-            local code = resJson.code
-            if code == 200 and resJson.success then
-                return resJson.data
-            else
-                logger.info("send admin error: %s", resJson.message)
-                return nil
-            end
-        else
-            logger.info("json.decode admin error: %s", resJson)
-        end
-    else
-        return nil
-    end
-end
-
--- 设置一个每秒的定时器
-local paodianTimer = luv.new_timer()
-
-local function pingAdmin()
-    local adminValue = dpReport('ping', 'ping');
-    if not nil then
-        --将获得的信息交给frida处理,解决热重载冲突
-        local ok, jsonStr = pcall(json.encode, adminValue)
-        if ok then
-            local arg0 = 9
-            local arg1 = 9999
-            local callOk, callResult = pcall(dp.frida.call, arg0,arg1,jsonStr)
-            if callOk then
-                logger.info("frida.call success: %d", callResult)
-            else
-                logger.info("frida.call fail: %s", callResult)
-            end
-        else
-            logger.info("adminValue encode fail : %s", adminValue)
-        end
-
-    else
-        logger.info("adminValue is nil")
-    end
-end
--- 启动定时器
-paodianTimer:start(1000, 1000, pingAdmin)
-
+local dpPing = require("dpPing")
+dpPing.run()
 ------------------------------------------------ 开启dnf-admin通信----------------------------------------------------------------------
 
 
@@ -101,7 +45,7 @@ local function onLogin(_user)
         uid = uid,
         name = name;
     }
-    dpReport('login',json:encode(reportValue))
+    dpReport.run('login',json.encode(reportValue))
 end
 dpx.hook(game.HookType.Reach_GameWord, onLogin)
 
@@ -114,7 +58,8 @@ local function onLogout(_user)
         uid = uid,
         name = name;
     }
-    dpReport('login',json:encode(reportValue))
+    json.encode(reportValue)
+    dpReport.run('logout',)
 end
 dpx.hook(game.HookType.Leave_GameWord, onLogout)
 ------------------------------------------------ 记录在线账号----------------------------------------------------------------------
