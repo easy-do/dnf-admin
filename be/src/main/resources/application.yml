@@ -9,7 +9,10 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/
-
+  liquibase:
+    enabled: true
+    databaseChangeLogTable: "da_database_change_log"
+    databaseChangeLogLockTable: "da_database_change_log_lock"
 
 mybatis-flex:
   datasource:
