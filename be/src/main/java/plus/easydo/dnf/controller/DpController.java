@@ -44,7 +44,7 @@ public class DpController {
             return DataResult.fail("gmKey错误,请检查配置.");
         }
         log.info("type:{},value:{}",type,value);
-        DpReportHandler<Object> handler = reportHandlerMap.get(type);
+        DpReportHandler handler = reportHandlerMap.get(type);
         if(Objects.nonNull(handler)){
             DataResult.ok(handler.handler(type,value));
         }
