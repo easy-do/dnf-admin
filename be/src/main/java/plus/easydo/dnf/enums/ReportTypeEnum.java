@@ -1,5 +1,6 @@
 package plus.easydo.dnf.enums;
 
+import lombok.Getter;
 import plus.easydo.dnf.constant.ReportTypeConstant;
 
 /**
@@ -9,6 +10,7 @@ import plus.easydo.dnf.constant.ReportTypeConstant;
  * @date 2023/10/27
  */
 
+@Getter
 public enum ReportTypeEnum {
 
     PING(0, ReportTypeConstant.PING,"ping"),
@@ -28,15 +30,4 @@ public enum ReportTypeEnum {
 
     private final String desc;
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
 }

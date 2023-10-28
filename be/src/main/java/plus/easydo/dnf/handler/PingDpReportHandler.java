@@ -7,8 +7,6 @@ import plus.easydo.dnf.constant.ReportTypeConstant;
 import plus.easydo.dnf.manager.CacheManager;
 import plus.easydo.dnf.vo.DpResult;
 
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author laoyu
@@ -20,13 +18,8 @@ import java.util.List;
 public class PingDpReportHandler implements DpReportHandler {
     @Override
     public DpResult handler(String type, String value) {
-        List<String> pingCache = CacheManager.DP_PING_CACHE;
         String pingTime = LocalDateTimeUtil.format(LocalDateTimeUtil.now(), DatePattern.NORM_DATETIME_MINUTE_FORMATTER);
-        if (pingCache.isEmpty()) {
-            CacheManager.DP_PING_CACHE.add(0, pingTime);
-        } else {
-            CacheManager.DP_PING_CACHE.set(0, pingTime);
-        }
-        return DpResult.build(ReportTypeConstant.PING, Collections.emptyList());
+        CacheManager.DP_PING_CACHE.add( pingTime);
+        return DpResult.build(ReportTypeConstant.PING, CacheManager.consumeExecList());
     }
 }

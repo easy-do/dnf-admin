@@ -1,5 +1,7 @@
 package plus.easydo.dnf.enums;
 
+import lombok.Getter;
+
 import java.util.Objects;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Objects;
  * @author laoyu
  * @date 2023/10/15
  */
+@Getter
 public enum SignInConfigDateEnum {
 
     EMPTY(0, "空"),
@@ -42,11 +45,4 @@ public enum SignInConfigDateEnum {
         return null;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
 }

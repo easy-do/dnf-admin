@@ -1,5 +1,6 @@
 package plus.easydo.dnf.controller;
 
+import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.hutool.core.util.URLUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,11 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import plus.easydo.dnf.enums.CallFunEnum;
 import plus.easydo.dnf.handler.DpReportHandler;
+import plus.easydo.dnf.manager.CacheManager;
+import plus.easydo.dnf.vo.CallResult;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.DpResult;
 import plus.easydo.dnf.vo.R;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -48,9 +53,17 @@ public class DpController {
         log.info("type:{},value:{}",type,value);
         DpReportHandler handler = reportHandlerMap.get(type);
         if(Objects.nonNull(handler)){
-            DataResult.ok(handler.handler(type,value));
+            return DataResult.ok(handler.handler(type,value));
         }
         return DataResult.fail(type + " handler not found");
+    }
+
+    @SaCheckRole("admin")
+    @GetMapping("/sendGameMessage")
+    public R<Object> roleList(@RequestParam("message")String message){
+        CallResult call = CallResult.builder().callDp(false).callFrida(true).debug(true).funName(CallFunEnum.GAME_WORLD_SEND_NOTICE_PACKET_MESSAGE.getFunName()).args(Collections.singletonList(message)).build();
+        CacheManager.addExecList(call);
+        return DataResult.ok();
     }
 
 }
