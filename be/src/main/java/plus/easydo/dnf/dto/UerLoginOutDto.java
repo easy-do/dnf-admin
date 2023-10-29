@@ -13,5 +13,7 @@ public class UerLoginOutDto {
 
     private Integer uid;
 
+    private Integer characNo;
+
     private String name;
 }

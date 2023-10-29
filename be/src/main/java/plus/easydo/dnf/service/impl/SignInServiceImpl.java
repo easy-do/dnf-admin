@@ -6,6 +6,7 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import plus.easydo.dnf.dto.DaSignInConfDto;
@@ -31,6 +32,7 @@ import java.util.Objects;
  * @description 签到相关实现
  * @date 2023/10/14
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SignInServiceImpl implements SignInService {
@@ -80,6 +82,32 @@ public class SignInServiceImpl implements SignInService {
         SignInConfigDate configData = JSONUtil.toBean(configJsonStr, SignInConfigDate.class);
         if(signInFlag){
             gamePostalService.sendSignInRoleMail(currentRole.getCharacNo(),configData);
+        }
+        return signInFlag;
+    }
+
+    @Override
+    public boolean characSign(Integer characNo) {
+        DaSignInConf signInConf = daSignInConfManager.getByCurrentConf();
+        if (Objects.isNull(signInConf)) {
+            log.info("没有找到当日签到配置信息.");
+            return false;
+        }
+
+        if (daSignInLogManager.existRoleConfigLog(characNo,signInConf.getId())) {
+            log.info("角色{}当日已签到.", characNo);
+            return false;
+        }
+        DaSignInLog entity = new DaSignInLog();
+        entity.setConfigId(signInConf.getId());
+        entity.setSignInUserId(StpUtil.getLoginIdAsInt());
+        entity.setSignInRoleId(characNo);
+        entity.setCreateTime(LocalDateTimeUtil.now());
+        boolean signInFlag = daSignInLogManager.save(entity);
+        String configJsonStr = signInConf.getConfigJson();
+        SignInConfigDate configData = JSONUtil.toBean(configJsonStr, SignInConfigDate.class);
+        if(signInFlag){
+            gamePostalService.sendSignInRoleMail(characNo,configData);
         }
         return signInFlag;
     }

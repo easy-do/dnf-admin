@@ -27,7 +27,7 @@ public interface SignInService {
     List<DaSignInConf> signList(Integer roleId);
 
     /**
-     * 角色签到
+     * 角色签到 校验请求账户是否有该角色
      *
      * @param roleId roleId
      * @return boolean
@@ -35,6 +35,16 @@ public interface SignInService {
      * @date 2023/10/14
      */
     boolean roleSign(Integer roleId);
+
+    /**
+     * 角色签到 不校验请求账户，内部调用
+     *
+     * @param characNo characNo
+     * @return boolean
+     * @author laoyu
+     * @date 2023/10/14
+     */
+    boolean characSign(Integer characNo);
 
     Page<DaSignInConf> signInPage(DaSignInConfQo daSignInConfQo);
 
