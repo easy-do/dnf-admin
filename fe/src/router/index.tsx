@@ -11,6 +11,7 @@ const DashboardAnlyanis = lazy(() => import('@src/pages/dashboard/anlyanis'))
 const Signin = lazy(() => import('@src/pages/signin'))
 const Notice = lazy(() => import('@src/pages/notice'))
 const Mail = lazy(() => import('@src/pages/mail'))
+const Item = lazy(() => import('@src/pages/item'))
 const routeList: RouteObject[] = [
 	{
 		path: '/',
@@ -35,6 +36,10 @@ const routeList: RouteObject[] = [
 			{
 				path: '/mail',
 				element: <WrapperRouteComponent element={<Mail />} titleId="邮件" auth />
+			},
+			{
+				path: '/item',
+				element: <WrapperRouteComponent element={<Item />} titleId="邮件" auth />
 			}
 		]
 	},

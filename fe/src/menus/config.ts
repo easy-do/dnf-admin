@@ -51,15 +51,20 @@ const MENU_CONFIG: MenuItem[] = [
 		text: 'app.menu.signin',
 		icon: IconTick,
 		path: '/signin'
+	},{
+		itemKey: '3',
+		text: 'app.menu.item',
+		icon: IconMail,
+		path: '/item'
 	},
 	{
-		itemKey: '3',
+		itemKey: '4',
 		text: 'app.menu.notice',
 		icon: IconHorn,
 		path: '/notice'
 	},
 	{
-		itemKey: '4',
+		itemKey: '5',
 		text: 'app.menu.mail',
 		icon: IconMail,
 		path: '/mail'

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
-import { Button, Card, List, Select, Space, Table, TextArea, Toast } from '@douyinfe/semi-ui'
+import { Button, Card, Form, List, Select, Space, Table, TextArea, Toast } from '@douyinfe/semi-ui'
 
 import userStore from '@src/store/user'
 import { getGameNoticePage, sendNoticeMessage } from '@src/api/gameNotice'
@@ -69,7 +69,9 @@ const Index: React.FC = () => {
 	return (
 
 		<Card>
-					<TextArea placeholder='公告内容' onChange={setMessage}></TextArea><Button onClick={sendMessage}>发送公告</Button>					
+						<TextArea style={ {width: '90%'} } maxLength={64}rows={1} autosize placeholder='公告内容' onChange={setMessage}/>
+					    <Button onClick={sendMessage}>发送公告</Button>			
+		
 					<Table columns={columns} pagination={{
 						                currentPage:pageData.pageNumber,
 										pageSize:pageData.pageSize,

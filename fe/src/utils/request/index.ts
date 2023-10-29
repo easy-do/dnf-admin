@@ -83,6 +83,19 @@ export async function getRequest(url) {
 	return res.data;
 }
 
+// @form-data请求
+export async function postFormData (url, body) {
+	const res = await request({
+	  method: "post",
+	  url,
+	  body,
+	  headers: {
+		"Content-Type": "multipart/form-data"
+	  }
+	});
+	return res.data;
+ }
+
 
 // request
 export default async function request(options: requestOptions) {

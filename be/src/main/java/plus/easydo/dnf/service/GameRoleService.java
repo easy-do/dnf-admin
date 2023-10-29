@@ -12,5 +12,5 @@ import java.util.List;
  */
 
 public interface GameRoleService {
-    List<CharacInfo> roleList();
+    List<CharacInfo> roleList(Integer uid, String name);
 }

@@ -3,6 +3,11 @@ server:
   port: 8888
 
 spring:
+  servlet:
+    multipart:
+      #限制报文大小，post请求大小限制,undertow里的设置不会生效
+      max-request-size: 200MB
+      max-file-size: 500MB
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true

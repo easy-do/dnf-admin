@@ -35,7 +35,7 @@ const Index: React.FC = () => {
 		roleList.map((value, index) => {
 			roleSelect.push(
 				<Select.Option key={index} value={value.characNo}>
-					{value.characName + '-' + value.jobName + '-' + value.mid + '-' + value.characNo}
+					{value.characName}
 				</Select.Option>
 			)
 		})
@@ -172,7 +172,7 @@ const Index: React.FC = () => {
 			header={
 				<Space>
 					
-					<div>选择角色:</div> <Select placeholder={'请先选择角色'} onSelect={roleOnSelect}>
+					<div>选择角色:</div> <Select filter placeholder={'请先选择角色'} onSelect={roleOnSelect}>
 						{roleSelect}
 					</Select>
 					{isAdmin ? <Button type='primary' onClick={()=>setListShow(true)}>签到配置</Button>:null}

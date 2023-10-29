@@ -2,20 +2,30 @@ package plus.easydo.dnf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckRole;
+import com.alibaba.excel.EasyExcelFactory;
 import com.mybatisflex.core.paginate.Page;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import plus.easydo.dnf.listener.ItemDataListener;
+import plus.easydo.dnf.qo.PageQo;
 import plus.easydo.dnf.service.IDaItemService;
 import plus.easydo.dnf.entity.DaItemEntity;
 import org.springframework.web.bind.annotation.RestController;
+import plus.easydo.dnf.util.ResponseUtil;
+import plus.easydo.dnf.vo.DataResult;
+import plus.easydo.dnf.vo.R;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,6 +40,34 @@ import java.util.List;
 public class DaItemController {
 
     private final IDaItemService daItemService;
+
+
+    /**
+     * 导入物品缓存
+     * @param file file
+     * @throws IOException
+     */
+    @SaCheckRole("admin")
+    @PostMapping("/importItem")
+    public R<Long> importItem(@RequestParam("file") MultipartFile file) throws IOException {
+        EasyExcelFactory.read(file.getInputStream(), DaItemEntity.class, new ItemDataListener(daItemService)).sheet().doRead();
+        return DataResult.ok();
+    }
+
+    /**
+     * 下载导入模板
+     *
+     * @param response response
+     * @author laoyu
+     * @date 2023/10/29
+     */
+    @SaCheckRole("admin")
+    @GetMapping("/downloadTemplate")
+    public void importItem(HttpServletResponse response) throws IOException {
+        ServletOutputStream opt = response.getOutputStream();
+        ResponseUtil.setFileResponse(response,"物品导入模板.xlsx");
+        EasyExcelFactory.write(opt, DaItemEntity.class).sheet(1).doWrite(Collections.emptyList());
+    }
 
     /**
      * 添加 物品缓存
@@ -51,7 +89,7 @@ public class DaItemController {
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
     @SaCheckRole("admin")
-    @DeleteMapping("/remove/{id}")
+    @GetMapping("/remove/{id}")
     public boolean remove(@PathVariable Serializable id) {
         return daItemService.removeById(id);
     }
@@ -64,7 +102,7 @@ public class DaItemController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @SaCheckRole("admin")
-    @PutMapping("/update")
+    @PostMapping("/update")
     public boolean update(@RequestBody DaItemEntity daItem) {
         return daItemService.updateById(daItem);
     }
@@ -77,33 +115,21 @@ public class DaItemController {
      */
     @SaCheckLogin
     @GetMapping("/list")
-    public List<DaItemEntity> list() {
-        return daItemService.list();
+    public R<List<DaItemEntity>> list(@RequestParam(value = "name", required = false)String name) {
+        return DataResult.ok(daItemService.listByName(name));
     }
 
-
-    /**
-     * 根据物品缓存主键获取详细信息。
-     *
-     * @param id daItem主键
-     * @return 物品缓存详情
-     */
-    @SaCheckLogin
-    @GetMapping("/getInfo/{id}")
-    public DaItemEntity getInfo(@PathVariable Serializable id) {
-        return daItemService.getById(id);
-    }
 
 
     /**
      * 分页查询物品缓存
      *
-     * @param page 分页对象
+     * @param pageQo 分页对象
      * @return 分页对象
      */
     @SaCheckRole("admin")
-    @GetMapping("/page")
-    public Page<DaItemEntity> page(Page<DaItemEntity> page) {
-        return daItemService.page(page);
+    @PostMapping("/page")
+    public R<Page<DaItemEntity>> page(@RequestBody PageQo pageQo) {
+        return DataResult.ok(daItemService.itemPage(pageQo));
     }
 }

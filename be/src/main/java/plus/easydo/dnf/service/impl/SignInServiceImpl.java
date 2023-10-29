@@ -86,7 +86,7 @@ public class SignInServiceImpl implements SignInService {
     }
 
     private void checkUserCharac(Integer characNo) {
-        List<CharacInfo> roleList = gameRoleService.roleList();
+        List<CharacInfo> roleList = gameRoleService.roleList(StpUtil.getLoginIdAsInt(), null);
         CharacInfo currentRole = null;
         for (CharacInfo characInfo: roleList) {
             if(characNo.equals(characInfo.getCharacNo())){
