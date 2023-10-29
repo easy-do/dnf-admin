@@ -31,7 +31,6 @@ public class ItemDataListener implements ReadListener<DaItemEntity> {
      */
     private List<DaItemEntity> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
-    private List<Long> dbDateIdList;
 
     /**
      * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
@@ -48,8 +47,6 @@ public class ItemDataListener implements ReadListener<DaItemEntity> {
      */
     public ItemDataListener(IService<DaItemEntity> baseService) {
         this.service = baseService;
-        List<DaItemEntity> list = baseService.list();
-        dbDateIdList = list.stream().map(DaItemEntity::getId).toList();
     }
 
     /**
@@ -89,6 +86,8 @@ public class ItemDataListener implements ReadListener<DaItemEntity> {
      */
     private void saveData() {
         log.info("{}条数据，开始存储数据库！", cachedDataList.size());
+        List<DaItemEntity> list = service.list();
+        List<Long> dbDateIdList = new ArrayList<>(list.stream().map(DaItemEntity::getId).toList());
         List<DaItemEntity> insertList = new ArrayList<>();
         List<DaItemEntity> updateList = new ArrayList<>();
         cachedDataList.forEach(item->{
