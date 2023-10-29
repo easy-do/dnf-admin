@@ -16,11 +16,6 @@ import static plus.easydo.dnf.entity.table.DaSignInLogTableDef.DA_SIGN_IN_LOG;
  */
 @Component
 public class DaSignInLogManager extends ServiceImpl<DaSignInLogMapper, DaSignInLog> {
-    public boolean existRoleConfigLog(Integer uid, Integer roleId, Long configId) {
-        return exists(QueryWrapper.create()
-                .from(DA_SIGN_IN_LOG).where(DA_SIGN_IN_LOG.SIGN_IN_ROLE_ID.eq(roleId)
-                        .and(DA_SIGN_IN_LOG.SIGN_IN_USER_ID.eq(uid)).and(DA_SIGN_IN_LOG.CONFIG_ID.eq(configId))));
-    }
 
     public boolean existRoleConfigLog(Integer roleId, Long configId) {
         return exists(QueryWrapper.create()

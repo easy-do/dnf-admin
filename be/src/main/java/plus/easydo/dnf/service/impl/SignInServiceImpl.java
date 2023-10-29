@@ -15,13 +15,18 @@ import plus.easydo.dnf.entity.CharacInfo;
 import plus.easydo.dnf.entity.DaSignInConf;
 import plus.easydo.dnf.entity.DaSignInLog;
 import plus.easydo.dnf.exception.BaseException;
+import plus.easydo.dnf.manager.CacheManager;
 import plus.easydo.dnf.manager.DaSignInConfManager;
 import plus.easydo.dnf.manager.DaSignInLogManager;
 import plus.easydo.dnf.qo.DaSignInConfQo;
 import plus.easydo.dnf.service.GamePostalService;
 import plus.easydo.dnf.service.GameRoleService;
 import plus.easydo.dnf.service.SignInService;
+import plus.easydo.dnf.util.ExecCallBuildUtil;
+import plus.easydo.dnf.vo.CallResult;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,17 +57,17 @@ public class SignInServiceImpl implements SignInService {
 
     @Override
     @Transactional
-    public boolean pcCharacSign(Integer roleId) {
-        checkUserCharac(roleId);
+    public boolean pcCharacSign(Integer characNo) {
+        checkUserCharac(characNo);
         DaSignInConf signInConf = daSignInConfManager.getByCurrentConf();
         if (Objects.isNull(signInConf)) {
             throw new BaseException("没有找到今日的签到配置");
         }
 
-        if (daSignInLogManager.existRoleConfigLog(StpUtil.getLoginIdAsInt(),roleId,signInConf.getId())) {
+        if (daSignInLogManager.existRoleConfigLog(characNo,signInConf.getId())) {
             throw new BaseException("已经签到过了");
         }
-        return saveLogAndSendMail(roleId, signInConf);
+        return saveLogAndSendMail(characNo, signInConf);
     }
 
     @Override
@@ -80,11 +85,11 @@ public class SignInServiceImpl implements SignInService {
         return saveLogAndSendMail(characNo, signInConf);
     }
 
-    private void checkUserCharac(Integer roleId) {
+    private void checkUserCharac(Integer characNo) {
         List<CharacInfo> roleList = gameRoleService.roleList();
         CharacInfo currentRole = null;
         for (CharacInfo characInfo: roleList) {
-            if(roleId.equals(characInfo.getCharacNo())){
+            if(characNo.equals(characInfo.getCharacNo())){
                 currentRole = characInfo;
             }
         }
@@ -93,16 +98,38 @@ public class SignInServiceImpl implements SignInService {
         }
     }
 
-    private boolean saveLogAndSendMail(Integer roleId, DaSignInConf signInConf) {
+    private boolean saveLogAndSendMail(Integer characNo, DaSignInConf signInConf) {
         DaSignInLog entity = new DaSignInLog();
         entity.setConfigId(signInConf.getId());
-        entity.setSignInRoleId(roleId);
+        entity.setSignInRoleId(characNo);
         entity.setCreateTime(LocalDateTimeUtil.now());
         boolean signInFlag = daSignInLogManager.save(entity);
         String configJsonStr = signInConf.getConfigJson();
         SignInConfigDate configData = JSONUtil.toBean(configJsonStr, SignInConfigDate.class);
         if(signInFlag){
-            gamePostalService.sendSignInRoleMail(roleId,configData);
+            List<SignInConfigDate.Conf> data = configData.getData();
+            String tile = "每日签到奖励-dnf-admin";
+            String content = "每日签到奖励,请查收. -dnf-admin";
+            if(data.size() > 10){
+                data.forEach(da->{
+                    List<Object> itemconfList = new ArrayList<>();
+                    itemconfList.add(da.getItemId());
+                    itemconfList.add(da.getQuantity());
+                    CallResult callResult = ExecCallBuildUtil.buildSendMultiMail(characNo, tile, content, 0L, Collections.singletonList(itemconfList));
+                    CacheManager.addExecList(callResult);
+                });
+            }else {
+                List<Object> itemList = new ArrayList<>();
+                data.forEach(da->{
+                    List<Object> itemconfList = new ArrayList<>();
+                    itemconfList.add(da.getItemId());
+                    itemconfList.add(da.getQuantity());
+                    itemList.add(itemconfList);
+                });
+                CallResult callResult = ExecCallBuildUtil.buildSendMultiMail(characNo,tile,content,0L,itemList);;
+                CacheManager.addExecList(callResult);
+            }
+
         }
         return signInFlag;
     }
@@ -119,7 +146,7 @@ public class SignInServiceImpl implements SignInService {
 
     @Override
     public boolean update(DaSignInConfDto daSignInConf) {
-        return daSignInConfManager.save(BeanUtil.copyProperties(daSignInConf,DaSignInConf.class));
+        return daSignInConfManager.updateById(BeanUtil.copyProperties(daSignInConf,DaSignInConf.class));
     }
 
     @Override
