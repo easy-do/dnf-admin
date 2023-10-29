@@ -1,11 +1,11 @@
 package plus.easydo.dnf.service.impl;
 
 
+import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import plus.easydo.dnf.service.IDaGameConfigService;
 import plus.easydo.dnf.entity.DaGameConfigEntity;
 import plus.easydo.dnf.mapper.DaGameConfigMapper;
-import com.mybatisflex.spring.service.impl.ServiceImpl;
+import plus.easydo.dnf.service.IDaGameConfigService;
 
 /**
  * 游戏配置 服务层实现。

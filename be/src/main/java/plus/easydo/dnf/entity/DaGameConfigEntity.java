@@ -5,10 +5,6 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 
-import java.lang.Long;
-import java.lang.String;
-import java.lang.Integer;
-
 /**
  * 游戏配置 实体类。
  *

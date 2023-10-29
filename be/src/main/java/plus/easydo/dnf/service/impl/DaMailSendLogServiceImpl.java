@@ -2,14 +2,13 @@ package plus.easydo.dnf.service.impl;
 
 
 import com.mybatisflex.core.paginate.Page;
-import com.mybatisflex.core.query.QueryCondition;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import plus.easydo.dnf.qo.PageQo;
-import plus.easydo.dnf.service.IDaMailSendLogService;
 import plus.easydo.dnf.entity.DaMailSendLogEntity;
 import plus.easydo.dnf.mapper.DaMailSendLogMapper;
-import com.mybatisflex.spring.service.impl.ServiceImpl;
+import plus.easydo.dnf.qo.PageQo;
+import plus.easydo.dnf.service.IDaMailSendLogService;
 
 import static plus.easydo.dnf.entity.table.DaMailSendLogEntityTableDef.DA_MAIL_SEND_LOG_ENTITY;
 

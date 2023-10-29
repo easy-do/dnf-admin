@@ -8,9 +8,6 @@ import com.mybatisflex.annotation.Table;
 import lombok.Builder;
 import lombok.Data;
 
-import java.lang.Long;
-import java.sql.Timestamp;
-import java.lang.String;
 import java.time.LocalDateTime;
 
 /**

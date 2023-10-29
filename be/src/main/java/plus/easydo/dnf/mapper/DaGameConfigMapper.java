@@ -1,8 +1,8 @@
 package plus.easydo.dnf.mapper;
 
-import plus.easydo.dnf.entity.DaGameConfigEntity;
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import plus.easydo.dnf.entity.DaGameConfigEntity;
 
 /**
  * 游戏配置 映射层。

@@ -1,6 +1,5 @@
 package plus.easydo.dnf.controller;
 
-import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.hutool.core.util.URLUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,14 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import plus.easydo.dnf.enums.CallFunEnum;
 import plus.easydo.dnf.handler.DpReportHandler;
-import plus.easydo.dnf.manager.CacheManager;
-import plus.easydo.dnf.vo.CallResult;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 

@@ -1,8 +1,8 @@
 package plus.easydo.dnf.service;
 
 
-import plus.easydo.dnf.entity.DaGameConfigEntity;
 import com.mybatisflex.core.service.IService;
+import plus.easydo.dnf.entity.DaGameConfigEntity;
 
 /**
  * 游戏配置 服务层。

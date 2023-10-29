@@ -2,8 +2,8 @@ package plus.easydo.dnf.service;
 
 
 import com.mybatisflex.core.paginate.Page;
-import plus.easydo.dnf.entity.DaMailSendLogEntity;
 import com.mybatisflex.core.service.IService;
+import plus.easydo.dnf.entity.DaMailSendLogEntity;
 import plus.easydo.dnf.qo.PageQo;
 
 /**
