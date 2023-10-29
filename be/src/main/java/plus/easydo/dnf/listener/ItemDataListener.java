@@ -8,6 +8,7 @@ import com.mybatisflex.core.service.IService;
 import lombok.extern.slf4j.Slf4j;
 import plus.easydo.dnf.entity.DaItemEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,12 +24,14 @@ public class ItemDataListener implements ReadListener<DaItemEntity> {
     /**
      * 每隔100条存储数据库，然后清理list ，方便内存回收
      */
-    private static final int BATCH_COUNT = 100;
+    private static final int BATCH_COUNT = 1000;
 
     /**
      * 缓存的数据
      */
     private List<DaItemEntity> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
+
+    private List<Long> dbDateIdList;
 
     /**
      * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
@@ -45,6 +48,8 @@ public class ItemDataListener implements ReadListener<DaItemEntity> {
      */
     public ItemDataListener(IService<DaItemEntity> baseService) {
         this.service = baseService;
+        List<DaItemEntity> list = baseService.list();
+        dbDateIdList = list.stream().map(DaItemEntity::getId).toList();
     }
 
     /**
@@ -84,7 +89,18 @@ public class ItemDataListener implements ReadListener<DaItemEntity> {
      */
     private void saveData() {
         log.info("{}条数据，开始存储数据库！", cachedDataList.size());
-        service.saveOrUpdateBatch(cachedDataList);
+        List<DaItemEntity> insertList = new ArrayList<>();
+        List<DaItemEntity> updateList = new ArrayList<>();
+        cachedDataList.forEach(item->{
+            if(dbDateIdList.contains(item.getId())){
+                updateList.add(item);
+                dbDateIdList.remove(item.getId());
+            }else {
+                insertList.add(item);
+            }
+        });
+        service.saveBatch(insertList);
+        service.updateBatch(updateList);
         log.info("存储数据库成功！");
     }
 }

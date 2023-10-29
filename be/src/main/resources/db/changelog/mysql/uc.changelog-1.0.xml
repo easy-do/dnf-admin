@@ -94,4 +94,9 @@
               DEFAULT CHARSET = utf8mb4 COMMENT ='邮件发送记录';
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20231029-2" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            ALTER TABLE da_item MODIFY COLUMN name varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称';
+        </sql>
+    </changeSet>
 </databaseChangeLog>
