@@ -35,15 +35,15 @@ public class SignInController {
     private final SignInService signInService;
 
     @SaCheckLogin
-    @GetMapping("/signInList/{roleId}")
-    public R<List<DaSignInConfVo>> signList(@PathVariable("roleId")Integer roleId){
-        return DataResult.ok(BeanUtil.copyToList(signInService.signList(roleId), DaSignInConfVo.class));
+    @GetMapping("/signInList/{characNo}")
+    public R<List<DaSignInConfVo>> signList(@PathVariable("characNo")Integer characNo){
+        return DataResult.ok(BeanUtil.copyToList(signInService.signList(characNo), DaSignInConfVo.class));
     }
 
     @SaCheckLogin
-    @GetMapping("/roleSign/{roleId}")
-    public R<Object> roleSign(@PathVariable("roleId")Integer roleId){
-        return DataResult.ok(signInService.roleSign(roleId));
+    @GetMapping("/characSign/{characNo}")
+    public R<Object> characSign(@PathVariable("characNo")Integer characNo){
+        return DataResult.ok(signInService.pcCharacSign(characNo));
     }
 
     @SaCheckRole("admin")

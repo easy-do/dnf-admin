@@ -11,7 +11,7 @@ import userStore from '@src/store/user'
 import signInStore from '@src/store/signIn'
 
 import dayjs from 'dayjs'
-import { roleSign } from '@src/api/signInApi'
+import { characSign } from '@src/api/signInApi'
 import SingInConfig from '../singInconfig'
 
 const Index: React.FC = () => {
@@ -56,7 +56,7 @@ const Index: React.FC = () => {
 	}
 
 	const signIn = async () => {
-		const res = await roleSign(currentRole)
+		const res = await characSign(currentRole)
 		if(res){
 			Toast.success("签到成功,注意查看邮箱.")
 			getSgnInList(currentRole)

@@ -25,15 +25,14 @@ import static plus.easydo.dnf.entity.table.DaSignInLogTableDef.DA_SIGN_IN_LOG;
  */
 @Component
 public class DaSignInConfManager extends ServiceImpl<DaSignInConfMapper, DaSignInConf> {
-    public List<DaSignInConf> getRoleSignList(Integer uid, Integer roleId) {
+    public List<DaSignInConf> getRoleSignList(Integer characNo) {
         QueryWrapper query = new QueryWrapper()
                 .select(DA_SIGN_IN_CONF.ALL_COLUMNS
                         , DA_SIGN_IN_LOG.CREATE_TIME.as("signInTime"))
                 .from(DA_SIGN_IN_CONF)
                 .leftJoin(DA_SIGN_IN_LOG)
                 .on(DA_SIGN_IN_CONF.ID.eq(DA_SIGN_IN_LOG.CONFIG_ID)
-                        .and(DA_SIGN_IN_LOG.SIGN_IN_ROLE_ID.eq(roleId))
-                        .and(DA_SIGN_IN_LOG.SIGN_IN_USER_ID.eq(uid)))
+                        .and(DA_SIGN_IN_LOG.SIGN_IN_ROLE_ID.eq(characNo)))
                 .where(DA_SIGN_IN_CONF.CONFIG_DATE.between(LocalDateTimeUtils.monthStartTime(), LocalDateTimeUtils.monthEndTime()));
         return list(query);
     }

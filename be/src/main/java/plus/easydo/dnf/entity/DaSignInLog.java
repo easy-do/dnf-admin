@@ -31,8 +31,6 @@ public class DaSignInLog implements Serializable {
 
     private String dataJson;
 
-    private Integer signInUserId;
-
     private Integer signInRoleId;
 
     private LocalDateTime createTime;

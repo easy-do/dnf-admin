@@ -4,8 +4,8 @@ export const signInList = (roleId) => {
 	return getRequest('/signIn/signInList/'+roleId)
 }
 
-export const roleSign = (roleId) => {
-	return getRequest('/signIn/roleSign/'+roleId)
+export const characSign = (roleId) => {
+	return getRequest('/signIn/characSign/'+roleId)
 }
 
 export const configPageRequest = (param) => {

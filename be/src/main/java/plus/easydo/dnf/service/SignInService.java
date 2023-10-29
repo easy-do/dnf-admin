@@ -19,12 +19,12 @@ public interface SignInService {
     /**
      * 获取签到列表
      *
-     * @param roleId roleId
+     * @param characNo characNo
      * @return plus.easydo.dnf.vo.R<java.util.List<plus.easydo.dnf.entity.DaSignInConf>>
      * @author laoyu
      * @date 2023/10/14
      */
-    List<DaSignInConf> signList(Integer roleId);
+    List<DaSignInConf> signList(Integer characNo);
 
     /**
      * 角色签到 校验请求账户是否有该角色
@@ -34,7 +34,7 @@ public interface SignInService {
      * @author laoyu
      * @date 2023/10/14
      */
-    boolean roleSign(Integer roleId);
+    boolean pcCharacSign(Integer roleId);
 
     /**
      * 角色签到 不校验请求账户，内部调用

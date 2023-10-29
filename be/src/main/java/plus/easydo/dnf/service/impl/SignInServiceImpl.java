@@ -46,13 +46,41 @@ public class SignInServiceImpl implements SignInService {
     private final GamePostalService gamePostalService;
 
     @Override
-    public List<DaSignInConf> signList(Integer roleId) {
-        return daSignInConfManager.getRoleSignList(StpUtil.getLoginIdAsInt(),roleId);
+    public List<DaSignInConf> signList(Integer characNo) {
+        return daSignInConfManager.getRoleSignList(characNo);
     }
 
     @Override
     @Transactional
-    public boolean roleSign(Integer roleId) {
+    public boolean pcCharacSign(Integer roleId) {
+        checkUserCharac(roleId);
+        DaSignInConf signInConf = daSignInConfManager.getByCurrentConf();
+        if (Objects.isNull(signInConf)) {
+            throw new BaseException("没有找到今日的签到配置");
+        }
+
+        if (daSignInLogManager.existRoleConfigLog(StpUtil.getLoginIdAsInt(),roleId,signInConf.getId())) {
+            throw new BaseException("已经签到过了");
+        }
+        return saveLogAndSendMail(roleId, signInConf);
+    }
+
+    @Override
+    public boolean characSign(Integer characNo) {
+        DaSignInConf signInConf = daSignInConfManager.getByCurrentConf();
+        if (Objects.isNull(signInConf)) {
+            log.info("没有找到今日的签到配置.");
+            return false;
+        }
+
+        if (daSignInLogManager.existRoleConfigLog(characNo,signInConf.getId())) {
+            log.info("角色{}当日已签到.", characNo);
+            return false;
+        }
+        return saveLogAndSendMail(characNo, signInConf);
+    }
+
+    private void checkUserCharac(Integer roleId) {
         List<CharacInfo> roleList = gameRoleService.roleList();
         CharacInfo currentRole = null;
         for (CharacInfo characInfo: roleList) {
@@ -63,50 +91,18 @@ public class SignInServiceImpl implements SignInService {
         if (Objects.isNull(currentRole)) {
             throw new BaseException("没有找到对应角色");
         }
+    }
 
-        DaSignInConf signInConf = daSignInConfManager.getByCurrentConf();
-        if (Objects.isNull(signInConf)) {
-            throw new BaseException("没有找到今日的签到配置");
-        }
-
-        if (daSignInLogManager.existRoleConfigLog(StpUtil.getLoginIdAsInt(),roleId,signInConf.getId())) {
-            throw new BaseException("已经签到过了");
-        }
+    private boolean saveLogAndSendMail(Integer roleId, DaSignInConf signInConf) {
         DaSignInLog entity = new DaSignInLog();
         entity.setConfigId(signInConf.getId());
-        entity.setSignInUserId(StpUtil.getLoginIdAsInt());
         entity.setSignInRoleId(roleId);
         entity.setCreateTime(LocalDateTimeUtil.now());
         boolean signInFlag = daSignInLogManager.save(entity);
         String configJsonStr = signInConf.getConfigJson();
         SignInConfigDate configData = JSONUtil.toBean(configJsonStr, SignInConfigDate.class);
         if(signInFlag){
-            gamePostalService.sendSignInRoleMail(currentRole.getCharacNo(),configData);
-        }
-        return signInFlag;
-    }
-
-    @Override
-    public boolean characSign(Integer characNo) {
-        DaSignInConf signInConf = daSignInConfManager.getByCurrentConf();
-        if (Objects.isNull(signInConf)) {
-            log.info("没有找到当日签到配置信息.");
-            return false;
-        }
-
-        if (daSignInLogManager.existRoleConfigLog(characNo,signInConf.getId())) {
-            log.info("角色{}当日已签到.", characNo);
-            return false;
-        }
-        DaSignInLog entity = new DaSignInLog();
-        entity.setConfigId(signInConf.getId());
-        entity.setSignInRoleId(characNo);
-        entity.setCreateTime(LocalDateTimeUtil.now());
-        boolean signInFlag = daSignInLogManager.save(entity);
-        String configJsonStr = signInConf.getConfigJson();
-        SignInConfigDate configData = JSONUtil.toBean(configJsonStr, SignInConfigDate.class);
-        if(signInFlag){
-            gamePostalService.sendSignInRoleMail(characNo,configData);
+            gamePostalService.sendSignInRoleMail(roleId,configData);
         }
         return signInFlag;
     }
