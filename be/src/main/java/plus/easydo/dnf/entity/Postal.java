@@ -46,7 +46,7 @@ public class Postal implements Serializable {
     private String sendCharacName;
 
     /**装备时装代表耐久 道具材料代表数量 时装固定是773*/
-    private Integer addInfo = 1;
+    private Long addInfo = 1L;
 
     /**为装备时，表示为品级 数值与品级关系较为随机 时装是1*/
     private Integer endurance = 1;

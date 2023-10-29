@@ -10,7 +10,7 @@ const DashboardWorkbeach = lazy(() => import('@src/pages/home'))
 const DashboardAnlyanis = lazy(() => import('@src/pages/dashboard/anlyanis'))
 const Signin = lazy(() => import('@src/pages/signin'))
 const Notice = lazy(() => import('@src/pages/notice'))
-
+const Mail = lazy(() => import('@src/pages/mail'))
 const routeList: RouteObject[] = [
 	{
 		path: '/',
@@ -30,7 +30,11 @@ const routeList: RouteObject[] = [
 			},
 			{
 				path: '/notice',
-				element: <WrapperRouteComponent element={<Notice />} titleId="签到" auth />
+				element: <WrapperRouteComponent element={<Notice />} titleId="公告" auth />
+			},
+			{
+				path: '/mail',
+				element: <WrapperRouteComponent element={<Mail />} titleId="邮件" auth />
 			}
 		]
 	},

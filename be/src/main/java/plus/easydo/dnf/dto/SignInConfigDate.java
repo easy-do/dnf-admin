@@ -25,7 +25,7 @@ public class SignInConfigDate {
         /**物品id*/
         private Long itemId;
         /**物品数量*/
-        private Integer quantity;
+        private Long quantity;
         /**物品类型*/
         private Integer itemType;
 

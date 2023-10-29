@@ -63,7 +63,7 @@ public class GamePostalServiceImpl implements GamePostalService {
         return true;
     }
 
-    public void sendPortal(Integer roleId, Long itemId, Integer itemType, Integer quantity){
+    public void sendPortal(Integer roleId, Long itemId, Integer itemType, Long quantity){
         Letter letter = createLetter(roleId);
         sendPortal(letter,roleId,itemId, itemType, quantity);
     }
@@ -78,7 +78,7 @@ public class GamePostalServiceImpl implements GamePostalService {
      * @author laoyu
      * @date 2023/10/15
      */
-    public void sendPortal(Letter letter,Integer roleId,Long itemId, Integer itemType, Integer quantity){
+    public void sendPortal(Letter letter,Integer roleId,Long itemId, Integer itemType, Long quantity){
         //发送物品
         Postal postal = new Postal();
         //设置信件id
@@ -132,16 +132,16 @@ public class GamePostalServiceImpl implements GamePostalService {
         }
     }
 
-    private void checkAndSetAddInfo(Postal postal, Integer itemType,Integer quantity){
+    private void checkAndSetAddInfo(Postal postal, Integer itemType,Long quantity){
         //道具材料等代表数量
         postal.setAddInfo(quantity);
         //时装固定是773
         if(ItemTypeEnum.FASHION.getCode().equals(itemType)){
-            postal.setAddInfo(773);
+            postal.setAddInfo(773L);
         }
         //装备代表耐久度、宠物未知, 先默认1
         if(ItemTypeEnum.EQUIPMENT.getCode().equals(itemType) || ItemTypeEnum.PET.getCode().equals(itemType)){
-            postal.setAddInfo(1);
+            postal.setAddInfo(1L);
         }
     }
 }

@@ -112,16 +112,16 @@ public class SignInServiceImpl implements SignInService {
             String content = "每日签到奖励,请查收. -dnf-admin";
             if(data.size() > 10){
                 data.forEach(da->{
-                    List<Object> itemconfList = new ArrayList<>();
+                    List<Long> itemconfList = new ArrayList<>();
                     itemconfList.add(da.getItemId());
                     itemconfList.add(da.getQuantity());
                     CallResult callResult = ExecCallBuildUtil.buildSendMultiMail(characNo, tile, content, 0L, Collections.singletonList(itemconfList));
                     CacheManager.addExecList(callResult);
                 });
             }else {
-                List<Object> itemList = new ArrayList<>();
+                List<List<Long>> itemList = new ArrayList<>();
                 data.forEach(da->{
-                    List<Object> itemconfList = new ArrayList<>();
+                    List<Long> itemconfList = new ArrayList<>();
                     itemconfList.add(da.getItemId());
                     itemconfList.add(da.getQuantity());
                     itemList.add(itemconfList);
