@@ -1,5 +1,7 @@
 import {
 	IconHome,
+	IconHorn,
+	IconTick,
 	IconEdit,
 	IconGridRectangle,
 	IconApps,
@@ -47,8 +49,14 @@ const MENU_CONFIG: MenuItem[] = [
 	{
 		itemKey: '2',
 		text: 'app.menu.signin',
-		icon: IconHome,
+		icon: IconTick,
 		path: '/signin'
+	},
+	{
+		itemKey: '3',
+		text: 'app.menu.notice',
+		icon: IconHorn,
+		path: '/notice'
 	}
 ]
 

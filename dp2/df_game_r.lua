@@ -40,11 +40,13 @@ local online = {}
 local function onLogin(_user)
     local user = game.fac.user(_user)
     local uid = user:GetAccId()
+    local characNo = user:GetCharacNo()
     local name = user:GetCharacName()
     online[uid] = true
     local reportValue = {
         uid = uid,
-        name = name;
+        name = name,
+        characNo=characNo
     }
     dpReport.run('login',json.encode(reportValue))
 end

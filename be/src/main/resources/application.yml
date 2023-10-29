@@ -41,7 +41,7 @@ mybatis-flex:
     call-setters-on-nulls:
 
 admin: ${ADMIN_USER:123456789}
-
+dpGmKey: ${DP_GM_KEY:123456789}
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:

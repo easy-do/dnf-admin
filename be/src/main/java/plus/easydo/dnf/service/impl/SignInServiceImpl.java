@@ -100,7 +100,6 @@ public class SignInServiceImpl implements SignInService {
         }
         DaSignInLog entity = new DaSignInLog();
         entity.setConfigId(signInConf.getId());
-        entity.setSignInUserId(StpUtil.getLoginIdAsInt());
         entity.setSignInRoleId(characNo);
         entity.setCreateTime(LocalDateTimeUtil.now());
         boolean signInFlag = daSignInLogManager.save(entity);

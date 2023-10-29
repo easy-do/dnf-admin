@@ -15,7 +15,6 @@ import plus.easydo.dnf.handler.DpReportHandler;
 import plus.easydo.dnf.manager.CacheManager;
 import plus.easydo.dnf.vo.CallResult;
 import plus.easydo.dnf.vo.DataResult;
-import plus.easydo.dnf.vo.DpResult;
 import plus.easydo.dnf.vo.R;
 
 import java.util.Collections;
@@ -35,8 +34,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class DpController {
 
-    @Value("${gmKey:123456789}")
-    private String gmKey;
+    @Value("${dpGmKey:123456789}")
+    private String dpGmKey;
 
     @Autowired
     private Map<String, DpReportHandler> reportHandlerMap;
@@ -46,7 +45,7 @@ public class DpController {
             @RequestParam("gmKey")String gmKey,
             @RequestParam("type")String type,
             @RequestParam("value")String value){
-        if(!this.gmKey.equals(gmKey)){
+        if(!this.dpGmKey.equals(gmKey)){
             return DataResult.fail("gmKey错误,请检查配置.");
         }
         value = URLUtil.decode(value);
@@ -58,12 +57,5 @@ public class DpController {
         return DataResult.fail(type + " handler not found");
     }
 
-    @SaCheckRole("admin")
-    @GetMapping("/sendGameMessage")
-    public R<Object> roleList(@RequestParam("message")String message){
-        CallResult call = CallResult.builder().callDp(false).callFrida(true).debug(true).funName(CallFunEnum.GAME_WORLD_SEND_NOTICE_PACKET_MESSAGE.getFunName()).args(Collections.singletonList(message)).build();
-        CacheManager.addExecList(call);
-        return DataResult.ok();
-    }
 
 }

@@ -58,7 +58,7 @@ const Index: React.FC = () => {
 	const signIn = async () => {
 		const res = await roleSign(currentRole)
 		if(res){
-			Toast.success("签到成功,小退查看邮箱.")
+			Toast.success("签到成功,注意查看邮箱.")
 			getSgnInList(currentRole)
 		}
 	}
