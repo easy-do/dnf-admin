@@ -49,13 +49,10 @@ public class DpController {
             return DataResult.fail("gmKey错误,请检查配置.");
         }
         value = URLUtil.decode(value);
-        log.info("type:{},value:{}",type,value);
         DpReportHandler handler = reportHandlerMap.get(type);
         if(Objects.nonNull(handler)){
             return DataResult.ok(handler.handler(type,value));
         }
         return DataResult.fail(type + " handler not found");
     }
-
-
 }
