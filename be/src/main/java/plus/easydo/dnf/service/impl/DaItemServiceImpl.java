@@ -2,10 +2,12 @@ package plus.easydo.dnf.service.impl;
 
 
 import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import plus.easydo.dnf.entity.DaItemEntity;
 import plus.easydo.dnf.mapper.DaItemMapper;
+import plus.easydo.dnf.qo.DaItemQo;
 import plus.easydo.dnf.qo.PageQo;
 import plus.easydo.dnf.service.IDaItemService;
 
@@ -29,8 +31,13 @@ public class DaItemServiceImpl extends ServiceImpl<DaItemMapper, DaItemEntity> i
     }
 
     @Override
-    public Page<DaItemEntity> itemPage(PageQo pageQo) {
-        return page(new Page<>(pageQo.getPageNumber(),pageQo.getPageSize()));
+    public Page<DaItemEntity> itemPage(DaItemQo daItemQo) {
+        Page<DaItemEntity> page = new Page<>(daItemQo.getPageNumber(), daItemQo.getPageSize());
+        QueryWrapper query = query()
+                .and(DA_ITEM_ENTITY.NAME.like(daItemQo.getName()))
+                .and(DA_ITEM_ENTITY.TYPE.like(daItemQo.getType()))
+                .and(DA_ITEM_ENTITY.RARITY.like(daItemQo.getRarity()));
+        return page(page,query);
     }
 
     @Override

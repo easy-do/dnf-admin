@@ -4,7 +4,7 @@ package plus.easydo.dnf.service;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 import plus.easydo.dnf.entity.DaItemEntity;
-import plus.easydo.dnf.qo.PageQo;
+import plus.easydo.dnf.qo.DaItemQo;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface IDaItemService extends IService<DaItemEntity> {
 
     Long importItem(DaItemEntity daItem);
 
-    Page<DaItemEntity> itemPage(PageQo pageQo);
+    Page<DaItemEntity> itemPage(DaItemQo daItemQo);
 
     List<DaItemEntity> listByName(String name);
 }

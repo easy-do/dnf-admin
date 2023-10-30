@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import plus.easydo.dnf.entity.DaItemEntity;
 import plus.easydo.dnf.listener.ItemDataListener;
-import plus.easydo.dnf.qo.PageQo;
+import plus.easydo.dnf.qo.DaItemQo;
 import plus.easydo.dnf.service.IDaItemService;
 import plus.easydo.dnf.util.ResponseUtil;
 import plus.easydo.dnf.vo.DataResult;
@@ -124,12 +124,12 @@ public class DaItemController {
     /**
      * 分页查询物品缓存
      *
-     * @param pageQo 分页对象
+     * @param daItemQo 分页对象
      * @return 分页对象
      */
     @SaCheckRole("admin")
     @PostMapping("/page")
-    public R<Page<DaItemEntity>> page(@RequestBody PageQo pageQo) {
-        return DataResult.ok(daItemService.itemPage(pageQo));
+    public R<Page<DaItemEntity>> page(@RequestBody DaItemQo daItemQo) {
+        return DataResult.ok(daItemService.itemPage(daItemQo));
     }
 }

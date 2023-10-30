@@ -1,27 +1,52 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Form, List, Select, Space, Table, TextArea, Toast, Upload } from '@douyinfe/semi-ui'
+import {
+	Button,
+	ButtonGroup,
+	Card,
+	Form,
+	Table,
+	Toast,
+	Upload
+} from '@douyinfe/semi-ui'
 
 import userStore from '@src/store/user'
 import { getItemPage, importItem } from '@src/api/gameItem'
-import { IconUpload } from '@douyinfe/semi-icons';
-import { customRequestArgs } from '@douyinfe/semi-ui/lib/es/upload';
-
+import { IconUpload } from '@douyinfe/semi-icons'
+import { customRequestArgs } from '@douyinfe/semi-ui/lib/es/upload'
+import { FormApi } from '@douyinfe/semi-ui/lib/es/form'
 
 const Index: React.FC = () => {
 
+	const [formApi,setFormApi] = useState<FormApi>();
 
-	const uploadIem = (object: customRequestArgs) =>{
-		importItem({'file':object.fileInstance});
-		Toast.success("操作成功,导入操作将在后台运行")
+	const onSearch = ()=>{
+		handlePageChange(pageData.pageNumber)
+
+	}
+
+	const onRefurush = ()=>{
+		handlePageChange(pageData.pageNumber)
+	}
+
+
+	const onReset= ()=>{
+		formApi.setValues({},{isOverride:true})
+		handlePageChange(pageData.pageNumber)
+	}
+
+
+	const uploadIem = (object: customRequestArgs) => {
+		importItem({ file: object.fileInstance })
+		Toast.success('操作成功,导入操作将在后台运行')
 	}
 
 	const isAdmin = userStore((state) => state.isAdmin)
 
 	const getCurrentUser = userStore((state) => state.getCurrentUser)
 
-	const downloadItemTemplate = () =>{
-		const w=window.open('about:blank');
-        w.location.href='/api/item/downloadTemplate' 
+	const downloadItemTemplate = () => {
+		const w = window.open('about:blank')
+		w.location.href = '/api/item/downloadTemplate'
 	}
 
 	const [pageData, setPageData] = useState({
@@ -32,11 +57,19 @@ const Index: React.FC = () => {
 	})
 
 	const handlePageChange = (pageNumber) => {
-		setPageData({
+		let values;
+		if(formApi){
+			values = formApi.getValues();
+		}else{
+			values = {}
+		}
+		 
+		getItemPage({
 			pageNumber: pageNumber,
 			pageSize: pageData.pageSize,
-			totalRow: pageData.totalRow,
-			records: pageData.records
+			... values
+		}).then((res) => {
+			setPageData({values,...res})
 		})
 	}
 
@@ -59,39 +92,51 @@ const Index: React.FC = () => {
 		}
 	]
 
-	const pageRequest = () => {
-		getItemPage({ pageNumber: pageData.pageNumber, pageSize: pageData.pageSize }).then((res) => {
-			setPageData(res)
-		})
-	}
 
 	useEffect(() => {
 		getCurrentUser()
-		pageRequest()
-	}, [JSON.stringify(pageData.pageNumber)])
+		handlePageChange(1)
+	},[])
 
 	return (
-		<Card>
-			<Space>
-			<Button onClick={downloadItemTemplate}>下载模板</Button>
-			<Upload showUploadList={false} accept='.xlsx' limit={1} customRequest={uploadIem}>
-            <Button icon={<IconUpload />} theme="light">
-                导入物品
-            </Button>
-           </Upload>
-			</Space>
-
-			<Table
-				columns={columns}
-				pagination={{
-					currentPage: pageData.pageNumber,
-					pageSize: pageData.pageSize,
-					total: pageData.totalRow,
-					onPageChange: handlePageChange
-				}}
-				dataSource={pageData.records}
-			/>
-		</Card>
+		<>
+			<Card>
+				<Form
+				    getFormApi={setFormApi}
+					wrapperCol={{ span: 24 }}
+					labelCol={{ span: 8 }}
+					layout="horizontal"
+					labelPosition="inset"
+				>
+					<Form.Input label="名称" field="name"></Form.Input>
+					<Form.Input label="类型" field="type"></Form.Input>
+					<Form.Input label="稀有度" field="rarity"></Form.Input>
+					<ButtonGroup>
+						<Button onClick={onSearch}>搜索</Button>
+						<Button onClick={onReset}>重置</Button>
+						<Button onClick={onRefurush}>刷新</Button>
+						<Button onClick={downloadItemTemplate}>下载模板</Button>
+						<Upload showUploadList={false} accept=".xlsx" limit={1} customRequest={uploadIem}>
+							<Button icon={<IconUpload />} theme="light">
+								导入物品
+							</Button>
+						</Upload>
+					</ButtonGroup>
+				</Form>
+			</Card>
+			<Card>
+				<Table
+					columns={columns}
+					pagination={{
+						currentPage: pageData.pageNumber,
+						pageSize: pageData.pageSize,
+						total: pageData.totalRow,
+						onPageChange: handlePageChange
+					}}
+					dataSource={pageData.records}
+				/>
+			</Card>
+		</>
 	)
 }
 

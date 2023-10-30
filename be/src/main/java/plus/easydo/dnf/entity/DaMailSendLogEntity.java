@@ -1,5 +1,6 @@
 package plus.easydo.dnf.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Builder
-@Table(value = "da_mail_send_log")
+@Table(value = "da_mail_send_log", dataSource = "d_taiwan")
 public class DaMailSendLogEntity {
 
     @Id(keyType = KeyType.Auto)
@@ -33,6 +34,7 @@ public class DaMailSendLogEntity {
      * 发送时间
      */
     @Column(value = "create_time")
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
 }

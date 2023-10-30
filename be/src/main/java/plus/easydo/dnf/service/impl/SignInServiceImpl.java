@@ -3,6 +3,7 @@ package plus.easydo.dnf.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 import plus.easydo.dnf.dto.DaSignInConfDto;
 import plus.easydo.dnf.dto.SignInConfigDate;
 import plus.easydo.dnf.entity.CharacInfo;
+import plus.easydo.dnf.entity.DaItemEntity;
 import plus.easydo.dnf.entity.DaSignInConf;
 import plus.easydo.dnf.entity.DaSignInLog;
 import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.manager.CacheManager;
 import plus.easydo.dnf.manager.DaSignInConfManager;
 import plus.easydo.dnf.manager.DaSignInLogManager;
+import plus.easydo.dnf.mapper.DaItemMapper;
 import plus.easydo.dnf.qo.DaSignInConfQo;
 import plus.easydo.dnf.service.GamePostalService;
 import plus.easydo.dnf.service.GameRoleService;
+import plus.easydo.dnf.service.IDaItemService;
 import plus.easydo.dnf.service.SignInService;
 import plus.easydo.dnf.util.ExecCallBuildUtil;
 import plus.easydo.dnf.vo.CallResult;
@@ -49,6 +53,8 @@ public class SignInServiceImpl implements SignInService {
     private final GameRoleService gameRoleService;
 
     private final GamePostalService gamePostalService;
+
+    private final IDaItemService daItemService;
 
     @Override
     public List<DaSignInConf> signList(Integer characNo) {
@@ -146,6 +152,20 @@ public class SignInServiceImpl implements SignInService {
 
     @Override
     public boolean update(DaSignInConfDto daSignInConf) {
+        String jsonStr = daSignInConf.getConfigJson();
+        if(CharSequenceUtil.isBlank(jsonStr)){
+            throw new BaseException("物品配置不能为空");
+        }
+        SignInConfigDate configData = JSONUtil.toBean(jsonStr, SignInConfigDate.class);
+        List<SignInConfigDate.Conf> confs = configData.getData();
+        confs.forEach(conf -> {
+            Long id = conf.getItemId();
+            DaItemEntity item = daItemService.getById(id);
+            if(Objects.nonNull(item)){
+                conf.setName(item.getName());
+            }
+        });
+        daSignInConf.setConfigJson(JSONUtil.toJsonStr(configData));
         return daSignInConfManager.updateById(BeanUtil.copyProperties(daSignInConf,DaSignInConf.class));
     }
 
@@ -154,6 +174,20 @@ public class SignInServiceImpl implements SignInService {
         if(daSignInConfManager.existsByDate(daSignInConf.getConfigDate())){
             throw new BaseException(daSignInConf.getConfigDate()+"的配置已存在");
         }
+        String jsonStr = daSignInConf.getConfigJson();
+        if(CharSequenceUtil.isBlank(jsonStr)){
+            throw new BaseException("物品配置不能为空");
+        }
+        SignInConfigDate configData = JSONUtil.toBean(jsonStr, SignInConfigDate.class);
+        List<SignInConfigDate.Conf> confs = configData.getData();
+        confs.forEach(conf -> {
+            Long id = conf.getItemId();
+            DaItemEntity item = daItemService.getById(id);
+            if(Objects.nonNull(item)){
+                conf.setName(item.getName());
+            }
+        });
+        daSignInConf.setConfigJson(JSONUtil.toJsonStr(configData));
         return daSignInConfManager.save(BeanUtil.copyProperties(daSignInConf,DaSignInConf.class));
     }
 }

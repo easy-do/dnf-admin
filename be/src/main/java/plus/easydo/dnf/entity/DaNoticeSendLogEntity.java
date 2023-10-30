@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Builder
-@Table(value = "da_notice_send_log")
+@Table(value = "da_notice_send_log", dataSource = "d_taiwan")
 public class DaNoticeSendLogEntity {
 
     @Id(keyType = KeyType.Auto)

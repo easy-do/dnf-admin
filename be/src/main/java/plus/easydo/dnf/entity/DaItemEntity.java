@@ -15,7 +15,7 @@ import lombok.Data;
  * @since 1.0
  */
 @Data
-@Table(value = "da_item")
+@Table(value = "da_item", dataSource = "d_taiwan")
 public class DaItemEntity {
 
     /**

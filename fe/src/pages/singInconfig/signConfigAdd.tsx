@@ -1,12 +1,32 @@
 import { ArrayField, Button, Col, Form, Modal, Row, Space, Toast, useFormApi } from '@douyinfe/semi-ui'
 import Section from '@douyinfe/semi-ui/lib/es/form/section'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import signInStore from '@src/store/signIn'
 import { inertConfigRequest } from '@src/api/signInApi'
+import { debounce } from 'lodash-es';
+import { getItemList } from '@src/api/gameItem'
 
 const { Input, DatePicker, TextArea, Select } = Form
 
 const SingInConfigAdd = () => {
+
+	const [selectList,setSelectList] = useState([]);
+	
+	const itemHandleSearch = (inputValue) => {
+		if(inputValue){
+			getItemList(inputValue).then((res) => {
+				const itemMap = {}
+
+				const list =[]
+				res.map((v, i) => {
+					list.push(
+						{ key:i, value:v.id, label: v.name, type: 1 }
+					)
+				})
+				setSelectList(list)
+			})
+		}
+	}
 
 	const setSignInInfo = signInStore((state) => state.setSignInInfo)
 
@@ -73,25 +93,16 @@ const SingInConfigAdd = () => {
 									{arrayFields.map(({ field, key, remove }, i) => (
 										<div key={key}>
 											<Space spacing={'loose'}>
-												<Input width={'15%'} field={`${field}[name]`} label={'显示名称'} />
 												<Select
-													style={{minWidth:'150px'}}
-													field={`${field}[itemType]`}
-													label={'物品类型'}
-													initValue={1}
-													optionList={[
-														{ label: '装备', value: 1 },
-														{ label: '消耗品', value: 2 },
-														{ label: '材料', value: 3 },
-														{ label: '任务材料', value: 4 },
-														{ label: '宠物', value: 5 },
-														{ label: '宠物装备', value: 6 },
-														{ label: '宠物消耗品', value: 7 },
-														{ label: '时装', value: 8 },
-														{ label: '副职业', value: 9 }
-													]}
+													style={{ width: '150px' }}
+													filter
+													field={`${field}[itemId]`}
+													label={'物品'}
+													remote={true}
+													onSearch={debounce(itemHandleSearch, 1000)}
+													optionList={selectList}
+													emptyContent={null}
 												/>
-												<Input width={'15%'} field={`${field}[itemId]`} type="number" min={1} label={'物品id'} />
 												<Input width={'15%'} field={`${field}[quantity]`} type="number" label={'数量'} />
 												<Button type="danger" theme="borderless" onClick={remove} style={{ margin: 12 }}>
 													删除
