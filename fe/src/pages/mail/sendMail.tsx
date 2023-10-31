@@ -35,7 +35,7 @@ const SendMail = (props) => {
 
 
 	useEffect(()=>{
-			allRoleList('').then((res) => {
+			allRoleList().then((res) => {
 				const list =[]
 				res.map((v, i) => {
 					list.push(

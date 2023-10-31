@@ -12,7 +12,7 @@ const gameRoleState = create<gameRoleState>((set) => ({
 	roleList: undefined,
 	currentRole: undefined,
 	getRoleList: async () => {
-		const data = await roleList('');
+		const data = await roleList();
 		set({ roleList: data })
 	},
 	setCurrentRole: (role) =>{
