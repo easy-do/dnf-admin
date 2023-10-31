@@ -62,6 +62,7 @@ public class GameRoleServiceImpl implements GameRoleService {
             ResultSet rs  = stat.executeQuery(sql);
             list = ResultSetUtil.reToBeanList(rs,CharacInfo.class, Collections.singletonList("charac_name"));
             stat.close();
+            conn.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
