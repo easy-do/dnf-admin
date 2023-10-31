@@ -29,19 +29,6 @@ const SingInConfigEdit = () => {
 
 	const [selectList,setSelectList] = useState([]);
 	
-	const itemHandleSearch = (inputValue) => {
-		if(inputValue){
-			getItemList(inputValue).then((res) => {
-				const list =[]
-				res.map((v, i) => {
-					list.push(
-						{ key:i, value:v.id, label: v.name, type: 1 }
-					)
-				})
-				setSelectList(list)
-			})
-		}
-	}
 
 	const configSubmit = () => {
 		let cumitData = cureentSignIn
@@ -60,15 +47,15 @@ const SingInConfigEdit = () => {
 
 	useEffect(() => {
 		if (editShow) {
-			// getItemList('').then((res) => {
-			// 	const list =[]
-			// 	res.map((v, i) => {
-			// 		list.push(
-			// 			{ key:i, value:v.id, label: v.name, type: 1 }
-			// 		)
-			// 	})
-			// 	setSelectList(list)
-			// })
+			getItemList('').then((res) => {
+				const list =[]
+				res.map((v, i) => {
+					list.push(
+						{ key:i, value:v.id, label: v.name, type: 1 }
+					)
+				})
+				setSelectList(list)
+			})
 			getSignInInfo(editId).then((res) => {
 				formApi.setValues(res, { isOverride: true })
 			})
@@ -93,7 +80,7 @@ const SingInConfigEdit = () => {
 							type="date"
 							label={{ text: '开始时间', required: true }}
 						/>
-						<TextArea field="reanrk" label={{ text: '备注', required: true }} />
+						<TextArea field="remark" label={{ text: '备注', required: true }} />
 					</Section>
 					<Section text={'物品配置'}>
 						<Form />
@@ -115,10 +102,13 @@ const SingInConfigEdit = () => {
 												<Select
 													style={{ width: '150px' }}
 													filter
-													field={'${field}[itemId]'}
+													field={`${field}[itemId]`}
 													label={'物品'}
-													remote={true}
-													onSearch={debounce(itemHandleSearch, 1000)}
+													virtualize = {{
+														height: 270,
+														width: '100%',
+														itemSize: 36, // px
+													}}
 													optionList={selectList}
 													emptyContent={null}
 												/>

@@ -72,9 +72,9 @@ const SingInConfigAdd = () => {
 							initValue={cureentSignIn.configDate}
 							field="configDate"
 							type="date"
-							label={{ text: '开始时间', required: true }}
+							label={{ text: '签到时间', required: true }}
 						/>
-						<TextArea field="reanrk" label={{ text: '备注', required: true }} />
+						<TextArea field="remark" label={{ text: '备注', required: true }} />
 					</Section>
 					<Section text={'物品配置'}>
 						<Form />
