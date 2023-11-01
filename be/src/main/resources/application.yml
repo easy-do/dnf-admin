@@ -51,7 +51,7 @@ dpGmKey: ${DP_GM_KEY:123456789}
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
   # jwt秘钥
-  jwt-secret-key: 123456789qweasdzxc
+  jwt-secret-key: ${JWT_SECRET_KEY:123456789qweasdzxc}
   # token 名称（同时也是 cookie 名称）
   token-name: Authorization
   # token 有效期（单位：秒） 默认30天，-1 代表永久有效
