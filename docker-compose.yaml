@@ -121,6 +121,5 @@ services:
     volumes:
       - /data/dnf/server/data:/data
       - /data/dnf/server/log:/home/neople/game/log
-      - /data/dnf/dp2/df_game_r.lua:/data/dp2/df_game_r.lua
       - /data/dnf/dp2:/dp2
     container_name: dnfserver
