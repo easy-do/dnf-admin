@@ -24,15 +24,21 @@ x-env: &env
     - PUBLIC_IP=192.168.123.88
     # DP2插件
     - DP2=true
-    # 统一登录器相关配置
-    - GM_ACCOUNT=gm_user
+    # 以下是统一登录器相关配置
+    # 网关登录账号
+    - GM_ACCOUNT=gm_user、
+    # 网关登录密码
     - GM_PASSWORD=123456
+    # 通信密钥
     - GM_CONNECT_KEY=763WXRBW3PFTC3IXPFWH
+    # 登录器版本
     - GM_LANDER_VERSION=20180307
+    # 以下是dnf-admin的相关配置
     # 拥有管理员权限的游戏账号
     - ADMIN_USER=123456789
-    # dp插件的通信密钥    dp/lua/reportDp.lua
+    # dp插件的通信密钥   需要同步修改dp/lua/reportDp.lua
     - DP_GM_KEY=123456789
+
 networks:
   dnf:
     ipam:

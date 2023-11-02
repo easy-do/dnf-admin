@@ -5,6 +5,8 @@
 本项目致力于打造更便捷可动态配置游戏参数、拓展性更强的游戏增强类后台，解决dp插件配置麻烦，需要到处找教程，小白看了教程很蒙圈的情况，逐步集成常用插件功能。
 本项目无二开限制，商用还请注明出处。
 欢迎感兴趣的同学加入贡献代码，本项目保证一直开源，不会进行停更、闭源收费等操作，但不保证以后不会加入广告，哈哈，毕竟为爱发电。
+演示视频: https://www.bilibili.com/video/BV1UH4y1r7Z8/
+
 
 #### 软件架构
 服务端：spring boot + mybatisflex + sa-token
@@ -26,7 +28,7 @@ dp插件：2.8.2集成frida通信
 一、独立部署
 1.  下载dp2文件夹，将全部文件替换到你的服务器原dp2目录内（首次安装dp需配置run文件），修改 dp2/lua/reportDp.lua的gmKey为服务端配置的 DP_GM_KEY ，修改adminAddr为服务端的通信ip,端口默认8888
 2.  拉取镜像： docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
-3.  运行镜像(需注意配置环境变量)： docker run -dit -e MYSQL_HOST=dnfmysql.dnf_dnf -p 8888:8888 --name dnf-admin registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
+3.  运行镜像(需注意配置环境变量)： docker run -dit -e MYSQL_HOST=dnfmysql -p 8888:8888 --name dnf-admin registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
 
 二、与docker一键端结合部署（比较完美）
 待补充
