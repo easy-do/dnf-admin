@@ -1,8 +1,10 @@
 package plus.easydo.dnf.service;
 
 
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 import plus.easydo.dnf.entity.DaGameConfigEntity;
+import plus.easydo.dnf.qo.DaGameConfigQo;
 
 /**
  * 游戏配置 服务层。
@@ -12,4 +14,5 @@ import plus.easydo.dnf.entity.DaGameConfigEntity;
  */
 public interface IDaGameConfigService extends IService<DaGameConfigEntity> {
 
+    Page<DaGameConfigEntity> confPage(DaGameConfigQo gameConfigQo);
 }

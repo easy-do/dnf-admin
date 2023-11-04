@@ -3,7 +3,6 @@ package plus.easydo.dnf.controller;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import com.mybatisflex.core.paginate.Page;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.dnf.entity.DaGameConfigEntity;
+import plus.easydo.dnf.qo.DaGameConfigQo;
 import plus.easydo.dnf.service.IDaGameConfigService;
+import plus.easydo.dnf.vo.DataResult;
+import plus.easydo.dnf.vo.R;
 
 import java.io.Serializable;
 import java.util.List;
@@ -25,10 +27,34 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/daGameConfig")
+@RequestMapping("/api/conf")
 public class DaGameConfigController {
 
     private final IDaGameConfigService daGameConfigService;
+
+
+    /**
+     * 分页查询游戏配置
+     *
+     * @param gameConfigQo gameConfigQo
+     * @return 分页对象
+     */
+    @SaCheckRole("admin")
+    @PostMapping("/page")
+    public R<Page<DaGameConfigEntity>> page(@RequestBody DaGameConfigQo gameConfigQo) {
+        return DataResult.ok(daGameConfigService.confPage(gameConfigQo));
+    }
+
+    /**
+     * 根据游戏配置主键获取详细信息。
+     *
+     * @param id daGameConfig主键
+     * @return 游戏配置详情
+     */
+    @GetMapping("/info/{id}")
+    public R<DaGameConfigEntity> getInfo(@PathVariable Serializable id) {
+        return DataResult.ok(daGameConfigService.getById(id));
+    }
 
     /**
      * 添加 游戏配置
@@ -38,23 +64,9 @@ public class DaGameConfigController {
      */
     @SaCheckRole("admin")
     @PostMapping("/save")
-    public boolean save(@RequestBody DaGameConfigEntity daGameConfig) {
-        return daGameConfigService.save(daGameConfig);
+    public R<Object> save(@RequestBody DaGameConfigEntity daGameConfig) {
+        return DataResult.ok(daGameConfigService.save(daGameConfig));
     }
-
-
-    /**
-     * 根据主键删除游戏配置
-     *
-     * @param id 主键
-     * @return {@code true} 删除成功，{@code false} 删除失败
-     */
-    @SaCheckRole("admin")
-    @DeleteMapping("/remove/{id}")
-    public boolean remove(@PathVariable Serializable id) {
-        return daGameConfigService.removeById(id);
-    }
-
 
     /**
      *
@@ -65,43 +77,10 @@ public class DaGameConfigController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @SaCheckRole("admin")
-    @PutMapping("/update")
-    public boolean update(@RequestBody DaGameConfigEntity daGameConfig) {
-        return daGameConfigService.updateById(daGameConfig);
+    @PostMapping("/update")
+    public R<Object> update(@RequestBody DaGameConfigEntity daGameConfig) {
+        return DataResult.ok(daGameConfigService.updateById(daGameConfig));
     }
 
 
-    /**
-     * 查询所有游戏配置
-     *
-     * @return 所有数据
-     */
-    @GetMapping("/list")
-    public List<DaGameConfigEntity> list() {
-        return daGameConfigService.list();
-    }
-
-
-    /**
-     * 根据游戏配置主键获取详细信息。
-     *
-     * @param id daGameConfig主键
-     * @return 游戏配置详情
-     */
-    @GetMapping("/getInfo/{id}")
-    public DaGameConfigEntity getInfo(@PathVariable Serializable id) {
-        return daGameConfigService.getById(id);
-    }
-
-
-    /**
-     * 分页查询游戏配置
-     *
-     * @param page 分页对象
-     * @return 分页对象
-     */
-    @GetMapping("/page")
-    public Page<DaGameConfigEntity> page(Page<DaGameConfigEntity> page) {
-        return daGameConfigService.page(page);
-    }
 }

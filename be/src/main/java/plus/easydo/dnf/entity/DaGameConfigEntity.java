@@ -4,6 +4,8 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 游戏配置 实体类。
@@ -11,6 +13,8 @@ import com.mybatisflex.annotation.Table;
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
  */
+@Getter
+@Setter
 @Table(value = "da_game_config")
 public class DaGameConfigEntity {
 
@@ -49,53 +53,4 @@ public class DaGameConfigEntity {
      */
     @Column(value = "remark")
     private String remark;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getConfName() {
-        return confName;
-    }
-
-    public void setConfName(String confName) {
-        this.confName = confName;
-    }
-
-    public Integer getConfType() {
-        return confType;
-    }
-
-    public void setConfType(Integer confType) {
-        this.confType = confType;
-    }
-
-    public String getConfData() {
-        return confData;
-    }
-
-    public void setConfData(String confData) {
-        this.confData = confData;
-    }
-
-    public String getConfKey() {
-        return confKey;
-    }
-
-    public void setConfKey(String confKey) {
-        this.confKey = confKey;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }

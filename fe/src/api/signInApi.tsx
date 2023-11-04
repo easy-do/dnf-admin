@@ -12,7 +12,7 @@ export const configPageRequest = (param) => {
 	return postRequest('/signIn/page', param)
 }
 
-export const configInfoReuet = (id) => {
+export const configInfoRequest = (id) => {
 	return getRequest('/signIn/info/'+id)
 }
 

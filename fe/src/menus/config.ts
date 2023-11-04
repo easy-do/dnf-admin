@@ -3,7 +3,7 @@ import {
 	IconHorn,
 	IconTick,
 	IconMail,
-	IconGridRectangle,
+	IconSetting,
 	IconApps,
 	IconTickCircle,
 	IconAlertTriangle,
@@ -68,6 +68,12 @@ const MENU_CONFIG: MenuItem[] = [
 		text: 'app.menu.mail',
 		icon: IconMail,
 		path: '/mail'
+	},
+	{
+		itemKey: '6',
+		text: 'app.menu.conf',
+		icon: IconSetting,
+		path: '/conf'
 	}
 ]
 

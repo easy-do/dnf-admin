@@ -12,6 +12,7 @@ const Signin = lazy(() => import('@src/pages/signin'))
 const Notice = lazy(() => import('@src/pages/notice'))
 const Mail = lazy(() => import('@src/pages/mail'))
 const Item = lazy(() => import('@src/pages/item'))
+const Conf = lazy(() => import('@src/pages/conf'))
 const routeList: RouteObject[] = [
 	{
 		path: '/',
@@ -40,6 +41,10 @@ const routeList: RouteObject[] = [
 			{
 				path: '/item',
 				element: <WrapperRouteComponent element={<Item />} titleId="邮件" auth />
+			},
+			{
+				path: '/conf',
+				element: <WrapperRouteComponent element={<Conf />} titleId="配置" auth />
 			}
 		]
 	},

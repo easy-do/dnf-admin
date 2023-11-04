@@ -99,4 +99,11 @@
             ALTER TABLE da_item MODIFY COLUMN name varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称';
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20231104" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            ALTER TABLE da_game_config MODIFY COLUMN id bigint(20) auto_increment NOT NULL COMMENT 'id';
+            INSERT INTO da_game_config (id, conf_name, conf_type, conf_data, conf_key, remark) VALUES(1, '主线任务完成券', 1, '114154', 'complete_task_id', '主线任务完成券的道具id');
+            INSERT INTO da_game_config (id, conf_name, conf_type, conf_data, conf_key, remark) VALUES(2, '强化增幅必成等级', 1, '15', 'upgrade_success_level', '强化或增幅等级多少以下不失败');
+        </sql>
+    </changeSet>
 </databaseChangeLog>

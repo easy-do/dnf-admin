@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import signInStore from '@src/store/signIn'
 import { updateConfigRequest } from '@src/api/signInApi'
 import { getItemList } from '@src/api/gameItem'
-import { debounce } from 'lodash-es';
+
 
 const { Input, DatePicker, TextArea, Select } = Form
 

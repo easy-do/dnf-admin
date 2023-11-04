@@ -1,5 +1,5 @@
 import create from 'zustand'
-import { configInfoReuet, configPageRequest, signInList } from '@src/api/signInApi'
+import { configInfoRequest, configPageRequest, signInList } from '@src/api/signInApi'
 
 export interface signInState {
 	signInList: any
@@ -54,7 +54,7 @@ const signInState = create<signInState>((set, get) => ({
 		}
 	},
 	getSignInInfo: async (id) => {
-		const data = await configInfoReuet(id);
+		const data = await configInfoRequest(id);
 		const jsonStr = data.configJson;
 		data.configJson = JSON.parse(jsonStr)
 		set({ cureentSignIn: data })

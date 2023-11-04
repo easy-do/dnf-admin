@@ -57,7 +57,7 @@ const SendMail = (props) => {
 
 	return (
 		<>
-			<Modal width={'50%'} visible={props.show} onOk={sendSubmit} onCancel={() => props.setShow(false)}>
+			<Modal visible={props.show} onOk={sendSubmit} onCancel={() => props.setShow(false)}>
 				<Form getFormApi={setFormApi}>
 					<Section text={'基本信息'}>
 						<Select

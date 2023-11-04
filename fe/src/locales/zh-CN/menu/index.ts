@@ -5,4 +5,5 @@ export const zhCN_menu = {
 	'app.menu.notice': '公告',
 	'app.menu.mail': '邮件',
 	'app.menu.item': '物品',
+	'app.menu.conf': '配置',
 }
