@@ -35,9 +35,21 @@ public class DpController {
     @Autowired
     private Map<String, DpReportHandler> reportHandlerMap;
 
+    /**
+     * dp通信接口
+     *
+     * @param gmKey 通信密钥
+     * @param opt 频道
+     * @param type 通信类型
+     * @param value 参数
+     * @return plus.easydo.dnf.vo.R<java.lang.Object>
+     * @author laoyu
+     * @date 2023/11/4
+     */
     @GetMapping("/report")
     public R<Object> roleList(
             @RequestParam("gmKey")String gmKey,
+            @RequestParam("type")String opt,
             @RequestParam("type")String type,
             @RequestParam("value")String value){
         if(!this.dpGmKey.equals(gmKey)){

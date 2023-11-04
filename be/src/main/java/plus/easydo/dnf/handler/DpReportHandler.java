@@ -14,12 +14,12 @@ public interface DpReportHandler {
     /**
      * 处理上报数据并做出响应
      *
-     * @param type type
+     * @param opt opt
      * @param value value
      * @return plus.easydo.dnf.vo.DpResult<T>
      * @author laoyu
      * @date 2023/10/27
      */
-    DpResult handler(String type,String value);
+    DpResult handler(String opt, String value);
 
 }

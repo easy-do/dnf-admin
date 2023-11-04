@@ -36,7 +36,7 @@ public class GameNoticeController {
     @SaCheckRole("admin")
     @GetMapping("/send")
     public R<Object> roleList(@RequestParam("message")String message){
-        CacheManager.addExecList(ExecCallBuildUtil.buildNotice(message));
+        CacheManager.addAllOptExecList(ExecCallBuildUtil.buildNotice(message));
         daNoticeSendLogService.save(DaNoticeSendLogEntity.builder().message(message).createTime(LocalDateTime.now()).build());
         return DataResult.ok();
     }

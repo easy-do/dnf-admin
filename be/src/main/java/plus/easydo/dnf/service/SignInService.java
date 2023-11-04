@@ -39,12 +39,13 @@ public interface SignInService {
     /**
      * 角色签到 不校验请求账户，内部调用
      *
+     * @param opt opt
      * @param characNo characNo
      * @return boolean
      * @author laoyu
      * @date 2023/10/14
      */
-    boolean characSign(Integer characNo);
+    boolean characSign(String opt, Integer characNo);
 
     Page<DaSignInConf> signInPage(DaSignInConfQo daSignInConfQo);
 

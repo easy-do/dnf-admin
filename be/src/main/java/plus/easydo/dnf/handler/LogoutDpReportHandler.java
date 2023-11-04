@@ -16,7 +16,7 @@ import plus.easydo.dnf.vo.DpResult;
 @Service(ReportTypeConstant.LOGOUT)
 public class LogoutDpReportHandler implements DpReportHandler {
     @Override
-    public DpResult handler(String type, String value) {
+    public DpResult handler(String opt, String value) {
         UerLoginOutDto uerLoginOutDto = JSONUtil.toBean(value, UerLoginOutDto.class);
         CacheManager.GAME_ONLINE_USER.remove(uerLoginOutDto.getUid());
         return DpResult.build(ReportTypeConstant.LOGOUT,true);

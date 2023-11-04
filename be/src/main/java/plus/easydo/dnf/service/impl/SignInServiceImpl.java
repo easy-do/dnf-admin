@@ -20,7 +20,6 @@ import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.manager.CacheManager;
 import plus.easydo.dnf.manager.DaSignInConfManager;
 import plus.easydo.dnf.manager.DaSignInLogManager;
-import plus.easydo.dnf.mapper.DaItemMapper;
 import plus.easydo.dnf.qo.DaSignInConfQo;
 import plus.easydo.dnf.service.GamePostalService;
 import plus.easydo.dnf.service.GameRoleService;
@@ -73,11 +72,11 @@ public class SignInServiceImpl implements SignInService {
         if (daSignInLogManager.existRoleConfigLog(characNo,signInConf.getId())) {
             throw new BaseException("已经签到过了");
         }
-        return saveLogAndSendMail(characNo, signInConf);
+        return saveLogAndSendMail(null, characNo, signInConf);
     }
 
     @Override
-    public boolean characSign(Integer characNo) {
+    public boolean characSign(String opt, Integer characNo) {
         DaSignInConf signInConf = daSignInConfManager.getByCurrentConf();
         if (Objects.isNull(signInConf)) {
             log.info("没有找到今日的签到配置.");
@@ -88,7 +87,7 @@ public class SignInServiceImpl implements SignInService {
             log.info("角色{}当日已签到.", characNo);
             return false;
         }
-        return saveLogAndSendMail(characNo, signInConf);
+        return saveLogAndSendMail(opt,characNo, signInConf);
     }
 
     private void checkUserCharac(Integer characNo) {
@@ -104,7 +103,7 @@ public class SignInServiceImpl implements SignInService {
         }
     }
 
-    private boolean saveLogAndSendMail(Integer characNo, DaSignInConf signInConf) {
+    private boolean saveLogAndSendMail(String opt, Integer characNo, DaSignInConf signInConf) {
         DaSignInLog entity = new DaSignInLog();
         entity.setConfigId(signInConf.getId());
         entity.setSignInRoleId(characNo);
@@ -122,7 +121,7 @@ public class SignInServiceImpl implements SignInService {
                     itemconfList.add(da.getItemId());
                     itemconfList.add(da.getQuantity());
                     CallResult callResult = ExecCallBuildUtil.buildSendMultiMail(characNo, tile, content, 0L, Collections.singletonList(itemconfList));
-                    CacheManager.addExecList(callResult);
+                    CacheManager.addExecList(opt,callResult);
                 });
             }else {
                 List<List<Long>> itemList = new ArrayList<>();
@@ -132,8 +131,8 @@ public class SignInServiceImpl implements SignInService {
                     itemconfList.add(da.getQuantity());
                     itemList.add(itemconfList);
                 });
-                CallResult callResult = ExecCallBuildUtil.buildSendMultiMail(characNo,tile,content,0L,itemList);;
-                CacheManager.addExecList(callResult);
+                CallResult callResult = ExecCallBuildUtil.buildSendMultiMail(characNo,tile,content,0L,itemList);
+                CacheManager.addExecList(opt,callResult);
             }
 
         }

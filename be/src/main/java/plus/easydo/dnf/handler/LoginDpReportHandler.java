@@ -21,11 +21,11 @@ public class LoginDpReportHandler implements DpReportHandler {
 
     private final SignInService signInService;
     @Override
-    public DpResult handler(String type, String value) {
+    public DpResult handler(String opt, String value) {
         UerLoginOutDto uerLoginOutDto = JSONUtil.toBean(value, UerLoginOutDto.class);
         CacheManager.GAME_ONLINE_USER.put(uerLoginOutDto.getUid(),uerLoginOutDto.getName());
         //判断角色是否领取签到奖励，如果未领取则发放奖励
-        signInService.characSign(uerLoginOutDto.getCharacNo());
+        signInService.characSign(opt,uerLoginOutDto.getCharacNo());
         return DpResult.build(ReportTypeConstant.LOGIN,true);
     }
 }

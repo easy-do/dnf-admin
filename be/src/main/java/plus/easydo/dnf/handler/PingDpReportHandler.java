@@ -17,9 +17,10 @@ import plus.easydo.dnf.vo.DpResult;
 @Service(ReportTypeConstant.PING)
 public class PingDpReportHandler implements DpReportHandler {
     @Override
-    public DpResult handler(String type, String value) {
+    public DpResult handler(String opt, String value) {
         String pingTime = LocalDateTimeUtil.format(LocalDateTimeUtil.now(), DatePattern.NORM_DATETIME_MINUTE_FORMATTER);
-        CacheManager.DP_PING_CACHE.add( pingTime);
-        return DpResult.build(ReportTypeConstant.PING, CacheManager.consumeExecList());
+        CacheManager.DP_PING_CACHE.put(opt,pingTime);
+        CacheManager.initOptExecListMap(opt);
+        return DpResult.build(ReportTypeConstant.PING, CacheManager.consumeExecList(opt));
     }
 }

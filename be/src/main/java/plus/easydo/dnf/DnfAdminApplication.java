@@ -14,7 +14,7 @@ public class DnfAdminApplication {
 
     public static void main(String[] args) {
         //将dp2文件copy到/data/dp2目录
-        FileUtil.copy("/home/dp2","/data",false);
+        FileUtil.copy("/home/dp2","/data",true);
         SpringApplication.run(DnfAdminApplication.class, args);
     }
 

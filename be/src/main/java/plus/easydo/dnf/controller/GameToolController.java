@@ -33,7 +33,7 @@ public class GameToolController {
     @SaCheckRole("admin")
     @PostMapping("/sendMail")
     public R<Object> sendMail(@RequestBody SendMailDto sendMailDto){
-        CacheManager.addExecList(ExecCallBuildUtil.buildSendMultiMail(sendMailDto));
+        CacheManager.addFirstOptExecList(ExecCallBuildUtil.buildSendMultiMail(sendMailDto));
         iDaMailSendLogService.save(DaMailSendLogEntity.builder().sendDetails(JSONUtil.toJsonStr(sendMailDto)).createTime(LocalDateTime.now()).build());
         return DataResult.ok();
     }
