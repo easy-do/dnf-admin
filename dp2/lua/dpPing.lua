@@ -7,6 +7,7 @@ local json = require("json")
 local luv = require("luv")
 local dpReport = require("dpReport")
 local logger = require("df.logger")
+local dpAdminConf = require("dpAdminConf")
 
 local dpPing = {}
 
@@ -22,28 +23,21 @@ local function checkArg(arg)
     return ''
 end
 
-local function fridaCall(adminResult)
-    local arg2 = checkArg(adminResult.arg2)
-    local callOk, callResult = pcall(dp.frida.call, tonumber(adminResult.arg0), tonumber(adminResult.arg1), arg2)
-    if not callOk then
-        logger.info("frida.call fail: %s", callResult)
-    end
-end
 
 local function execFridaCall(v)
-    local callOk, callResult = pcall(dp.frida.call, 9999, 9999, checkArg(v))
+    local arg2 = checkArg(v.arg2)
+    local callOk, callResult = pcall(dp.frida.call, 9999, 9999, arg2)
     if not callOk then
         logger.info("frida.call fail: %s", callResult)
     end
 end
 
 
-local function dpCall(adminResult)
-    local arg2 = checkArg(adminResult.arg2)
-end
-
 local function execDpCall(v)
-
+    -- local arg2 = checkArg(adminResult.arg2)
+    if tostring(v.funName) == "flushed_conf" then
+        dpAdminConf.flushedConf()
+    end
 end
 
 
@@ -56,18 +50,7 @@ local function pingAdmin()
         if debug then
             logger.info("adminValue debug : %s", adminResult)
         end
-        local callDp = adminResult.callDp and true or false
-        if callDp then
-            if debug then
-                logger.info("callDp debug : %s", adminResult)
-            end
-            dpCall(adminResult)
-        end
-        local callFrida = adminResult.callFrida and true or false
-        if callFrida then
-            fridaCall(adminResult);
-        end
-        local execList = adminResult.arg2
+        local execList = adminResult.value
         if adminResult.type == 'ping' and type(execList) == "table" then
             if debug then
                 logger.info("exec execList debug : %s", execList)
@@ -100,7 +83,7 @@ local function pingAdmin()
             end
         end
     else
-        logger.info("adminValue is nil")
+        logger.info("ping dnf-admin faild value is nil")
     end
 end
 

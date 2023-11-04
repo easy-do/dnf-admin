@@ -110,4 +110,10 @@
             INSERT INTO da_game_config (id, conf_name, conf_type, conf_data, conf_key, remark) VALUES(2, '强化增幅必成等级', 1, '15', 'upgrade_success_level', '强化或增幅等级多少以下不失败');
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20231105" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            UPDATE da_game_config SET conf_name='主线任务完成券', conf_type=1, conf_data='8070', conf_key='complete_task_item_id', remark='一键完成主线任务的道具id' WHERE id=1;
+            UPDATE da_game_config SET conf_name='强化增幅必成等级', conf_type=1, conf_data='30', conf_key='upgrade_success_level', remark='强化或增幅多少级不失败' WHERE id=2;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

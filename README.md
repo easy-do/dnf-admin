@@ -23,13 +23,45 @@ dp插件：2.8.2集成frida通信
 4.支持每日签到配置，可指定特定日期的签到标题，奖励内容（物品无上线，可无限添加），玩家可在网页端签到，登录游戏角色自动签到，方便打卡。
 5.支持发送游戏公告
 6.支持发送邮件,无需小退
-
+7.支持后台配置游戏相关脚本功能并实时生效
+8.支持配置一键完成主线任务的道具
+9.支持配置指定强化增幅指定等级不失败
+10.待添加
 
 #### 安装教程
 一、独立部署
 挪到下面了
-二、与docker一键端结合部署（比较完美）
-待补充
+二、与docker一键端结合部署 直接一键集成
+
+下载 docker-compose.yaml  编辑环境变量修改 数据库密码、服务器ip地址、统一登录器相关配置、后台通信密钥、超级管理员账号等信息，上传至服务器。
+
+登录服务器 cd到 docker-compose.yaml所在的目录,执行命令 docker-compose up -d
+
+查看数据库日志
+```shell
+docker logs -f dnfmysql  
+```
+查看服务端日志
+```shell
+docker logs -f dnfserver  
+```
+查看后台日志
+```shell
+docker logs -f dnf-admin 
+```
+
+升级后台到最新版的方法:
+
+cd到 docker-compose.yaml的目录
+```shell
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
+docker rm -f dnf-admin
+docker-compose up -d
+docker restart dnfserver
+```
+
+
+
 
 #### 使用说明
 

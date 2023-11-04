@@ -2,9 +2,11 @@ package plus.easydo.dnf.manager;
 
 
 import cn.hutool.core.date.LocalDateTimeUtil;
+import plus.easydo.dnf.entity.DaGameConfigEntity;
 import plus.easydo.dnf.vo.CallResult;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -29,12 +31,14 @@ public class CacheManager {
     public static final Map<String, String> DP_PING_CACHE = new ConcurrentHashMap<>();
     public static final Map<String, Map<LocalDateTime, List<CallResult>>> EXEC_LIST_MAP = new ConcurrentHashMap<>();
 
+    public static final List<DaGameConfigEntity> GAME_CONF_LIST = new ArrayList<>();
+
     private CacheManager() {
     }
 
     public static void initOptExecListMap(String opt) {
         Map<LocalDateTime, List<CallResult>> optMap = EXEC_LIST_MAP.get(opt);
-        if (Objects.nonNull(optMap)) {
+        if (Objects.isNull(optMap)) {
             EXEC_LIST_MAP.put(opt, new ConcurrentHashMap<>());
         }
     }

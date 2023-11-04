@@ -18,7 +18,7 @@ public class CallResult {
     /**调用的函数名*/
     private String funName;
 
-    /**传递的函数集合,不限制个数*/
+    /**传递的参数集合,不限制个数*/
     private List<Object> args;
 
     /**是否调用frida脚本*/

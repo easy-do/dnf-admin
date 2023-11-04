@@ -49,7 +49,7 @@ public class DpController {
     @GetMapping("/report")
     public R<Object> roleList(
             @RequestParam("gmKey")String gmKey,
-            @RequestParam("type")String opt,
+            @RequestParam("opt")String opt,
             @RequestParam("type")String type,
             @RequestParam("value")String value){
         if(!this.dpGmKey.equals(gmKey)){
@@ -58,7 +58,7 @@ public class DpController {
         value = URLUtil.decode(value);
         DpReportHandler handler = reportHandlerMap.get(type);
         if(Objects.nonNull(handler)){
-            return DataResult.ok(handler.handler(type,value));
+            return DataResult.ok(handler.handler(opt,value));
         }
         return DataResult.fail(type + " handler not found");
     }

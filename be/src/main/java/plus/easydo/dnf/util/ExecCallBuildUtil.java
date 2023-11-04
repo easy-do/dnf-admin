@@ -42,4 +42,8 @@ public class ExecCallBuildUtil {
         args.add(sendMailDto.getItemList());
         return CallResult.builder().callDp(false).callFrida(true).debug(true).funName(CallFunEnum.SEND_MULTI_MAIL.getFunName()).args(args).build();
     }
+
+    public static CallResult buildFlushedConf(){
+        return CallResult.builder().callDp(true).callFrida(false).debug(false).funName(CallFunEnum.FLUSHED_CONF.getFunName()).args(Collections.emptyList()).build();
+    }
 }

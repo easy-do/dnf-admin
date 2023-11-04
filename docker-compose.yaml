@@ -1,7 +1,7 @@
 
 version: "4.3"
 
-
+# 请修改这里的环境不亮
 x-env: &env
   environment:
     - TZ=Asia/Shanghai
@@ -34,7 +34,7 @@ x-env: &env
     # 以下是dnf-admin的相关配置
     # 拥有管理员权限的游戏账号
     - ADMIN_USER=123456789
-    # dp插件的通信密钥   需要同步修改dp/lua/reportDp.lua
+    # dp插件的通信密钥   需要同步修改服务端的/dp2/lua/reportDp.lua
     - DP_GM_KEY=123456789
 
 networks:

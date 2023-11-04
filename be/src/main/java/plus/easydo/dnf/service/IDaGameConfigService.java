@@ -15,4 +15,8 @@ import plus.easydo.dnf.qo.DaGameConfigQo;
 public interface IDaGameConfigService extends IService<DaGameConfigEntity> {
 
     Page<DaGameConfigEntity> confPage(DaGameConfigQo gameConfigQo);
+
+    boolean saveConf(DaGameConfigEntity daGameConfig);
+
+    boolean updateConf(DaGameConfigEntity daGameConfig);
 }

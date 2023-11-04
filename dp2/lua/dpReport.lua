@@ -7,6 +7,7 @@ local json = require("json")
 local logger = require("df.logger")
 
 local opt = dpx.opt()
+
 local dpReport = {}
 
 dpReport.run = function(type, value)

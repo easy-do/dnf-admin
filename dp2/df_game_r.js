@@ -3010,7 +3010,7 @@ function hook_history_log() {
 					var item_id = parseInt(group[15]);
 					var group_18 = parseInt(group[18]);
 					if (group_18 == 4) {
-						processing_data(item_id, user, 3257, 2500, get_random_int(50, 888));
+						processing_data(item_id, user, get_random_int(50, 888));
 					}
 				}
 				else if (game_event == 'KillMob') //杀死怪物
@@ -3037,7 +3037,7 @@ function hook_history_log() {
 }
 
 //角色获取道具发送全服通知
-function processing_data(item_id, user, award_item_id, award_item_count, count) {
+function processing_data(item_id, user, count) {
 	const itemName = api_CItem_GetItemName(item_id);
 	//pvf中获取装备数据
 	var citem = CDataManager_find_item(G_CDataManager(), item_id);

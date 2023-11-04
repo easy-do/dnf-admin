@@ -65,7 +65,7 @@ public class DaGameConfigController {
     @SaCheckRole("admin")
     @PostMapping("/save")
     public R<Object> save(@RequestBody DaGameConfigEntity daGameConfig) {
-        return DataResult.ok(daGameConfigService.save(daGameConfig));
+        return DataResult.ok(daGameConfigService.saveConf(daGameConfig));
     }
 
     /**
@@ -79,7 +79,7 @@ public class DaGameConfigController {
     @SaCheckRole("admin")
     @PostMapping("/update")
     public R<Object> update(@RequestBody DaGameConfigEntity daGameConfig) {
-        return DataResult.ok(daGameConfigService.updateById(daGameConfig));
+        return DataResult.ok(daGameConfigService.updateConf(daGameConfig));
     }
 
 
