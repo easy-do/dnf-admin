@@ -1,0 +1,34 @@
+此教程针对已经部署服务端，集成或未集成dp插件的场景
+
+
+1. 下载或克隆仓库
+仓库地址：https://gitee.com/yuzhanfeng/dnf-admin
+
+克隆命令 ： git clone https://gitee.com/yuzhanfeng/dnf-admin
+
+2.进入项目目录，将dp2目录内的全部文件上传至服务端的/dp2目录内
+
+3.如果未集成dp2插件则需要修改run文件  在启动频道代码前添加 LD_PRELOAD="=/dp2/libdp2pre.so"
+如果已经集成了dp2只要确认正确替换了原dp插件相关文件就无需修改
+修改/dp2/lua/dpReport.lua的adminAddr为你要部署后台机器的ip地址和端口,端口默认8888，如果是同一台机器并且非docker版服务端则修改ip为127.0.0.1
+重启服务端。
+
+4.使用docker命令运行后台程序
+
+镜像的环境变量说明
+MYSQL_HOST 服务端的数据库ip 默认 dnfmysql 
+MYSQL_PORT 服务端的数据库端口 默认 3306 
+MYSQL_USER 服务端的数据库账号 默认 root
+MYSQL_PASS 服务端的数据库密码 默认 88888888 
+ADMIN_USER 后台超级管理员对应的游戏账号 默认123456789 
+DP_GM_KEY 与dp插件通信的安全密钥 默认123456789  如果修改需要同步修改 /dp2/lua/dpReport.lua里面的密钥
+
+
+启动命令 注意替换对应环境变量
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
+docker run -dit  -e MYSQL_HOST=dnfmysql  -e MYSQL_PORT=3306 -e MYSQL_USER=root -e MYSQL_PASS=88888888 -e ADMIN_USER=123456789 -e DP_GM_KEY =123456789 -p 8888:8888 --name dnf-admin registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
+
+查看日志
+docker logs -f dnf-admin 
+
+5.访问后台： 你的部署服务器ip:8888     账号密码为游戏的账号密码，超管权限账号是环境变量ADMIN_USER 设置的账号

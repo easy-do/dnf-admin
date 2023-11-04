@@ -13,7 +13,7 @@ x-env: &env
     - MYSQL_ROOT_PASSWORD=88888888
     - MYSQL_PASS=88888888
     # 自动获取mysql容器的ip
-    - AUTO_MYSQL_IP=false
+    - AUTO_MYSQL_IP=true
     # mysql容器名称
     - MYSQL_NAME=dnfmysql
     # mysql的IP地址
@@ -22,11 +22,9 @@ x-env: &env
     - AUTO_PUBLIC_IP=false
     # 这里填写你的IP地址
     - PUBLIC_IP=192.168.123.88
-    # DP2插件
-    - DP2=true
     # 以下是统一登录器相关配置
     # 网关登录账号
-    - GM_ACCOUNT=gm_user、
+    - GM_ACCOUNT=gm_user
     # 网关登录密码
     - GM_PASSWORD=123456
     # 通信密钥
@@ -47,7 +45,7 @@ networks:
 
 services:
   dnfmysql:
-    image: xanderye/dnf-mysql:5.6
+    image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfmysql:5.6
     ports:
       - 3306:3306
     <<: *env
@@ -57,7 +55,7 @@ services:
       - /data/dnf/mysql:/var/lib/mysql
     restart: unless-stopped
     container_name: dnfmysql
-  dnfm-admin:
+  dnfadmin:
     image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
     depends_on:
       - dnfmysql
@@ -71,9 +69,10 @@ services:
     restart: unless-stopped
     container_name: dnf-admin
   dnfserver:
-    image: xanderye/dnf-server:centos7
+    image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfserver:latest
     depends_on:
       - dnfmysql
+      - dnfadmin
     <<: *env
     links:
       - dnfmysql
