@@ -38,7 +38,6 @@ https://www.bilibili.com/video/BV1ju4y187SS/
 - 克隆代码
 ```shell
 cd /root
-yum install git -y
 git clone https://gitee.com/yuzhanfeng/dnf-admin.git  
 cd dnf-admin
 ```
