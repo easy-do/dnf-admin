@@ -25,8 +25,8 @@ end
 
 
 local function execFridaCall(v)
-    local arg2 = checkArg(v.arg2)
-    local callOk, callResult = pcall(dp.frida.call, 9999, 9999, arg2)
+    local vStr = checkArg(v)
+    local callOk, callResult = pcall(dp.frida.call, 9999, 9999, vStr)
     if not callOk then
         logger.info("frida.call fail: %s", callResult)
     end
