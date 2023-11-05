@@ -85,20 +85,30 @@ docker-compose up -d
 ```
 
 查看数据库日志
+
 ```shell
 docker logs -f dnfmysql  
 ```
 - 查看服务端日志
+
 ```shell
 docker logs -f dnfserver  
 ```
 - 查看后台日志
+
 ```shell
 docker logs -f dnf-admin 
 ```
 - 后台地址
+
 ```yaml
 http://ip:8888 请使用游戏注册的账号密码登录，管理员为第一步环境变量内配置的超级管理员账号，其他游戏账号夜客登录权限为普通用户
+```
+
+- pvf及等级补丁替换路径
+
+```shell
+/data/dnf/server/data
 ```
 
 - 已部署旧版升级到最新版后台:
