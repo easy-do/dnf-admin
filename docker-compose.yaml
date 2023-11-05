@@ -1,40 +1,40 @@
 
 version: "4.3"
 
-# 请修改这里的环境不亮
+# 请修改这里的环境变量
 x-env: &env
   environment:
     - TZ=Asia/Shanghai
-    # game账户ip白名单
+    # game账户ip白名单 默认即可
     - ALLOW_IP=172.20.0.%
-    # game账户密码
+    # game账户密码 默认即可
     - GAME_PASSWORD=uu5!^%jg
-    # root账户密码
+    # root账户密码 外网则需要修改
     - MYSQL_ROOT_PASSWORD=88888888
     - MYSQL_PASS=88888888
-    # 自动获取mysql容器的ip
+    # 自动获取mysql容器的ip 默认即可
     - AUTO_MYSQL_IP=true
-    # mysql容器名称
+    # mysql容器名称 默认即可
     - MYSQL_NAME=dnfmysql
-    # mysql的IP地址
+    # mysql的IP地址 默认即可
     - MYSQL_IP=dnfmysql
-    # 自动获取公网ip
+    # 自动获取公网ip 推荐false 手动填写服务器ip
     - AUTO_PUBLIC_IP=false
-    # 这里填写你的IP地址
+    # 这里填写你的服务器公网或局域网IP地址
     - PUBLIC_IP=192.168.123.88
     # 以下是统一登录器相关配置
-    # 网关登录账号
+    # 网关的登录账号
     - GM_ACCOUNT=gm_user
-    # 网关登录密码
+    # 网关的登录密码
     - GM_PASSWORD=123456
-    # 通信密钥
+    # 网关的通信密钥
     - GM_CONNECT_KEY=763WXRBW3PFTC3IXPFWH
-    # 登录器版本
+    # 网关的登录器版本
     - GM_LANDER_VERSION=20180307
-    # 以下是dnf-admin的相关配置
+    # 以下是后台dnf-admin的相关配置
     # 拥有管理员权限的游戏账号
     - ADMIN_USER=123456789
-    # dp插件的通信密钥   需要同步修改服务端的/dp2/lua/reportDp.lua
+    # dp插件的通信密钥 非外网默认即可，因为还需要同步修改服务端的/dp2/lua/reportDp.lua
     - DP_GM_KEY=123456789
 
 networks:
