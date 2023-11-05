@@ -30,6 +30,9 @@
 
 #### docker服务端加后台一键部署教程
 
+- 视频教程： 
+https://www.bilibili.com/video/BV1ju4y187SS/
+
 - 整体流程为下载 docker-compose.yaml  编辑环境变量、启动容器编排
 
 - 克隆代码
