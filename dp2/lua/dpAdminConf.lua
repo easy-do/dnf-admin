@@ -15,7 +15,7 @@ DpAdminConf.flushedConf = function()
         for i, v in ipairs(adminResult.value) do
             local key = v.confKey;
             local confType = v.confType;
-            local value = v.congData;
+            local value = v.confData;
             if confType == 1 then
                 AdminConfData[key] = tonumber(value)
             elseif confType == 3 then
@@ -26,6 +26,7 @@ DpAdminConf.flushedConf = function()
                 AdminConfData[key] = value
             end
         end
+        logger.info("dp flushedConf success: %s", json.encode(AdminConfData))
     end
 end
 
