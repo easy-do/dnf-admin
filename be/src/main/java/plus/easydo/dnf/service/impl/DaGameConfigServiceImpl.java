@@ -41,6 +41,7 @@ public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaG
         boolean result = save(daGameConfig);
         if(result){
             cacheGameConf();
+            CacheManager.addAllOptExecList(ExecCallBuildUtil.buildFlushedConf());
         }
         return result;
     }
