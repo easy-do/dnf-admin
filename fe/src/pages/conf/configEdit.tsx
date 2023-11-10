@@ -1,14 +1,13 @@
 import { Form, Modal, Toast } from '@douyinfe/semi-ui'
-import React, { useEffect, useState } from 'react'
-import { useFormApi } from '@douyinfe/semi-ui/lib/es/form'
+import React, { useEffect, useRef, useState } from 'react'
 import { confInfoRequest, updateConfRequest } from '@src/api/confApi'
 
 const ConfigEdit = (props) => {
-	let formApi = useFormApi()
 
-	const setFormApi = (api) => {
-		formApi = api
-	}
+
+
+	const formRef = useRef()
+
 
 	const [confType, setConfType] = useState(0)
 
@@ -17,7 +16,7 @@ const ConfigEdit = (props) => {
 	}
 
 	const configSubmit = () => {
-		updateConfRequest(formApi.getValues()).then((res) => {
+		updateConfRequest(formRef.current.formApi.getValues()).then((res) => {
 			if (res) {
 				Toast.success('配置成功')
 				props.setEditShow(false)
@@ -29,7 +28,8 @@ const ConfigEdit = (props) => {
 	useEffect(() => {
 		if (props.editShow) {
 			confInfoRequest(props.editId).then((res) => {
-				formApi.setValues(res, { isOverride: true })
+				formRef.current.formApi.setValues(res, { isOverride: true })
+				setConfType(res.confType)
 			})
 		}
 	}, [props.editShow, props.editId])
@@ -37,12 +37,12 @@ const ConfigEdit = (props) => {
 	return (
 		<>
 			<Modal visible={props.editShow} onOk={configSubmit} onCancel={() => props.setEditShow(false)}>
-				<Form getFormApi={setFormApi}>
+				<Form ref={formRef}>
 					<Form.Input field="confName" label="配置名称" />
 					<Form.Select initValue={1} onChange={onChangeConfType} field="confType" label="配置类型">
 						<Form.Select.Option value={1}>数值</Form.Select.Option>
 						<Form.Select.Option value={2}>字符串</Form.Select.Option>
-						<Form.Select.Option value={3}>是否</Form.Select.Option>
+						<Form.Select.Option value={3}>是/否</Form.Select.Option>
 						<Form.Select.Option value={4}>JSON</Form.Select.Option>
 					</Form.Select>
 					<Form.Input field="confKey" label="配置标签" />

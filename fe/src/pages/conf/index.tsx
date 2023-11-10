@@ -87,7 +87,7 @@ const Index: React.FC = () => {
 					case 2:
 						return '字符串';
 					case 3:
-						return '是否';
+						return '是/否';
 					case 4:
 						return 'JSON';
 					default:
