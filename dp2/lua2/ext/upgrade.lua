@@ -20,7 +20,7 @@ function _M:run(fnext, _user, iitem, online)
     -- 如果强化了失败了走这里进行处理 
     if not ok then
         local upgrade_success_level = dpAdminConf.getConf("upgrade_success_level");
-        if upgrade <= tonumber(upgrade_success_level) then
+        if upgrade <= upgrade_success_level then
             iitem:inc_upgrade()
             --ok=true 代表强化结果为成功 ok=false代表强化失败
             ok = true

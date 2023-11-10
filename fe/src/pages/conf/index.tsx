@@ -79,7 +79,21 @@ const Index: React.FC = () => {
 		},
 		{
 			title: '配置类型',
-			dataIndex: 'confType'
+			dataIndex: 'confType',
+			render:(_tex, record, _index)=>{
+				switch (record.confType) {
+					case 1:
+						return '数值';
+					case 2:
+						return '字符串';
+					case 3:
+						return '是否';
+					case 4:
+						return 'JSON';
+					default:
+						return '未知';
+				}
+			}
 		},
 		{
 			title: '备注',

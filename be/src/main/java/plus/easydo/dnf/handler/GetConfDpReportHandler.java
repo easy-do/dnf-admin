@@ -5,8 +5,6 @@ import plus.easydo.dnf.constant.ReportTypeConstant;
 import plus.easydo.dnf.manager.CacheManager;
 import plus.easydo.dnf.vo.DpResult;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author laoyu
@@ -18,10 +16,6 @@ import java.util.Map;
 public class GetConfDpReportHandler implements DpReportHandler{
     @Override
     public DpResult handler(String opt, String value) {
-        Map<String,String> resultMap = new HashMap<>();
-        CacheManager.GAME_CONF_LIST.forEach(gameConfig->{
-            resultMap.put(gameConfig.getConfKey(),gameConfig.getConfData());
-        });
-        return DpResult.build(ReportTypeConstant.GET_CONF, resultMap);
+        return DpResult.build(ReportTypeConstant.GET_CONF, CacheManager.GAME_CONF_LIST);
     }
 }

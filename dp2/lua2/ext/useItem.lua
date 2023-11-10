@@ -42,7 +42,7 @@ function _M:run(_user, item_id, online)
     local user = game.fac.user(_user)
     logger.info("道具消耗事件: %s %d",user:GetCharacName(), item_id)
     local complete_task_item_id = dpAdminConf.getConf("complete_task_item_id");
-    if item_id == tonumber(complete_task_item_id) then
+    if item_id == complete_task_item_id then
         completeTask(user)
     end
 
