@@ -4,6 +4,7 @@ AdminConfData = {}
 local dpReport = require("dpReport")
 local logger = require("df.logger")
 local json = require("json")
+local dpFlushedConf = require("dpFlushedConf")
 
 local DpAdminConf = {}
 
@@ -27,12 +28,15 @@ DpAdminConf.flushedConf = function()
             end
         end
         logger.info("dp flushedConf success: %s", json.encode(AdminConfData))
+        dpFlushedConf.run()
     end
 end
 
 DpAdminConf.getConf = function(key)
     return AdminConfData[key]
 end
-
+DpAdminConf.AdminConfData = function()
+    return AdminConfData
+end
 
 return DpAdminConf

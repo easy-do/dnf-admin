@@ -116,4 +116,25 @@
             UPDATE da_game_config SET conf_name='强化增幅必成等级', conf_type=1, conf_data='30', conf_key='upgrade_success_level', remark='强化或增幅多少级不失败' WHERE id=2;
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20231111" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('等级上限', 1, '100', 'max_level', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('绝望之塔通关后仍可继续挑战(需门票)', 3, 'false', 'unlimit_towerofdespair', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('设置物品免确认(异界装备不影响)', 3, 'true', 'disable_item_routing', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('解除100级及以上的限制', 3, 'false', 'disable_security_protection', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('退出副本免虚弱', 3, 'false', 'disable_giveup_panalty', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('解锁镇魂开门任务', 3, 'false', 'open_timegate', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('允许创建缔造者', 3, 'false', 'enable_creator', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('开启GM功能, (需要添加管理员账号ID至数据库中)', 3, 'false', 'enable_game_master', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('关闭新账号发送的契约邮件', 3, 'false', 'disable_mobile_rewards', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('解除交易限额, 已达上限的第二天生效', 3, 'false', 'disable_trade_limit', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('设置使用拍卖行的最低等级', 1, '1', 'set_auction_min_level', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('修复拍卖行消耗品上架, 设置最大总价, 建议值2E', 1, '200000000', 'fix_auction_regist_item', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('关闭NPC回购系统', 3, 'false', 'disable_redeem_item', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('禁用支援兵', 3, 'false', 'disable_striker', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('禁用道具掉落随机强化', 3, 'false', 'disable_drop_random_upgrade', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('装备解锁时间(秒)', 1, '86400', 'set_item_unlock_time', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('掉落时随机赋予红字的装备最低等级 (默认55)', 1, '55', 'set_drop_amplify_level', '立即生效,影响洗红字的等级');
+        </sql>
+    </changeSet>
 </databaseChangeLog>

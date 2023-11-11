@@ -135,3 +135,19 @@ end
 
 dpx.hook(game.HookType.Upgrade, upgrade)
 -------------------------------------------------强化事件监听----------------------------------------------------------------------
+
+-------------------------------------------------修复绝望之塔金币异常----------------------------------------------------------------------
+local function MyUseAncientDungeonItems(fnext, _party, _dungeon, _item)
+    local party = game.fac.party(_party)
+    local dungeon = game.fac.dungeon(_dungeon)
+
+    local dungeon_index = dungeon:GetIndex()
+    if dungeon_index >= 11008 and dungeon_index <= 11107 then
+        return true
+    end
+
+    return fnext()
+end
+
+dpx.hook(game.HookType.CParty_UseAncientDungeonItems, MyUseAncientDungeonItems)
+-------------------------------------------------修复绝望之塔金币异常----------------------------------------------------------------------
