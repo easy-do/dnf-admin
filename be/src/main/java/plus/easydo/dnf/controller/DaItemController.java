@@ -51,9 +51,8 @@ public class DaItemController {
      */
     @SaCheckRole("admin")
     @PostMapping("/importItem")
-    public R<Long> importItem(@RequestParam("file") MultipartFile file) throws IOException {
+    public void importItem(@RequestParam("file") MultipartFile file) throws IOException {
         EasyExcelFactory.read(file.getInputStream(), DaItemEntity.class, new ItemDataListener(daItemService)).sheet().doRead();
-        return DataResult.ok();
     }
 
     /**
@@ -63,10 +62,9 @@ public class DaItemController {
      */
     @SaCheckRole("admin")
     @PostMapping("/importItemFor7z")
-    public R<Object> importItemFor7z(@RequestParam("file") MultipartFile file) throws IOException {
+    public void importItemFor7z(@RequestParam("file") MultipartFile file) throws IOException {
         List<JSONObject> res = ItemReaderUtil.reader(file);
         daItemService.importItemForJson(res);
-        return DataResult.ok(res);
     }
 
     /**
