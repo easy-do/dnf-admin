@@ -2,6 +2,7 @@ package plus.easydo.dnf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckRole;
+import cn.hutool.json.JSONObject;
 import com.alibaba.excel.EasyExcelFactory;
 import com.mybatisflex.core.paginate.Page;
 import jakarta.servlet.ServletOutputStream;
@@ -19,6 +20,7 @@ import plus.easydo.dnf.entity.DaItemEntity;
 import plus.easydo.dnf.listener.ItemDataListener;
 import plus.easydo.dnf.qo.DaItemQo;
 import plus.easydo.dnf.service.IDaItemService;
+import plus.easydo.dnf.util.ItemReaderUtil;
 import plus.easydo.dnf.util.ResponseUtil;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
@@ -52,6 +54,19 @@ public class DaItemController {
     public R<Long> importItem(@RequestParam("file") MultipartFile file) throws IOException {
         EasyExcelFactory.read(file.getInputStream(), DaItemEntity.class, new ItemDataListener(daItemService)).sheet().doRead();
         return DataResult.ok();
+    }
+
+    /**
+     * 导入物品缓存 从pvf导出的7z文件导入
+     * @param file file
+     * @throws IOException
+     */
+    @SaCheckRole("admin")
+    @PostMapping("/importItemFor7z")
+    public R<Object> importItemFor7z(@RequestParam("file") MultipartFile file) throws IOException {
+        List<JSONObject> res = ItemReaderUtil.reader(file);
+        daItemService.importItemForJson(res);
+        return DataResult.ok(res);
     }
 
     /**

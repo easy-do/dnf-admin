@@ -10,7 +10,7 @@ import {
 } from '@douyinfe/semi-ui'
 
 import userStore from '@src/store/user'
-import { getItemPage, importItem } from '@src/api/gameItem'
+import { getItemPage, importItem, importItemFor7z } from '@src/api/gameItem'
 import { IconUpload } from '@douyinfe/semi-icons'
 import { customRequestArgs } from '@douyinfe/semi-ui/lib/es/upload'
 import { FormApi } from '@douyinfe/semi-ui/lib/es/form'
@@ -37,7 +37,12 @@ const Index: React.FC = () => {
 
 	const uploadIem = (object: customRequestArgs) => {
 		importItem({ file: object.fileInstance })
-		Toast.success('操作成功,导入操作将在后台运行')
+		Toast.success('文件上传成功,导入操作将在后台运行，注意查看日志')
+	}
+
+	const upload7zIem = (object: customRequestArgs) => {
+		importItemFor7z({ file: object.fileInstance })
+		Toast.success('文件上传成功,导入操作将在后台运行，注意查看日志')
 	}
 
 	const isAdmin = userStore((state) => state.isAdmin)
@@ -118,7 +123,12 @@ const Index: React.FC = () => {
 						<Button onClick={downloadItemTemplate}>下载模板</Button>
 						<Upload showUploadList={false} accept=".xlsx" limit={1} customRequest={uploadIem}>
 							<Button icon={<IconUpload />} theme="light">
-								导入物品
+								从模板导入物品
+							</Button>
+						</Upload>
+						<Upload showUploadList={false} accept=".7z" limit={1} customRequest={upload7zIem}>
+							<Button icon={<IconUpload />} theme="light">
+								从pvfUtility导出的7z导入物品
 							</Button>
 						</Upload>
 					</ButtonGroup>

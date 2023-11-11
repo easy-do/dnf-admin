@@ -1,6 +1,7 @@
 package plus.easydo.dnf.service;
 
 
+import cn.hutool.json.JSONObject;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 import plus.easydo.dnf.entity.DaItemEntity;
@@ -16,9 +17,9 @@ import java.util.List;
  */
 public interface IDaItemService extends IService<DaItemEntity> {
 
-    Long importItem(DaItemEntity daItem);
-
     Page<DaItemEntity> itemPage(DaItemQo daItemQo);
 
     List<DaItemEntity> listByName(String name);
+
+    Long importItemForJson(List<JSONObject> res);
 }
