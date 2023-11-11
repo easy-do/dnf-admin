@@ -7,6 +7,7 @@
 欢迎感兴趣的同学加入贡献代码，本项目保证一直开源，不会进行停更、闭源收费等操作，但不保证以后不会加入广告，哈哈，毕竟为爱发电。
 - 演示视频: https://www.bilibili.com/video/BV1UH4y1r7Z8/
 - 技术交流群: 154213998  418505204
+- 主页: https://blog.easydo.plus
 
 #### 软件架构
 - 服务端：spring boot + mybatisflex + sa-token
