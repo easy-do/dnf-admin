@@ -56,7 +56,7 @@ services:
     restart: unless-stopped
     container_name: dnfmysql
   dnfadmin:
-    image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
+    image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
     depends_on:
       - dnfmysql
     ports:

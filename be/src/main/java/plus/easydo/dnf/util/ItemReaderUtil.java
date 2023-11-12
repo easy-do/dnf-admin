@@ -165,19 +165,42 @@ public class ItemReaderUtil {
         line = reader.readLine();
         String currentKey = null;
         while (line != null) {
-            line = line.replace("\t", "").replace("`", "");
-            if (line.contains("[/")) {
-                // 什么都不做
-            } else if (line.contains("[") || line.contains("]")) {
-                currentKey = line.replace("[", "").replace("]", "");
-            } else {
-                if (CharSequenceUtil.isNotBlank(line)) {
-                    jsonObject.set(currentKey, line.trim());
-                }
-            }
+            currentKey = getString(jsonObject, currentKey, line);
             line = reader.readLine();
         }
         reader.close();
         return jsonObject;
+    }
+
+    /**
+     * 读取单个文件
+     *
+     * @param fileContext fileContext
+     * @return cn.hutool.json.JSONObject
+     * @author laoyu
+     * @date 2023/11/11
+     */
+    public static JSONObject readerForStr(String fileContext) {
+        JSONObject jsonObject = JSONUtil.createObj();
+        List<String> lines = CharSequenceUtil.split(fileContext, "\n");
+        String currentKey = null;
+        for (String line :lines) {
+            currentKey = getString(jsonObject, currentKey, line);
+        }
+        return jsonObject;
+    }
+
+    private static String getString(JSONObject jsonObject, String currentKey, String line) {
+        line = line.replace("\t", "").replace("\r","").replace("`", "");
+        if (line.contains("[/")) {
+            // 什么都不做
+        } else if (line.contains("[") || line.contains("]")) {
+            currentKey = line.replace("[", "").replace("]", "");
+        } else {
+            if (CharSequenceUtil.isNotBlank(line)) {
+                jsonObject.set(currentKey, line.trim());
+            }
+        }
+        return currentKey;
     }
 }

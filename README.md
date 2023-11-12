@@ -46,6 +46,7 @@
 - 支持装备解锁时间-2023.11.11
 - 支持掉落时随机赋予红字的装备最低等级-2023.11.11
 - 修复绝望之塔金币异常-2023.11.11
+- 支持读取pvf文件自动导入物品数据-2023.11.12
 
 #### docker服务端加后台一键部署教程
 
@@ -98,6 +99,8 @@ x-env: &env
     - ADMIN_USER=123456789
     # dp插件的通信密钥 非外网默认即可，因为还需要同步修改服务端的/dp2/lua/reportDp.lua
     - DP_GM_KEY=123456789
+    # 服务端读取pvf文件的路径、docker端编排方式保持默认值即可
+    - PVF_PATH=/data/server/data/Script.pvf
 
 ```
 - 执行命令启动容器编排
@@ -136,7 +139,8 @@ http://ip:8888 请使用游戏注册的账号密码登录，管理员为第一�
 
 ```shell
 cd /root/dnf-admin
-docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
+编辑文件 docker-compose.yaml registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0 替换为 registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
 docker rm -f dnf-admin
 docker-compose up -d
 docker restart dnfserver
@@ -152,6 +156,7 @@ MYSQL_PORT #游戏数据库端口 默认 3306
 MYSQL_PASS 3游戏数据库密码 默认 88888888
 ADMIN_USER 3超级管理员对应的游戏账号 默认123456789
 DP_GM_KEY #与dp插件通信的安全密钥 默认123456789
+PVF_PATH #服务端读取pvf文件的路径，默认 /data/server/data/Script.pvf 
 ```
 - 后台端口默认为 8888 使用游戏的账号密码登录
 - 其他教程待补充

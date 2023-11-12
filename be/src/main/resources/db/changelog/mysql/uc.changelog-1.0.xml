@@ -137,4 +137,9 @@
             INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('掉落时随机赋予红字的装备最低等级 (默认55)', 1, '55', 'set_drop_amplify_level', '立即生效,影响洗红字的等级');
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20231112" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('启动后自动加载pvf数据到数据库', 3, 'true', 'gm_reader_pvf', '后台参数,是否启动后加载pvf文件数据');
+        </sql>
+    </changeSet>
 </databaseChangeLog>

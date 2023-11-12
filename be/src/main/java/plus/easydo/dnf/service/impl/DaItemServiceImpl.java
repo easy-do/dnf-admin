@@ -51,7 +51,7 @@ public class DaItemServiceImpl extends ServiceImpl<DaItemMapper, DaItemEntity> i
                 DaItemEntity entity = new DaItemEntity();
                 entity.setId(itemId);
                 entity.setName(name);
-                entity.setType("导入物品");
+                entity.setType("自动导入");
                 String rarity = json.getStr("rarity");
                 if(CharSequenceUtil.isNotBlank(rarity)){
                     entity.setRarity(RarityEnum.getByCode(Integer.valueOf(rarity)));

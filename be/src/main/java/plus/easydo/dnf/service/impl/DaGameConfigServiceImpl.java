@@ -56,6 +56,12 @@ public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaG
         return result;
     }
 
+    @Override
+    public DaGameConfigEntity getByConfKey(String confKey) {
+        QueryWrapper query = query().and(DA_GAME_CONFIG_ENTITY.CONF_KEY.eq(confKey));
+        return getOne(query);
+    }
+
 
     @PostConstruct
     public void cacheGameConf() {

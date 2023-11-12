@@ -19,4 +19,6 @@ public interface IDaGameConfigService extends IService<DaGameConfigEntity> {
     boolean saveConf(DaGameConfigEntity daGameConfig);
 
     boolean updateConf(DaGameConfigEntity daGameConfig);
+
+    DaGameConfigEntity getByConfKey(String confKey);
 }
