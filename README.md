@@ -18,12 +18,13 @@
 
 #### 图片介绍
 
-![](.\img\首页.png)
-![](.\img\签到.png)
-![](.\img\物品.png)
-![](.\img\公告.png)
-![](.\img\邮件.png)
-![](.\img\配置.png)
+<img src="./img/首页.png">
+<img src="./img/签到.png">
+<img src="./img/物品.png">
+<img src="./img/公告.png">
+<img src="./img/邮件.png">
+<img src="./img/配置.png">
+
 
 #### 更新记录&支持功能
 - 使用游戏账号密码登录
