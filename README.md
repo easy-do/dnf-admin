@@ -220,16 +220,25 @@ PVF_PATH #服务端读取pvf文件的路径，默认 /data/server/data/Script.pv
 
 - 下载项目文件或git克隆仓库
   仓库地址：https://gitee.com/yuzhanfeng/dnf-admin
-- 克隆方式
+- 克隆代码 如果服务器git需要安装一下，以centos为例
+```shell
+yum install git -y
+```
+- 克隆命令
 ```shell
 cd /root
-git clone https://gitee.com/yuzhanfeng/dnf-admin
+git clone https://gitee.com/yuzhanfeng/dnf-admin.git  
 cd dnf-admin
 ```
+- 安装docker,服务器已经安装了直接跳过
+```shell
+yum install docker -y
+```
+
 - 将dp2插件的全部文件复制到服务器/dp2目录内
 
 ```shell
-cp -r /root/dnf-admin/dp2 /dp2
+cp -r /root/dnf-admin/dp2/* /dp2
 ```
 
 - 如果未集成dp2插件则需要修改run文件  在启动频道代码前添加 LD_PRELOAD="=/dp2/libdp2pre.so"
@@ -239,23 +248,25 @@ LD_PRELOAD=/dp2/libdp2pre.so ./df_game_r siroco11 start &
 sleep 2
 LD_PRELOAD=/lib/libdp2pre.so ./df_game_r siroco52 start &
 ```
-- 如果已经集成了dp2只要确认正确替换了原dp插件相关文件就无需修改
+- 如果已经集成了dp2只要确认正确替换了原dp插件目录下的所有文件就行无需特殊修改
+- 
 - 修改/dp2/lua/dpReport.lua的相关参数
 
 ``` yaml
     -- gmKey:为了通讯安全请与服务端同步设置复杂的密钥
     local gmKey = "123456789"
-    --改为dnf-admin的ip和端口
+    --改为dnf-admin的ip和端口，如果你的服务端跑在宿主机，后台也在同一台服务器上则改为http://127.0.0.1:8888,注意：8888这个端口代表的是后面启动后台时指定的端口
     local adminAddr = "http://dnf-admin:8888"
 
 ```
-- 以上操作完成后重启服务端。
+- 以上操作完成后先不要重启服务端。
 
-- 运行GM网页后台程序 注意替换启动命令的环境变量
-
+- 运行GM网页后台程序 注意替换启动命令的环境变量，把文字描述的替换掉对应参数
+- docker run -dit  -e MYSQL_HOST=你的数据库ip  -e MYSQL_PORT=数据库端口 -e MYSQL_USER=数据库账号 -e MYSQL_PASS=数据库密码 -e ADMIN_USER=超级管理员游戏账号(游戏的账号) -e DP_GM_KEY=与后台的通讯密钥 -p 后台的端口号:8888 --name dnf-admin registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
+- 例如:
 ```shell 
-docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
-docker run -dit  -e MYSQL_HOST=dnfmysql  -e MYSQL_PORT=3306 -e MYSQL_USER=root -e MYSQL_PASS=88888888 -e ADMIN_USER=123456789 -e DP_GM_KEY =123456789 -p 8888:8888 --name dnf-admin registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+docker run -dit  -e MYSQL_HOST=127.0.0.1  -e MYSQL_PORT=3306 -e MYSQL_USER=game -e MYSQL_PASS=uu5!^%jg -e ADMIN_USER=123456789 -e DP_GM_KEY=123456789 -p 8888:8888 --name dnf-admin registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
 ```
 
 - 查看后台日志
@@ -264,10 +275,25 @@ docker run -dit  -e MYSQL_HOST=dnfmysql  -e MYSQL_PORT=3306 -e MYSQL_USER=root -
 docker logs -f dnf-admin
 ```
 
-
 - 访问后台
 ```yaml
 http://服务器ip:8888     使用游戏的账号密码登录，超管权限账号是环境变量ADMIN_USER设置的账号，其他账号为普通权限
+```
+
+- 升级后台
+```shell
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+docker rm -f dnf-admin
+# 这里在执行一遍你之前的启动命令
+```
+- 重启后台
+```shell
+docker restart dnf-admin
+```
+- 卸载后台
+```shell
+docker rm -f dnf-admin
+docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
 ```
 
 #### 参与贡献
@@ -277,4 +303,7 @@ http://服务器ip:8888     使用游戏的账号密码登录，超管权限账�
 3.  提交代码
 4.  新建 Pull Request
 
-
+#### 反馈相关共呢个
+1.  在仓库提交is
+2.  在群内找我反馈
+3.  提供使用的dp功能代码，我来集成实现
