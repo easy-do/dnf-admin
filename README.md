@@ -5,7 +5,7 @@
 本项目致力于打造更便捷可动态配置游戏参数、拓展性更强的游戏增强类后台，解决dp插件配置麻烦，需要到处找教程，小白看了教程很蒙圈的情况，逐步集成常用插件功能。
 本项目无二开限制，商用还请注明出处。
 欢迎感兴趣的同学加入贡献代码，本项目保证一直开源，不会进行停更、闭源收费等操作，但不保证以后不会加入广告，哈哈，毕竟为爱发电。
-- 演示视频: https://www.bilibili.com/video/BV1UH4y1r7Z8/
+- 演示视频: 其他说明.txt
 
 
 #### 软件架构
@@ -49,8 +49,8 @@
 
 #### docker服务端加后台一键部署教程
 
-- 视频教程： 
-https://www.bilibili.com/video/BV1ju4y187SS/
+- 视频教程：
+  其他说明.txt
 
 - 整体流程为下载 docker-compose.yaml  编辑环境变量、启动容器编排
 
@@ -307,5 +307,3 @@ docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
 2.  在群内找我反馈
 3.  提供使用的dp功能代码，我来集成实现
 
-技术交流群: 154213998  418505204
-主页: https://blog.easydo.plus
