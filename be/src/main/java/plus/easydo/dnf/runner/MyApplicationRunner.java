@@ -1,5 +1,6 @@
 package plus.easydo.dnf.runner;
 
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.json.JSONObject;
 import lombok.RequiredArgsConstructor;
@@ -43,17 +44,22 @@ public class MyApplicationRunner implements ApplicationRunner {
         String confValue = conf.getConfData();
         if(Boolean.parseBoolean(confValue)){
             if(FileUtil.isFile(pvfPath)){
-                List<JSONObject> jsonObjectList = new ArrayList<>();
-                PvfData pvfData = PvfReader.reader(pvfPath);
-                Map<Integer, String> itemMap = pvfData.getItemMap();
-                itemMap.forEach((key,value)->{
-                    JSONObject res = ItemReaderUtil.readerForStr(value);
-                    res.set("itemId",key);
-                    jsonObjectList.add(res);
-                });
-                daItemService.importItemForJson(jsonObjectList);
-                conf.setConfData("false");
-                daGameConfigService.updateById(conf);
+                try {
+                    List<JSONObject> jsonObjectList = new ArrayList<>();
+                    PvfData pvfData = PvfReader.reader(pvfPath);
+                    Map<Integer, String> itemMap = pvfData.getItemMap();
+                    itemMap.forEach((key,value)->{
+                        JSONObject res = ItemReaderUtil.readerForStr(value);
+                        res.set("itemId",key);
+                        jsonObjectList.add(res);
+                    });
+                    daItemService.importItemForJson(jsonObjectList);
+                    conf.setConfData("false");
+                    daGameConfigService.updateById(conf);
+                }catch (Exception exception){
+                    log.warn("解析pvf文件发生错误{}", ExceptionUtil.getMessage(exception));
+                }
+
             }else {
                 log.warn("在路径{}下没有找到pvf文件,请检查配置",pvfPath);
             }
