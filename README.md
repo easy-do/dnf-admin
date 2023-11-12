@@ -137,7 +137,7 @@ docker logs -f dnfmysql
 - 数据库初始化完成后启动后台
 
 ```shell
-docker up dnfadmin -d  
+docker-compose up dnfadmin -d  
 ```
 
 - 查看后台日志
@@ -150,7 +150,7 @@ docker logs -f dnf-admin
 - 启动服务端
 
 ```shell
-docker up dnfserver -d 
+docker-compose up dnfserver -d 
 ```
 - 查看服务端日志
 ```shell
