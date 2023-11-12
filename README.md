@@ -55,13 +55,26 @@ https://www.bilibili.com/video/BV1ju4y187SS/
 
 - 整体流程为下载 docker-compose.yaml  编辑环境变量、启动容器编排
 
-- 克隆代码
+- 克隆代码 如果服务器git需要安装一下，以centos为例
+```shell
+yum install git -y
+```
+- 克隆命令
 ```shell
 cd /root
 git clone https://gitee.com/yuzhanfeng/dnf-admin.git  
 cd dnf-admin
 ```
-- 编辑 docker-compose.yaml的内容，配置环境变量
+- 安装docker,服务器已经安装了直接跳过
+```shell
+yum install docker -y
+```
+- 安装docker-compose,服务器已经安装了直接跳过
+```shell
+yum install docker-compose -y
+```
+
+- 编辑 docker-compose.yaml的内容，配置环境变量，哪些需要改看注释
 
 ```yaml
 # 请修改这里的环境变量
@@ -103,30 +116,49 @@ x-env: &env
     - PVF_PATH=/data/server/data/Script.pvf
 
 ```
-- 执行命令启动容器编排
+- 启动数据库
 ```shell
-docker-compose up -d
+docker-compose up dnfmysql -d
 ```
-
-查看数据库日志
+查看数据库日志,使用相关工具连接数据库，因为首次加载比较慢，需要确保数据库初始化完成在继续启动其他服务才能启动服务端和后台
 
 ```shell
 docker logs -f dnfmysql  
 ```
-- 查看服务端日志
+- 数据库初始化完成后启动后台
 
 ```shell
-docker logs -f dnfserver  
+docker up dnfadmin -d  
 ```
-- 查看后台日志
 
+- 查看后台日志
 ```shell
 docker logs -f dnf-admin 
 ```
+当日志里面出现 "Completed initialization in 1 ms" 字样则代表正常启动完成,初次启动会加载pvf文件并导入数据库
+,如果看到 INSERT INTO `da_item`(`id`, `name`, `type`, `rarity`) VALUES 这样的日志则代表正在导入数据库,可以不用管，往下走启动服务端
+
+- 启动服务端
+
+```shell
+docker up dnfserver -d 
+```
+- 查看服务端日志
+```shell
+docker logs -f dnfserver
+```
+一般看到"server has been started successfully."字样停留不动，并且cpu占用骤降就代表服务端基本启动完成，再过一阵还能看到五国字样
+
+- 服务端的详细日志日志一般存放在 /data/dnf/server/log下, 可以使用命令tail -f查看详细日志 
+```shell
+tail -f 这里换成具体日志的位置 比如 /data/dnf/server/log/siroco11/Logxxxxxx.log
+```
+- 数据库文件存在 /data/dnf/mysql,如果需要删档或或者初始化数据库长时间不成功就删掉这个目录下的所有文件，然后重启数据库服务
+
 - 后台地址
 
 ```yaml
-http://ip:8888 请使用游戏注册的账号密码登录，管理员为第一步环境变量内配置的超级管理员账号，其他游戏账号夜客登录权限为普通用户
+http://ip:8888 # 请使用游戏注册的账号密码登录，管理员为第一步环境变量内配置的超级管理员账号，其他游戏账号夜客登录权限为普通用户
 ```
 
 - pvf及等级补丁替换路径
@@ -135,17 +167,37 @@ http://ip:8888 请使用游戏注册的账号密码登录，管理员为第一�
 /data/dnf/server/data
 ```
 
-- 已部署旧版升级到最新版后台:
+- 1.0版本升级到1.1最新版后台:
 
 ```shell
 cd /root/dnf-admin
-编辑文件 docker-compose.yaml registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0 替换为 registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+# 编辑第59行 将registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0 修改为 registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
 docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
 docker rm -f dnf-admin
-docker-compose up -d
+docker-compose up dnfadmin -d
 docker restart dnfserver
 ```
 
+- 升级当前版本后台到最新版:
+
+```shell
+cd /root/dnf-admin
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+docker rm -f dnf-admin
+docker-compose up dnfadmin -d
+docker restart dnfserver
+```
+
+- 卸载所有数据，彻底清除
+```shell
+cd /root/dnf-admin
+docker-compose stop
+docker-compose rm -f
+rm -rf /data/dnf/*
+docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfmysql:5.6
+docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfserver:latest
+```
 
 #### 其他说明
 
