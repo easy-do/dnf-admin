@@ -171,7 +171,7 @@ http://ip:8888 # 请使用游戏注册的账号密码登录，管理员为第一
 
 ```shell
 cd /root/dnf-admin
-# 编辑第59行 将registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0 修改为 registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+# 编辑docker-compose.yaml，一般在第59行 将registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0 修改为 registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
 docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
 docker rm -f dnf-admin
 docker-compose up dnfadmin -d
