@@ -1,5 +1,5 @@
 import create from 'zustand'
-import { roleList } from '@src/api/roleApi'
+import { gameRoleList } from '@src/api/gameRole'
 
 export interface gameRoleState {
 	roleList: any
@@ -12,7 +12,7 @@ const gameRoleState = create<gameRoleState>((set) => ({
 	roleList: undefined,
 	currentRole: undefined,
 	getRoleList: async () => {
-		const data = await roleList();
+		const data = await gameRoleList();
 		set({ roleList: data })
 	},
 	setCurrentRole: (role) =>{

@@ -1,6 +1,7 @@
 package plus.easydo.dnf.service.impl;
 
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
@@ -10,14 +11,18 @@ import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plus.easydo.dnf.dto.AuthRoleResourceDto;
+import plus.easydo.dnf.entity.DaRole;
 import plus.easydo.dnf.entity.DaRoleResource;
 import plus.easydo.dnf.service.IDaResourceService;
 import plus.easydo.dnf.entity.DaResource;
 import plus.easydo.dnf.mapper.DaResourceMapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import plus.easydo.dnf.service.IDaRoleResourceService;
+import plus.easydo.dnf.service.IDaRoleService;
+import plus.easydo.dnf.service.IDaUserRoleService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static plus.easydo.dnf.entity.table.DaResourceTableDef.DA_RESOURCE;
@@ -33,6 +38,10 @@ import static plus.easydo.dnf.entity.table.DaResourceTableDef.DA_RESOURCE;
 public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResource> implements IDaResourceService {
 
     private final IDaRoleResourceService roleResourceService;
+
+    private final IDaRoleService roleService;
+
+    private final IDaUserRoleService userRoleService;
 
     @Override
     public boolean authRoleResource(AuthRoleResourceDto authRoleResourceDto) {
@@ -62,6 +71,25 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
         return buildResourceTree(allList);
     }
 
+    @Override
+    public List<String> userResource(Long userId) {
+        List<Long> roles = userRoleService.userRoleIds(userId);
+        if(roles.isEmpty()){
+            return Collections.emptyList();
+        }
+        List<DaResource> resourceList = getRoleResourceList(roles);
+        return resourceList.stream().map(DaResource::getResourceCode).toList();
+    }
+    @Override
+    public List<Tree<Long>> userResource() {
+        List<Long> roles = userRoleService.userRoleIds();
+        if(roles.isEmpty()){
+            return Collections.emptyList();
+        }
+        List<DaResource> resourceList = getRoleResourceList(roles);
+        return buildResourceTree(resourceList);
+    }
+
     /**
      * 构建资源树
      *
@@ -75,16 +103,17 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
             return ListUtil.empty();
         }
         TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
+        treeNodeConfig.setNameKey("label");
         NodeParser<DaResource, Long> nodeParser = (daResource, treeNode) -> {
             treeNode.setId(daResource.getId());
             treeNode.setParentId(daResource.getParentId());
             treeNode.setName(daResource.getResourceName());
             treeNode.setWeight(daResource.getOrderNumber());
             treeNode.putExtra("details", daResource);
-            treeNode.putExtra("key", daResource.getUrl());
+            treeNode.putExtra("key", daResource.getResourceCode());
+            treeNode.putExtra("value", daResource.getId());
             treeNode.putExtra("type", daResource.getResourceType());
-            treeNode.putExtra("resourceCode", daResource.getResourceCode());
-            treeNode.putExtra("visible", daResource.getStatus());
+            treeNode.putExtra("disabled", !daResource.getStatus());
         };
         Long min = resourceList.stream().min((a, b) -> (int) (a.getParentId() - b.getParentId())).get().getParentId();
         return TreeUtil.build(resourceList, min, treeNodeConfig, nodeParser);

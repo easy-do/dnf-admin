@@ -152,7 +152,7 @@
                 `parent_id`     bigint(20)             DEFAULT 0 COMMENT '父级ID',
                 `resource_name` varchar(50)   NOT NULL COMMENT '资源名称',
                 `resource_code` varchar(100)  NOT NULL COMMENT '资源编码',
-                `resource_path` varchar(2048) NOT NULL COMMENT '资源id路径，以/开始以/结束，从根节点ID到当点节点ID，节点ID之间以/连接',
+                `resource_path` varchar(2048)          COMMENT '资源id路径，以/开始以/结束，从根节点ID到当点节点ID，节点ID之间以/连接',
                 `resource_type` char(1)                DEFAULT '' COMMENT '资源类型（M菜单 F功能）',
                 `order_number`  int(11)                DEFAULT 0 COMMENT '显示顺序',
                 `url`           varchar(200)           DEFAULT '' COMMENT '路径',
@@ -176,7 +176,6 @@
                 `is_default`  int(11)      NOT NULL DEFAULT 0 COMMENT '是否默认角色,0否 1是',
                 `status`      int(11)      NOT NULL DEFAULT 1 COMMENT '角色状态（0停用 1开启）',
                 `remark`      varchar(500)          DEFAULT NULL COMMENT '备注',
-                `del_flag`    int(11)               DEFAULT 0 COMMENT '删除标记',
                 PRIMARY KEY (`id`) USING BTREE
             ) ENGINE = InnoDB
               DEFAULT CHARSET = utf8mb4 COMMENT ='角色信息表';
@@ -199,6 +198,19 @@
                 PRIMARY KEY (`user_id`, `role_id`) USING BTREE
             ) ENGINE = InnoDB
               DEFAULT CHARSET = utf8mb4 COMMENT ='用户和角色关联表';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231114-1" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_role (role_name, role_key, role_sort, is_default, status, remark) VALUES('系统管理员', 'admin', 0, 1, 1, '系统管理员');
+            INSERT INTO da_role (role_name, role_key, role_sort, is_default, status, remark) VALUES('默认角色', 'default_role', 0, 1, 1, '系统默认角色');
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(1, 0, '首页', 'home', '/home', '', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(2, 0, '每日签到', 'signin', '/signin', '', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(3, 0, '物品管理', 'item', '/item', '', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(4, 0, '游戏公告', 'notice', '/notice', '', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(5, 0, '邮件系统', 'mail', '/mail', '', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(6, 0, '系统配置', 'conf', '/conf', '', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(7, 0, '角色管理', 'role', '/role', '', 0, '', NULL, 1, 1, '', 0);
         </sql>
     </changeSet>
 </databaseChangeLog>

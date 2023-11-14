@@ -44,25 +44,18 @@ public class DaRole {
      * 是否默认角色,0否 1是
      */
     @Column(value = "is_default")
-    private Integer isDefault;
+    private Boolean isDefault;
 
     /**
      * 角色状态（0正常 1停用）
      */
     @Column(value = "status")
-    private Integer status;
+    private Boolean status;
 
     /**
      * 备注
      */
     @Column(value = "remark")
     private String remark;
-
-    /**
-     * 删除标记
-     */
-    @Column(value = "del_flag")
-    private Integer delFlag;
-
 
 }

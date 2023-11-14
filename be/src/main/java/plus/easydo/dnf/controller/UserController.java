@@ -2,6 +2,7 @@ package plus.easydo.dnf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
+import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -11,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.dnf.dto.LoginDto;
+import plus.easydo.dnf.service.IDaResourceService;
 import plus.easydo.dnf.service.LoginService;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
+
+import java.util.List;
 
 /**
  * @author laoyu
@@ -27,6 +31,8 @@ import plus.easydo.dnf.vo.R;
 public class UserController {
 
     private final LoginService loginService;
+
+    private final IDaResourceService resourceService;
 
     @SaIgnore
     @PostMapping("/login")
@@ -44,6 +50,12 @@ public class UserController {
     @GetMapping("/currentUser")
     public R<JSONObject> currentUser(){
         return DataResult.ok(loginService.currentUser());
+    }
+
+    @SaCheckLogin
+    @GetMapping("/userResource")
+    public R<List<Tree<Long>>> userResource(){
+        return DataResult.ok(resourceService.userResource());
     }
 
 }

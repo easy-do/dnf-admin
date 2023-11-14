@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { sendGameMemail } from '@src/api/gameMail'
 import { getItemList } from '@src/api/gameItem'
 import { debounce } from 'lodash-es';
-import { allRoleList } from '@src/api/roleApi'
+import { allGameRoleList } from '@src/api/gameRole'
 
 const { Input, Select, TextArea } = Form
 
@@ -35,7 +35,7 @@ const SendMail = (props) => {
 
 
 	useEffect(()=>{
-			allRoleList().then((res) => {
+			allGameRoleList().then((res) => {
 				const list =[]
 				res.map((v, i) => {
 					list.push(

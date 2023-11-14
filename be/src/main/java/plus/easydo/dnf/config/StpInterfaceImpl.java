@@ -1,10 +1,11 @@
 package plus.easydo.dnf.config;
 
 import cn.dev33.satoken.stp.StpInterface;
-import cn.dev33.satoken.stp.StpUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import plus.easydo.dnf.service.IDaResourceService;
+import plus.easydo.dnf.service.IDaRoleService;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,18 +15,21 @@ import java.util.List;
  * @date 2023/10/19
  */
 @Component
+@RequiredArgsConstructor
 public class StpInterfaceImpl implements StpInterface {
+
+    private final IDaResourceService resourceService;
+
+    private final IDaRoleService roleService;
+
+
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        return Collections.emptyList();
+        return resourceService.userResource(Long.valueOf(loginId.toString()));
     }
 
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        boolean isAdmin = (boolean) StpUtil.getExtra("admin");
-        if(isAdmin){
-            return Collections.singletonList("admin");
-        }
-        return Collections.emptyList();
+        return roleService.userRoleCodes(Long.valueOf(loginId.toString()));
     }
 }

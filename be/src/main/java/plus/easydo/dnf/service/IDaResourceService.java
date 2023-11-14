@@ -23,4 +23,9 @@ public interface IDaResourceService extends IService<DaResource> {
     List<Long> roleResourceIds(Long roleId);
 
     List<Tree<Long>> resourceTree();
+
+    List<String> userResource(Long userId);
+
+    List<Tree<Long>> userResource();
+
 }

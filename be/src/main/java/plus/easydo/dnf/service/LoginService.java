@@ -13,6 +13,7 @@ import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.exception.BaseException;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -28,9 +29,12 @@ public class LoginService {
 
     private final AccountsService accountsService;
 
-    @Value("${admin:admin}")
-    private String adminUser;
+    private final IDaRoleService roleService;
 
+    private static final String ADMIN_ROLE = "admin";
+
+    @Value("${adminUser:123456789}")
+    private String adminUser;
 
     /**
      * 登录
@@ -40,17 +44,23 @@ public class LoginService {
      * @author laoyu
      * @date 2023/10/14
      */
-    public String login(LoginDto loginDto){
+    public String login(LoginDto loginDto) {
         Accounts accounts = accountsService.getByUserName(loginDto.getUserName());
-        if(Objects.isNull(accounts)){
+        if (Objects.isNull(accounts)) {
             throw new BaseException("账号不存在或密码错误");
         }
         String md5Password = SecureUtil.md5().digestHex(loginDto.getPassword());
-        if(CharSequenceUtil.equals(md5Password,accounts.getPassword())){
-            boolean isAdmin = accounts.getAccountname().equals(adminUser);
+        if (CharSequenceUtil.equals(md5Password, accounts.getPassword())) {
+            boolean userNameIsAdmin = loginDto.getUserName().equals(adminUser);
+            List<String> roles = roleService.userRoleCodes(accounts.getUid());
+            boolean roleInAdmin = roles.contains(ADMIN_ROLE);
+            if(userNameIsAdmin && !roleInAdmin){
+                roleService.bindUserRole(accounts.getUid(),ADMIN_ROLE);
+            }
+            boolean isAdmin =  userNameIsAdmin || roleInAdmin;
             accounts.setAdmin(isAdmin);
             StpUtil.login(accounts.getUid(), SaLoginConfig
-                    .setExtra("userInfo", JSONUtil.toJsonPrettyStr(accounts)).setExtra("admin",isAdmin));
+                    .setExtra("userInfo", JSONUtil.toJsonPrettyStr(accounts)).setExtra(ADMIN_ROLE, isAdmin));
             return StpUtil.getTokenValue();
         }
         throw new BaseException("账号不存在或密码错误");

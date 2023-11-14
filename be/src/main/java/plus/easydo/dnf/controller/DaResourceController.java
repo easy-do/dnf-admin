@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/resource")
+@RequestMapping("/api/resource")
 public class DaResourceController {
 
     

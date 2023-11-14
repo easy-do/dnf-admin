@@ -74,6 +74,12 @@ const MENU_CONFIG: MenuItem[] = [
 		text: 'app.menu.conf',
 		icon: IconSetting,
 		path: '/conf'
+	},
+	{
+		itemKey: '7',
+		text: 'app.menu.role',
+		icon: IconSetting,
+		path: '/role'
 	}
 ]
 

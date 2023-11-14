@@ -25,7 +25,7 @@ import java.io.Serializable;
 public class Accounts implements Serializable {
 
     @Id(keyType = KeyType.Auto)
-    private Integer uid;
+    private Long uid;
 
     private String accountname;
 
