@@ -7,7 +7,7 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import plus.easydo.dnf.entity.DaGameConfigEntity;
+import plus.easydo.dnf.entity.DaGameConfig;
 import plus.easydo.dnf.manager.CacheManager;
 import plus.easydo.dnf.mapper.DaGameConfigMapper;
 import plus.easydo.dnf.qo.DaGameConfigQo;
@@ -26,10 +26,10 @@ import static plus.easydo.dnf.entity.table.DaGameConfigEntityTableDef.DA_GAME_CO
  */
 @Slf4j
 @Service
-public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaGameConfigEntity> implements IDaGameConfigService {
+public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaGameConfig> implements IDaGameConfigService {
 
     @Override
-    public Page<DaGameConfigEntity> confPage(DaGameConfigQo gameConfigQo) {
+    public Page<DaGameConfig> confPage(DaGameConfigQo gameConfigQo) {
         QueryWrapper query = query()
                 .and(DA_GAME_CONFIG_ENTITY.CONF_NAME.like(gameConfigQo.getConfName())
                         .and(DA_GAME_CONFIG_ENTITY.CONF_KEY.like(gameConfigQo.getConfKey())));
@@ -37,7 +37,7 @@ public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaG
     }
 
     @Override
-    public boolean saveConf(DaGameConfigEntity daGameConfig) {
+    public boolean saveConf(DaGameConfig daGameConfig) {
         boolean result = save(daGameConfig);
         if(result){
             cacheGameConf();
@@ -47,7 +47,7 @@ public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaG
     }
 
     @Override
-    public boolean updateConf(DaGameConfigEntity daGameConfig) {
+    public boolean updateConf(DaGameConfig daGameConfig) {
         boolean result = updateById(daGameConfig);
         if(result){
             cacheGameConf();
@@ -57,7 +57,7 @@ public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaG
     }
 
     @Override
-    public DaGameConfigEntity getByConfKey(String confKey) {
+    public DaGameConfig getByConfKey(String confKey) {
         QueryWrapper query = query().and(DA_GAME_CONFIG_ENTITY.CONF_KEY.eq(confKey));
         return getOne(query);
     }
@@ -66,7 +66,7 @@ public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaG
     @PostConstruct
     public void cacheGameConf() {
         log.info("初始化缓存游戏配置 start");
-        List<DaGameConfigEntity> confList  = list();
+        List<DaGameConfig> confList  = list();
         CacheManager.GAME_CONF_LIST.clear();
         CacheManager.GAME_CONF_LIST.addAll(confList);
         log.info("初始化缓存游戏配置 end");

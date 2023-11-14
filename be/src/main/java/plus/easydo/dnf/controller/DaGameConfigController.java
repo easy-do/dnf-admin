@@ -6,18 +6,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import plus.easydo.dnf.entity.DaGameConfigEntity;
+import plus.easydo.dnf.entity.DaGameConfig;
 import plus.easydo.dnf.qo.DaGameConfigQo;
 import plus.easydo.dnf.service.IDaGameConfigService;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 游戏配置 控制层。
@@ -41,7 +39,7 @@ public class DaGameConfigController {
      */
     @SaCheckRole("admin")
     @PostMapping("/page")
-    public R<Page<DaGameConfigEntity>> page(@RequestBody DaGameConfigQo gameConfigQo) {
+    public R<Page<DaGameConfig>> page(@RequestBody DaGameConfigQo gameConfigQo) {
         return DataResult.ok(daGameConfigService.confPage(gameConfigQo));
     }
 
@@ -52,7 +50,7 @@ public class DaGameConfigController {
      * @return 游戏配置详情
      */
     @GetMapping("/info/{id}")
-    public R<DaGameConfigEntity> getInfo(@PathVariable Serializable id) {
+    public R<DaGameConfig> getInfo(@PathVariable Serializable id) {
         return DataResult.ok(daGameConfigService.getById(id));
     }
 
@@ -64,7 +62,7 @@ public class DaGameConfigController {
      */
     @SaCheckRole("admin")
     @PostMapping("/save")
-    public R<Object> save(@RequestBody DaGameConfigEntity daGameConfig) {
+    public R<Object> save(@RequestBody DaGameConfig daGameConfig) {
         return DataResult.ok(daGameConfigService.saveConf(daGameConfig));
     }
 
@@ -78,7 +76,7 @@ public class DaGameConfigController {
      */
     @SaCheckRole("admin")
     @PostMapping("/update")
-    public R<Object> update(@RequestBody DaGameConfigEntity daGameConfig) {
+    public R<Object> update(@RequestBody DaGameConfig daGameConfig) {
         return DataResult.ok(daGameConfigService.updateConf(daGameConfig));
     }
 

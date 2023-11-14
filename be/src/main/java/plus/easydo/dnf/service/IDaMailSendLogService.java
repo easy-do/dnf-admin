@@ -3,7 +3,7 @@ package plus.easydo.dnf.service;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
-import plus.easydo.dnf.entity.DaMailSendLogEntity;
+import plus.easydo.dnf.entity.DaMailSendLog;
 import plus.easydo.dnf.qo.PageQo;
 
 /**
@@ -12,7 +12,7 @@ import plus.easydo.dnf.qo.PageQo;
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
  */
-public interface IDaMailSendLogService extends IService<DaMailSendLogEntity> {
+public interface IDaMailSendLogService extends IService<DaMailSendLog> {
 
-    Page<DaMailSendLogEntity> sendLogpage(PageQo pageQo);
+    Page<DaMailSendLog> sendLogpage(PageQo pageQo);
 }

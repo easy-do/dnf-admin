@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import plus.easydo.dnf.entity.DaMailSendLogEntity;
+import plus.easydo.dnf.entity.DaMailSendLog;
 import plus.easydo.dnf.qo.PageQo;
 import plus.easydo.dnf.service.IDaMailSendLogService;
 import plus.easydo.dnf.vo.DataResult;
@@ -36,7 +36,7 @@ public class DaMailSendLogController {
      */
     @SaCheckRole("admin")
     @PostMapping("/page")
-    public R<Page<DaMailSendLogEntity>> page(@RequestBody  PageQo pageQo) {
+    public R<Page<DaMailSendLog>> page(@RequestBody  PageQo pageQo) {
         return DataResult.ok(daMailSendLogService.sendLogpage(pageQo));
     }
 }

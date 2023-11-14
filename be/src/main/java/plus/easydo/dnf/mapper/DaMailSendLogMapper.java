@@ -2,7 +2,7 @@ package plus.easydo.dnf.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import plus.easydo.dnf.entity.DaMailSendLogEntity;
+import plus.easydo.dnf.entity.DaMailSendLog;
 
 /**
  * 邮件发送记录 映射层。
@@ -11,7 +11,7 @@ import plus.easydo.dnf.entity.DaMailSendLogEntity;
  * @since 1.0
  */
 @Mapper
-public interface DaMailSendLogMapper extends BaseMapper<DaMailSendLogEntity> {
+public interface DaMailSendLogMapper extends BaseMapper<DaMailSendLog> {
 
 
 }

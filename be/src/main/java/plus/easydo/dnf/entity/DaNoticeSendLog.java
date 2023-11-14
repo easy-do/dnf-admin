@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @Table(value = "da_notice_send_log", dataSource = "d_taiwan")
-public class DaNoticeSendLogEntity {
+public class DaNoticeSendLog {
 
     @Id(keyType = KeyType.Auto)
     private Long id;

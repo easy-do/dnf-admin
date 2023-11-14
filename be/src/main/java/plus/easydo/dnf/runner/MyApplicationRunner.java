@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import plus.easydo.dnf.entity.DaGameConfigEntity;
+import plus.easydo.dnf.entity.DaGameConfig;
 import plus.easydo.dnf.service.IDaGameConfigService;
 import plus.easydo.dnf.service.IDaItemService;
 import plus.easydo.dnf.util.ItemReaderUtil;
@@ -40,7 +40,7 @@ public class MyApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        DaGameConfigEntity conf = daGameConfigService.getByConfKey("gm_reader_pvf");
+        DaGameConfig conf = daGameConfigService.getByConfKey("gm_reader_pvf");
         String confValue = conf.getConfData();
         if(Boolean.parseBoolean(confValue)){
             if(FileUtil.isFile(pvfPath)){

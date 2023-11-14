@@ -142,4 +142,63 @@
             INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('启动后自动加载pvf数据到数据库', 3, 'true', 'gm_reader_pvf', '后台参数,是否启动后加载pvf文件数据');
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20231114" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            -- da_resource definition
+
+            CREATE TABLE `da_resource`
+            (
+                `id`            bigint(20)    NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                `parent_id`     bigint(20)             DEFAULT 0 COMMENT '父级ID',
+                `resource_name` varchar(50)   NOT NULL COMMENT '资源名称',
+                `resource_code` varchar(100)  NOT NULL COMMENT '资源编码',
+                `resource_path` varchar(2048) NOT NULL COMMENT '资源id路径，以/开始以/结束，从根节点ID到当点节点ID，节点ID之间以/连接',
+                `resource_type` char(1)                DEFAULT '' COMMENT '资源类型（M菜单 F功能）',
+                `order_number`  int(11)                DEFAULT 0 COMMENT '显示顺序',
+                `url`           varchar(200)           DEFAULT '' COMMENT '路径',
+                `icon`          text                   DEFAULT NULL COMMENT '图标',
+                `status`        tinyint(1)             DEFAULT 1 COMMENT '状态（0停用 1开启）',
+                `auth_flag`     tinyint(1)    NOT NULL DEFAULT 1 COMMENT '是否需要授权访问：1-是、0-否',
+                `resource_desc` varchar(500)           DEFAULT '' COMMENT '备注',
+                `del_flag`      tinyint(1)             DEFAULT 0 COMMENT '删除标记',
+                PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='系统资源';
+
+            -- da_role definition
+
+            CREATE TABLE `da_role`
+            (
+                `id`     bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+                `role_name`   varchar(30)  NOT NULL COMMENT '角色名称',
+                `role_key`    varchar(100) NOT NULL COMMENT '角色权限字符串',
+                `role_sort`   int(11)      NOT NULL DEFAULT 0 COMMENT '显示顺序',
+                `is_default`  int(11)      NOT NULL DEFAULT 0 COMMENT '是否默认角色,0否 1是',
+                `status`      int(11)      NOT NULL DEFAULT 1 COMMENT '角色状态（0停用 1开启）',
+                `remark`      varchar(500)          DEFAULT NULL COMMENT '备注',
+                `del_flag`    int(11)               DEFAULT 0 COMMENT '删除标记',
+                PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='角色信息表';
+
+            -- da_role_resource definition
+
+            CREATE TABLE `da_role_resource`
+            (
+                `role_id`     bigint(20) NOT NULL COMMENT '角色ID',
+                `resource_id` bigint(20) NOT NULL COMMENT '资源ID'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='角色和资源关联表';
+
+            -- da_user_role definition
+
+            CREATE TABLE `da_user_role`
+            (
+                `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+                `role_id` bigint(20) NOT NULL COMMENT '角色ID',
+                PRIMARY KEY (`user_id`, `role_id`) USING BTREE
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='用户和角色关联表';
+        </sql>
+    </changeSet>
 </databaseChangeLog>

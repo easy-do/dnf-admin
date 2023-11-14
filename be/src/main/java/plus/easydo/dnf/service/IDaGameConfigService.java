@@ -3,7 +3,7 @@ package plus.easydo.dnf.service;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
-import plus.easydo.dnf.entity.DaGameConfigEntity;
+import plus.easydo.dnf.entity.DaGameConfig;
 import plus.easydo.dnf.qo.DaGameConfigQo;
 
 /**
@@ -12,13 +12,13 @@ import plus.easydo.dnf.qo.DaGameConfigQo;
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
  */
-public interface IDaGameConfigService extends IService<DaGameConfigEntity> {
+public interface IDaGameConfigService extends IService<DaGameConfig> {
 
-    Page<DaGameConfigEntity> confPage(DaGameConfigQo gameConfigQo);
+    Page<DaGameConfig> confPage(DaGameConfigQo gameConfigQo);
 
-    boolean saveConf(DaGameConfigEntity daGameConfig);
+    boolean saveConf(DaGameConfig daGameConfig);
 
-    boolean updateConf(DaGameConfigEntity daGameConfig);
+    boolean updateConf(DaGameConfig daGameConfig);
 
-    DaGameConfigEntity getByConfKey(String confKey);
+    DaGameConfig getByConfKey(String confKey);
 }

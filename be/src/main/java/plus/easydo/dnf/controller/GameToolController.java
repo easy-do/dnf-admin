@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.dnf.dto.SendMailDto;
-import plus.easydo.dnf.entity.DaMailSendLogEntity;
+import plus.easydo.dnf.entity.DaMailSendLog;
 import plus.easydo.dnf.manager.CacheManager;
 import plus.easydo.dnf.service.IDaMailSendLogService;
 import plus.easydo.dnf.util.ExecCallBuildUtil;
@@ -34,7 +34,7 @@ public class GameToolController {
     @PostMapping("/sendMail")
     public R<Object> sendMail(@RequestBody SendMailDto sendMailDto){
         CacheManager.addFirstOptExecList(ExecCallBuildUtil.buildSendMultiMail(sendMailDto));
-        iDaMailSendLogService.save(DaMailSendLogEntity.builder().sendDetails(JSONUtil.toJsonStr(sendMailDto)).createTime(LocalDateTime.now()).build());
+        iDaMailSendLogService.save(DaMailSendLog.builder().sendDetails(JSONUtil.toJsonStr(sendMailDto)).createTime(LocalDateTime.now()).build());
         return DataResult.ok();
     }
 

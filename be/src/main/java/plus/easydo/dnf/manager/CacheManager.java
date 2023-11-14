@@ -2,7 +2,7 @@ package plus.easydo.dnf.manager;
 
 
 import cn.hutool.core.date.LocalDateTimeUtil;
-import plus.easydo.dnf.entity.DaGameConfigEntity;
+import plus.easydo.dnf.entity.DaGameConfig;
 import plus.easydo.dnf.vo.CallResult;
 
 import java.time.LocalDateTime;
@@ -31,7 +31,7 @@ public class CacheManager {
     public static final Map<String, String> DP_PING_CACHE = new ConcurrentHashMap<>();
     public static final Map<String, Map<LocalDateTime, List<CallResult>>> EXEC_LIST_MAP = new ConcurrentHashMap<>();
 
-    public static final List<DaGameConfigEntity> GAME_CONF_LIST = new ArrayList<>();
+    public static final List<DaGameConfig> GAME_CONF_LIST = new ArrayList<>();
 
     private CacheManager() {
     }
