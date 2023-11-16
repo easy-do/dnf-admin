@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.exception.BaseException;
+import plus.easydo.dnf.vo.CurrentUser;
 
 import java.util.List;
 import java.util.Objects;
@@ -78,10 +79,10 @@ public class LoginService {
     }
 
 
-    public JSONObject currentUser() {
+    public CurrentUser currentUser() {
         Object userInfo = StpUtil.getExtra("userInfo");
         JSONObject userJson = JSONUtil.parseObj(userInfo);
         userJson.remove("password");
-        return userJson;
+        return JSONUtil.toBean(userJson, CurrentUser.class);
     }
 }

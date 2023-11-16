@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.service.IDaResourceService;
 import plus.easydo.dnf.service.LoginService;
+import plus.easydo.dnf.vo.CurrentUser;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
 
@@ -48,7 +49,7 @@ public class UserController {
 
     @SaCheckLogin
     @GetMapping("/currentUser")
-    public R<JSONObject> currentUser(){
+    public R<CurrentUser> currentUser(){
         return DataResult.ok(loginService.currentUser());
     }
 

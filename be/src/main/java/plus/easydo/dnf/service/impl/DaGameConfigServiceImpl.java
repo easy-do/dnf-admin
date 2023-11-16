@@ -16,7 +16,8 @@ import plus.easydo.dnf.util.ExecCallBuildUtil;
 
 import java.util.List;
 
-import static plus.easydo.dnf.entity.table.DaGameConfigEntityTableDef.DA_GAME_CONFIG_ENTITY;
+import static plus.easydo.dnf.entity.table.DaGameConfigTableDef.DA_GAME_CONFIG;
+
 
 /**
  * 游戏配置 服务层实现。
@@ -31,8 +32,8 @@ public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaG
     @Override
     public Page<DaGameConfig> confPage(DaGameConfigQo gameConfigQo) {
         QueryWrapper query = query()
-                .and(DA_GAME_CONFIG_ENTITY.CONF_NAME.like(gameConfigQo.getConfName())
-                        .and(DA_GAME_CONFIG_ENTITY.CONF_KEY.like(gameConfigQo.getConfKey())));
+                .and(DA_GAME_CONFIG.CONF_NAME.like(gameConfigQo.getConfName())
+                        .and(DA_GAME_CONFIG.CONF_KEY.like(gameConfigQo.getConfKey())));
         return page(new Page<>(gameConfigQo.getPageNumber(), gameConfigQo.getPageSize()), query);
     }
 
@@ -58,7 +59,7 @@ public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaG
 
     @Override
     public DaGameConfig getByConfKey(String confKey) {
-        QueryWrapper query = query().and(DA_GAME_CONFIG_ENTITY.CONF_KEY.eq(confKey));
+        QueryWrapper query = query().and(DA_GAME_CONFIG.CONF_KEY.eq(confKey));
         return getOne(query);
     }
 

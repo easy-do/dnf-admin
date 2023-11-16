@@ -9,11 +9,11 @@ const RoleAuth = (props) => {
 
 	const [treeData,setTreeDara] = useState([])
 
-	const [roleResource,setRoleResource] = useState([])
+	const [defaultSelect,setDefaultSelect] = useState([])
 	
 
 	const configSubmit = () => {
-		authRoleResourceRequest({"roleId":props.authRoleId,"resourceIds":roleResource}).then((res) => {
+		authRoleResourceRequest({"roleId":props.authRoleId,"resourceIds":defaultSelect}).then((res) => {
 			if (res) {
 				Toast.success('配置成功')
 				props.setAuthShow(false)
@@ -24,11 +24,11 @@ const RoleAuth = (props) => {
 
 	useEffect(() => {
 		if (props.authShow) {
-			roleResourceIdsRequest(props.authRoleId).then((res) => {
-				setRoleResource(res)
-			})
 			resourceTreeRequest().then((res) => {
 				setTreeDara(res)
+			})
+			roleResourceIdsRequest(props.authRoleId).then((res) => {
+				setDefaultSelect(res)
 			})
 		}
 	}, [props.authShow, props.authRoleId])
@@ -38,11 +38,11 @@ const RoleAuth = (props) => {
 			<Modal visible={props.authShow} onOk={configSubmit} onCancel={() => props.setAuthShow(false)}>
 				<Tree
 					treeData={treeData}
-					defaultValue={roleResource}
+					value={defaultSelect}
 					multiple
 					checkRelation='unRelated'
 					defaultExpandAll
-					onChange={(value)=>setRoleResource(value)}
+					onChange={setDefaultSelect}
 				/>
 			</Modal>
 		</>

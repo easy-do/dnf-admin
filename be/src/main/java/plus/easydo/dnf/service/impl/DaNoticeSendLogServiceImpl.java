@@ -10,7 +10,7 @@ import plus.easydo.dnf.mapper.DaNoticeSendLogMapper;
 import plus.easydo.dnf.qo.PageQo;
 import plus.easydo.dnf.service.IDaNoticeSendLogService;
 
-import static plus.easydo.dnf.entity.table.DaNoticeSendLogEntityTableDef.DA_NOTICE_SEND_LOG_ENTITY;
+import static plus.easydo.dnf.entity.table.DaNoticeSendLogTableDef.DA_NOTICE_SEND_LOG;
 
 /**
  * 公告发送记录 服务层实现。
@@ -24,7 +24,7 @@ public class DaNoticeSendLogServiceImpl extends ServiceImpl<DaNoticeSendLogMappe
     @Override
     public Page<DaNoticeSendLog> noticePage(PageQo pageQo) {
         Page<DaNoticeSendLog> page = new Page<>(pageQo.getPageNumber(),pageQo.getPageSize());
-        QueryWrapper query = query().orderBy(DA_NOTICE_SEND_LOG_ENTITY.CREATE_TIME, false);
+        QueryWrapper query = query().orderBy(DA_NOTICE_SEND_LOG.CREATE_TIME, false);
         return page(page,query);
     }
 }

@@ -10,7 +10,7 @@ import plus.easydo.dnf.mapper.DaMailSendLogMapper;
 import plus.easydo.dnf.qo.PageQo;
 import plus.easydo.dnf.service.IDaMailSendLogService;
 
-import static plus.easydo.dnf.entity.table.DaMailSendLogEntityTableDef.DA_MAIL_SEND_LOG_ENTITY;
+import static plus.easydo.dnf.entity.table.DaMailSendLogTableDef.DA_MAIL_SEND_LOG;
 
 /**
  * 邮件发送记录 服务层实现。
@@ -23,7 +23,7 @@ public class DaMailSendLogServiceImpl extends ServiceImpl<DaMailSendLogMapper, D
 
     @Override
     public Page<DaMailSendLog> sendLogpage(PageQo pageQo) {
-        QueryWrapper query = query().orderBy(DA_MAIL_SEND_LOG_ENTITY.CREATE_TIME, false);
+        QueryWrapper query = query().orderBy(DA_MAIL_SEND_LOG.CREATE_TIME, false);
         return page(new Page<>(pageQo.getPageNumber(),pageQo.getPageSize()),query);
     }
 }
