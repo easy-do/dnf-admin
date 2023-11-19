@@ -4,12 +4,10 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.hutool.json.JSONObject;
 import com.alibaba.excel.EasyExcelFactory;
-import com.mybatisflex.core.paginate.Page;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +24,6 @@ import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -76,7 +73,7 @@ public class DaItemController {
      */
     @SaCheckRole("admin")
     @GetMapping("/downloadTemplate")
-    public void importItem(HttpServletResponse response) throws IOException {
+    public void downloadTemplate(HttpServletResponse response) throws IOException {
         ServletOutputStream opt = response.getOutputStream();
         ResponseUtil.setFileResponse(response,"物品导入模板.xlsx");
         EasyExcelFactory.write(opt, DaItemEntity.class).sheet(1).doWrite(Collections.emptyList());
@@ -90,7 +87,7 @@ public class DaItemController {
      */
     @SaCheckRole("admin")
     @PostMapping("/save")
-    public boolean save(@RequestBody DaItemEntity daItem) {
+    public boolean saveItem(@RequestBody DaItemEntity daItem) {
         return daItemService.save(daItem);
     }
 
@@ -98,13 +95,13 @@ public class DaItemController {
     /**
      * 根据主键删除物品缓存
      *
-     * @param id 主键
+     * @param ids 主键
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
     @SaCheckRole("admin")
-    @GetMapping("/remove/{id}")
-    public boolean remove(@PathVariable Serializable id) {
-        return daItemService.removeById(id);
+    @PostMapping("/remove")
+    public boolean removeItem(@RequestBody List<String> ids) {
+        return daItemService.removeByIds(ids);
     }
 
 
@@ -116,7 +113,7 @@ public class DaItemController {
      */
     @SaCheckRole("admin")
     @PostMapping("/update")
-    public boolean update(@RequestBody DaItemEntity daItem) {
+    public boolean updateItem(@RequestBody DaItemEntity daItem) {
         return daItemService.updateById(daItem);
     }
 
@@ -128,7 +125,7 @@ public class DaItemController {
      */
     @SaCheckLogin
     @GetMapping("/list")
-    public R<List<DaItemEntity>> list(@RequestParam(value = "name", required = false)String name) {
+    public R<List<DaItemEntity>> listItem(@RequestParam(value = "name", required = false)String name) {
         return DataResult.ok(daItemService.listByName(name));
     }
 
@@ -142,7 +139,7 @@ public class DaItemController {
      */
     @SaCheckRole("admin")
     @PostMapping("/page")
-    public R<Page<DaItemEntity>> page(@RequestBody DaItemQo daItemQo) {
+    public R<List<DaItemEntity>> pageItem(@RequestBody DaItemQo daItemQo) {
         return DataResult.ok(daItemService.itemPage(daItemQo));
     }
 }

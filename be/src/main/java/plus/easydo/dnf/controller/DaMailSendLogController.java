@@ -13,6 +13,8 @@ import plus.easydo.dnf.service.IDaMailSendLogService;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
 
+import java.util.List;
+
 /**
  * 邮件发送记录 控制层。
  *
@@ -36,7 +38,7 @@ public class DaMailSendLogController {
      */
     @SaCheckRole("admin")
     @PostMapping("/page")
-    public R<Page<DaMailSendLog>> page(@RequestBody  PageQo pageQo) {
+    public R<List<DaMailSendLog>> pageMailSendLog(@RequestBody  PageQo pageQo) {
         return DataResult.ok(daMailSendLogService.sendLogpage(pageQo));
     }
 }

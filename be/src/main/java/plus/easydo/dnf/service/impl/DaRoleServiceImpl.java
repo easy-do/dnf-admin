@@ -2,10 +2,12 @@ package plus.easydo.dnf.service.impl;
 
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plus.easydo.dnf.entity.DaUserRole;
+import plus.easydo.dnf.qo.DaRoleQo;
 import plus.easydo.dnf.service.IDaRoleService;
 import plus.easydo.dnf.entity.DaRole;
 import plus.easydo.dnf.mapper.DaRoleMapper;
@@ -46,6 +48,11 @@ public class DaRoleServiceImpl extends ServiceImpl<DaRoleMapper, DaRole> impleme
     }
 
     @Override
+    public List<String> userRoleCodes() {
+        long userId = StpUtil.getLoginIdAsLong();
+        return userRoleCodes(userId);
+    }
+    @Override
     public List<String> userRoleCodes(Long userId) {
         List<DaRole> roles = userRole(userId);
         return roles.stream().map(DaRole::getRoleKey).toList();
@@ -66,5 +73,14 @@ public class DaRoleServiceImpl extends ServiceImpl<DaRoleMapper, DaRole> impleme
             userRoleService.save(entity);
         }
 
+    }
+
+    @Override
+    public Page<DaRole> pageRole(DaRoleQo daRoleQo) {
+        QueryWrapper query = query().and(DA_ROLE.ROLE_NAME.like(daRoleQo.getRoleName()))
+                .and(DA_ROLE.ROLE_KEY.like(daRoleQo.getRoleKey()))
+                .and(DA_ROLE.IS_DEFAULT.eq(daRoleQo.getIsDefault()))
+                .and(DA_ROLE.REMARK.like(daRoleQo.getRemark()));
+        return page(new Page<>(daRoleQo.getCurrent(),daRoleQo.getPageSize()),query);
     }
 }

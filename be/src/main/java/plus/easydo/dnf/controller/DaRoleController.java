@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import plus.easydo.dnf.qo.DaRoleQo;
 import plus.easydo.dnf.service.IDaRoleService;
 import plus.easydo.dnf.entity.DaRole;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,13 +38,13 @@ public class DaRoleController {
     /**
      * 分页查询角色信息表
      *
-     * @param page 分页对象
+     * @param daRoleQo daRoleQo
      * @return 分页对象
      */
     @SaCheckRole("admin")
     @PostMapping("/page")
-    public R<Page<DaRole>> page(Page<DaRole> page) {
-        return DataResult.ok(daRoleService.page(page));
+    public R<List<DaRole>> pageRole(@RequestBody DaRoleQo daRoleQo) {
+        return DataResult.ok(daRoleService.pageRole(daRoleQo));
     }
 
     /**
@@ -54,7 +55,7 @@ public class DaRoleController {
      */
     @SaCheckRole("admin")
     @GetMapping("/info/{id}")
-    public R<DaRole> getInfo(@PathVariable Serializable id) {
+    public R<DaRole> getRoleInfo(@PathVariable Serializable id) {
         return DataResult.ok(daRoleService.getById(id));
     }
 
@@ -66,7 +67,7 @@ public class DaRoleController {
      */
     @SaCheckRole("admin")
     @PostMapping("/update")
-    public R<Boolean> update(@RequestBody DaRole daRole) {
+    public R<Boolean> updateRole(@RequestBody DaRole daRole) {
         return DataResult.ok(daRoleService.updateById(daRole));
     }
 
@@ -78,7 +79,7 @@ public class DaRoleController {
      */
     @SaCheckRole("admin")
     @PostMapping("/save")
-    public R<Boolean> save(@RequestBody DaRole daRole) {
+    public R<Boolean> saveRole(@RequestBody DaRole daRole) {
         return DataResult.ok(daRoleService.save(daRole));
     }
 

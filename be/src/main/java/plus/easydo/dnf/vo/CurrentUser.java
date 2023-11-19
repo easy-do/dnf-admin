@@ -1,7 +1,10 @@
 package plus.easydo.dnf.vo;
 
+import cn.hutool.core.lang.tree.Tree;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * @author laoyu
@@ -20,4 +23,7 @@ public class CurrentUser {
     private Integer billing;
     private String vip;
     private Boolean isAdmin;
+    private List<Object> menu;
+    private List<String> role;
+    private List<String> resource;
 }

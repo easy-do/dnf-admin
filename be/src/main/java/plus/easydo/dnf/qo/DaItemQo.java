@@ -1,6 +1,5 @@
 package plus.easydo.dnf.qo;
 
-import com.mybatisflex.annotation.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +14,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-@Table(value = "da_item")
 public class DaItemQo extends PageQo{
 
 

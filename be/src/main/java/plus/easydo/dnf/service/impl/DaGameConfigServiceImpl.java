@@ -34,7 +34,7 @@ public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaG
         QueryWrapper query = query()
                 .and(DA_GAME_CONFIG.CONF_NAME.like(gameConfigQo.getConfName())
                         .and(DA_GAME_CONFIG.CONF_KEY.like(gameConfigQo.getConfKey())));
-        return page(new Page<>(gameConfigQo.getPageNumber(), gameConfigQo.getPageSize()), query);
+        return page(new Page<>(gameConfigQo.getCurrent(), gameConfigQo.getPageSize()), query);
     }
 
     @Override

@@ -90,6 +90,16 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
         return buildResourceTree(resourceList);
     }
 
+    @Override
+    public List<String> userResourceCodes() {
+        List<Long> roles = userRoleService.userRoleIds();
+        if(roles.isEmpty()){
+            return Collections.emptyList();
+        }
+        List<DaResource> resourceList = getRoleResourceList(roles);
+        return resourceList.stream().map(DaResource::getResourceCode).toList();
+    }
+
     /**
      * 构建资源树
      *
@@ -103,17 +113,13 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
             return ListUtil.empty();
         }
         TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
-        treeNodeConfig.setNameKey("label");
+//        treeNodeConfig.setNameKey("label");
         NodeParser<DaResource, Long> nodeParser = (daResource, treeNode) -> {
             treeNode.setId(daResource.getId());
             treeNode.setParentId(daResource.getParentId());
             treeNode.setName(daResource.getResourceName());
             treeNode.setWeight(daResource.getOrderNumber());
-            treeNode.putExtra("details", daResource);
-            treeNode.putExtra("key", daResource.getResourceCode());
-            treeNode.putExtra("value", daResource.getId());
-            treeNode.putExtra("type", daResource.getResourceType());
-            treeNode.putExtra("disabled", !daResource.getStatus());
+            treeNode.putExtra("path", daResource.getResourcePath());
         };
         Long min = resourceList.stream().min((a, b) -> (int) (a.getParentId() - b.getParentId())).get().getParentId();
         return TreeUtil.build(resourceList, min, treeNodeConfig, nodeParser);

@@ -24,6 +24,6 @@ public class DaMailSendLogServiceImpl extends ServiceImpl<DaMailSendLogMapper, D
     @Override
     public Page<DaMailSendLog> sendLogpage(PageQo pageQo) {
         QueryWrapper query = query().orderBy(DA_MAIL_SEND_LOG.CREATE_TIME, false);
-        return page(new Page<>(pageQo.getPageNumber(),pageQo.getPageSize()),query);
+        return page(new Page<>(pageQo.getCurrent(),pageQo.getPageSize()),query);
     }
 }

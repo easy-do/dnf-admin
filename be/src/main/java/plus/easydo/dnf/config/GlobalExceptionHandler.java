@@ -1,5 +1,6 @@
 package plus.easydo.dnf.config;
 
+import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.SaTokenException;
 import cn.hutool.http.HttpStatus;
 import org.slf4j.Logger;
@@ -88,6 +89,19 @@ public class GlobalExceptionHandler {
     public Object authException(SaTokenException e) {
         log.error(e.getMessage(), e);
         return DataResult.fail(HttpStatus.HTTP_UNAUTHORIZED,e.getMessage());
+    }
+
+    /**
+     * 自定义验证异常
+     *
+     * @param e e
+     * @return java.lang.Object
+     * @author laoyu
+     */
+    @ExceptionHandler(NotLoginException.class)
+    public Object notLoginException(NotLoginException e) {
+        log.error(e.getMessage(), e);
+        return DataResult.fail(HttpStatus.HTTP_UNAUTHORIZED,"未登录，或授权过期");
     }
 
 }

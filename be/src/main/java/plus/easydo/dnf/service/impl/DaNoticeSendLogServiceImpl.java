@@ -23,7 +23,7 @@ public class DaNoticeSendLogServiceImpl extends ServiceImpl<DaNoticeSendLogMappe
 
     @Override
     public Page<DaNoticeSendLog> noticePage(PageQo pageQo) {
-        Page<DaNoticeSendLog> page = new Page<>(pageQo.getPageNumber(),pageQo.getPageSize());
+        Page<DaNoticeSendLog> page = new Page<>(pageQo.getCurrent(),pageQo.getPageSize());
         QueryWrapper query = query().orderBy(DA_NOTICE_SEND_LOG.CREATE_TIME, false);
         return page(page,query);
     }

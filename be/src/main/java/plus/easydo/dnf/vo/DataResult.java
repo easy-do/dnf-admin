@@ -1,6 +1,10 @@
 package plus.easydo.dnf.vo;
 
 
+import com.mybatisflex.core.paginate.Page;
+
+import java.util.List;
+
 /**
  * 操作消息提醒
  *
@@ -66,6 +70,23 @@ public class DataResult<T> extends R<T> {
     /**
      * OK
      *
+     * @param page page
+     * @return plus.easydo.common.result
+     * @author laoyu
+     */
+    public static <T> DataResult<List<T>> ok(Page<T> page) {
+        DataResult<List<T>> r = initResult();
+        r.setData(page.getRecords());
+        r.setTotal(page.getTotalRow());
+        r.setSuccess(true);
+        r.setCode(SUCCESS_CODE);
+        r.setMessage(SUCCESS_MSG);
+        return r;
+    }
+
+    /**
+     * OK
+     *
      * @param msg msg
      * @return plus.easydo.common.result
      * @author laoyu
@@ -105,6 +126,7 @@ public class DataResult<T> extends R<T> {
         DataResult<T> r = initResult();
         r.setCode(ERROR_CODE);
         r.setMessage(FAIL_MSG);
+        r.setErrorMessage(FAIL_MSG);
         r.setSuccess(false);
         return r;
     }
@@ -120,6 +142,7 @@ public class DataResult<T> extends R<T> {
         DataResult<T> r = initResult();
         r.setCode(ERROR_CODE);
         r.setMessage(msg);
+        r.setErrorMessage(msg);
         r.setSuccess(false);
         return r;
     }
@@ -137,6 +160,7 @@ public class DataResult<T> extends R<T> {
         r.setSuccess(false);
         r.setCode(ERROR_CODE);
         r.setMessage(FAIL_MSG);
+        r.setErrorMessage(FAIL_MSG);
         return r;
     }
 
@@ -154,6 +178,7 @@ public class DataResult<T> extends R<T> {
         r.setData(data);
         r.setCode(ERROR_CODE);
         r.setMessage(msg);
+        r.setErrorMessage(msg);
         return r;
     }
 
@@ -170,6 +195,7 @@ public class DataResult<T> extends R<T> {
         r.setSuccess(false);
         r.setCode(code);
         r.setMessage(msg);
+        r.setErrorMessage(msg);
         return r;
     }
 
@@ -189,6 +215,7 @@ public class DataResult<T> extends R<T> {
         r.setSuccess(success);
         r.setCode(code);
         r.setMessage(msg);
+        r.setErrorMessage(msg);
         return r;
     }
     /**
@@ -205,6 +232,7 @@ public class DataResult<T> extends R<T> {
         r.setCode(code);
         r.setSuccess(success);
         r.setMessage(msg);
+        r.setErrorMessage(msg);
         return r;
     }
 

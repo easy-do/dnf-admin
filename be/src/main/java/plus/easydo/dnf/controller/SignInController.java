@@ -48,25 +48,25 @@ public class SignInController {
 
     @SaCheckRole("admin")
     @PostMapping("/page")
-    public R<Page<DaSignInConf>> signInPage(@RequestBody DaSignInConfQo daSignInConfQo){
+    public R<List<DaSignInConf>> signInPage(@RequestBody DaSignInConfQo daSignInConfQo){
         return DataResult.ok(signInService.signInPage(daSignInConfQo));
     }
 
     @SaCheckRole("admin")
     @GetMapping("/info/{id}")
-    public R<DaSignInConfVo> info(@PathVariable("id")Long id){
+    public R<DaSignInConfVo> signInInfo(@PathVariable("id")Long id){
         return DataResult.ok(BeanUtil.copyProperties(signInService.info(id), DaSignInConfVo.class));
     }
 
     @SaCheckRole("admin")
-    @PostMapping("/insert")
-    public R<Boolean> insert(@RequestBody DaSignInConfDto daSignInConf){
+    @PostMapping("/save")
+    public R<Boolean> saveSignIn(@RequestBody DaSignInConfDto daSignInConf){
         return DataResult.ok(signInService.insert(daSignInConf));
     }
 
     @SaCheckRole("admin")
     @PostMapping("/update")
-    public R<Boolean> update(@RequestBody DaSignInConfDto daSignInConf){
+    public R<Boolean> updateSignIn(@RequestBody DaSignInConfDto daSignInConf){
         return DataResult.ok(signInService.update(daSignInConf));
     }
 

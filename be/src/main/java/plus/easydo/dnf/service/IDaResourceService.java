@@ -28,4 +28,6 @@ public interface IDaResourceService extends IService<DaResource> {
 
     List<Tree<Long>> userResource();
 
+    List<String> userResourceCodes();
+
 }

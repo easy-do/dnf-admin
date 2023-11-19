@@ -49,7 +49,7 @@ public class DaSignInConfManager extends ServiceImpl<DaSignInConfMapper, DaSignI
     }
 
     public Page<DaSignInConf> pageByQo(DaSignInConfQo daSignInConfQo) {
-        Page<DaSignInConf> page = new Page<>(daSignInConfQo.getPageNumber(),daSignInConfQo.getPageSize());
+        Page<DaSignInConf> page = new Page<>(daSignInConfQo.getCurrent(),daSignInConfQo.getPageSize());
         QueryWrapper query = QueryWrapper.create()
                 .from(DA_SIGN_IN_CONF).where(DA_SIGN_IN_CONF.CONFIG_NAME.like(daSignInConfQo.getConfigName()));
         return page(page,query);

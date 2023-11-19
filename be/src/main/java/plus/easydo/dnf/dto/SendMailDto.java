@@ -21,5 +21,5 @@ public class SendMailDto {
 
     private Long gold;
 
-    private List<List<Long>> itemList;
+    private List<MailItemDto> itemList;
 }

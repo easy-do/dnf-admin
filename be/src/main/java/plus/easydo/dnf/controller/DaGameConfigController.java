@@ -16,6 +16,7 @@ import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 游戏配置 控制层。
@@ -39,7 +40,7 @@ public class DaGameConfigController {
      */
     @SaCheckRole("admin")
     @PostMapping("/page")
-    public R<Page<DaGameConfig>> page(@RequestBody DaGameConfigQo gameConfigQo) {
+    public R<List<DaGameConfig>> pageConf(@RequestBody DaGameConfigQo gameConfigQo) {
         return DataResult.ok(daGameConfigService.confPage(gameConfigQo));
     }
 
@@ -50,7 +51,7 @@ public class DaGameConfigController {
      * @return 游戏配置详情
      */
     @GetMapping("/info/{id}")
-    public R<DaGameConfig> getInfo(@PathVariable Serializable id) {
+    public R<DaGameConfig> getConfInfo(@PathVariable Serializable id) {
         return DataResult.ok(daGameConfigService.getById(id));
     }
 
@@ -62,7 +63,7 @@ public class DaGameConfigController {
      */
     @SaCheckRole("admin")
     @PostMapping("/save")
-    public R<Object> save(@RequestBody DaGameConfig daGameConfig) {
+    public R<Object> saveConf(@RequestBody DaGameConfig daGameConfig) {
         return DataResult.ok(daGameConfigService.saveConf(daGameConfig));
     }
 
@@ -76,7 +77,7 @@ public class DaGameConfigController {
      */
     @SaCheckRole("admin")
     @PostMapping("/update")
-    public R<Object> update(@RequestBody DaGameConfig daGameConfig) {
+    public R<Object> updateConf(@RequestBody DaGameConfig daGameConfig) {
         return DataResult.ok(daGameConfigService.updateConf(daGameConfig));
     }
 

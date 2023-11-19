@@ -42,7 +42,11 @@ public class R<T> implements Serializable {
 
     protected String message;
 
+    protected String errorMessage;
+
     protected boolean success;
+
+    protected long total;
 
 
     public int getCode() {
@@ -81,4 +85,19 @@ public class R<T> implements Serializable {
         return success;
     }
 
+    public long getTotal() {
+        return total;
+    }
+
+    public void setTotal(long total) {
+        this.total = total;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 }

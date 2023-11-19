@@ -29,7 +29,7 @@ public class DaItemServiceImpl extends ServiceImpl<DaItemMapper, DaItemEntity> i
 
     @Override
     public Page<DaItemEntity> itemPage(DaItemQo daItemQo) {
-        Page<DaItemEntity> page = new Page<>(daItemQo.getPageNumber(), daItemQo.getPageSize());
+        Page<DaItemEntity> page = new Page<>(daItemQo.getCurrent(), daItemQo.getPageSize());
         QueryWrapper query = query()
                 .and(DA_ITEM_ENTITY.NAME.like(daItemQo.getName()))
                 .and(DA_ITEM_ENTITY.TYPE.like(daItemQo.getType()))

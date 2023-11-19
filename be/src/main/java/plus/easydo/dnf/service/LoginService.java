@@ -32,6 +32,8 @@ public class LoginService {
 
     private final IDaRoleService roleService;
 
+    private final IDaResourceService resourceService;
+
     private static final String ADMIN_ROLE = "admin";
 
     @Value("${adminUser:123456789}")
@@ -83,6 +85,11 @@ public class LoginService {
         Object userInfo = StpUtil.getExtra("userInfo");
         JSONObject userJson = JSONUtil.parseObj(userInfo);
         userJson.remove("password");
+        userJson.set("menu",resourceService.userResource());
+        userJson.set("role",roleService.userRoleCodes());
+        userJson.set("resource",resourceService.userResourceCodes());
         return JSONUtil.toBean(userJson, CurrentUser.class);
     }
+
+
 }

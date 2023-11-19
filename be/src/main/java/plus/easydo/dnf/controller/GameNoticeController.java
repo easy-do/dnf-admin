@@ -18,6 +18,7 @@ import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 公告发送记录 控制层。
@@ -34,8 +35,8 @@ public class GameNoticeController {
 
 
     @SaCheckRole("admin")
-    @GetMapping("/send")
-    public R<Object> roleList(@RequestParam("message")String message){
+    @GetMapping("/sendNotice")
+    public R<Object> sendNotice(@RequestParam("message")String message){
         CacheManager.addAllOptExecList(ExecCallBuildUtil.buildNotice(message));
         daNoticeSendLogService.save(DaNoticeSendLog.builder().message(message).createTime(LocalDateTime.now()).build());
         return DataResult.ok();
@@ -50,7 +51,7 @@ public class GameNoticeController {
      * @date 2023/10/29
      */
     @PostMapping("/page")
-    public  R<Page<DaNoticeSendLog>> page(@RequestBody PageQo pageQo) {
+    public  R<List<DaNoticeSendLog>> pageGameNotice(@RequestBody PageQo pageQo) {
         return DataResult.ok(daNoticeSendLogService.noticePage(pageQo));
     }
 }
