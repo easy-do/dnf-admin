@@ -3,7 +3,7 @@ package plus.easydo.dnf.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
-import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.lang.TypeReference;
 import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
 import lombok.RequiredArgsConstructor;
@@ -110,13 +110,14 @@ public class SignInServiceImpl implements SignInService {
         entity.setCreateTime(LocalDateTimeUtil.now());
         boolean signInFlag = daSignInLogManager.save(entity);
         String configJsonStr = signInConf.getConfigJson();
-        SignInConfigDate configData = JSONUtil.toBean(configJsonStr, SignInConfigDate.class);
+
+        List<SignInConfigDate> configData = JSONUtil.toBean(configJsonStr, new TypeReference<>() {
+        }, true);
         if(signInFlag){
-            List<SignInConfigDate.Conf> data = configData.getData();
             String tile = "每日签到奖励-dnf-admin";
             String content = "每日签到奖励,请查收. -dnf-admin";
-            if(data.size() > 10){
-                data.forEach(da->{
+            if(configData.size() > 10){
+                configData.forEach(da->{
                     List<Long> itemconfList = new ArrayList<>();
                     itemconfList.add(da.getItemId());
                     itemconfList.add(da.getQuantity());
@@ -125,7 +126,7 @@ public class SignInServiceImpl implements SignInService {
                 });
             }else {
                 List<List<Long>> itemList = new ArrayList<>();
-                data.forEach(da->{
+                configData.forEach(da->{
                     List<Long> itemconfList = new ArrayList<>();
                     itemconfList.add(da.getItemId());
                     itemconfList.add(da.getQuantity());
@@ -150,43 +151,34 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    public boolean update(DaSignInConfDto daSignInConf) {
-        String jsonStr = daSignInConf.getConfigJson();
-        if(CharSequenceUtil.isBlank(jsonStr)){
-            throw new BaseException("物品配置不能为空");
-        }
-        SignInConfigDate configData = JSONUtil.toBean(jsonStr, SignInConfigDate.class);
-        List<SignInConfigDate.Conf> confs = configData.getData();
-        confs.forEach(conf -> {
-            Long id = conf.getItemId();
-            DaItemEntity item = daItemService.getById(id);
-            if(Objects.nonNull(item)){
-                conf.setName(item.getName());
-            }
-        });
-        daSignInConf.setConfigJson(JSONUtil.toJsonStr(configData));
-        return daSignInConfManager.updateById(BeanUtil.copyProperties(daSignInConf,DaSignInConf.class));
+    public boolean update(DaSignInConfDto daSignInConfDto) {
+        DaSignInConf entity = dtoToEntity(daSignInConfDto);
+        return daSignInConfManager.updateById(entity);
     }
 
     @Override
-    public boolean insert(DaSignInConfDto daSignInConf) {
-        if(daSignInConfManager.existsByDate(daSignInConf.getConfigDate())){
-            throw new BaseException(daSignInConf.getConfigDate()+"的配置已存在");
+    public boolean insert(DaSignInConfDto daSignInConfDto) {
+        if(daSignInConfManager.existsByDate(daSignInConfDto.getConfigDate())){
+            throw new BaseException(daSignInConfDto.getConfigDate()+"的配置已存在");
         }
-        String jsonStr = daSignInConf.getConfigJson();
-        if(CharSequenceUtil.isBlank(jsonStr)){
+        DaSignInConf entity = dtoToEntity(daSignInConfDto);
+        return daSignInConfManager.save(entity);
+    }
+
+    private DaSignInConf dtoToEntity(DaSignInConfDto daSignInConfDto) {
+        List<SignInConfigDate> configJson = daSignInConfDto.getConfigJson();
+        if(Objects.isNull(configJson)){
             throw new BaseException("物品配置不能为空");
         }
-        SignInConfigDate configData = JSONUtil.toBean(jsonStr, SignInConfigDate.class);
-        List<SignInConfigDate.Conf> confs = configData.getData();
-        confs.forEach(conf -> {
+        configJson.forEach(conf -> {
             Long id = conf.getItemId();
             DaItemEntity item = daItemService.getById(id);
             if(Objects.nonNull(item)){
                 conf.setName(item.getName());
             }
         });
-        daSignInConf.setConfigJson(JSONUtil.toJsonStr(configData));
-        return daSignInConfManager.save(BeanUtil.copyProperties(daSignInConf,DaSignInConf.class));
+        DaSignInConf entity = BeanUtil.copyProperties(daSignInConfDto, DaSignInConf.class);
+        entity.setConfigJson(JSONUtil.toJsonStr(configJson));
+        return entity;
     }
 }

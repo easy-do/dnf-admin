@@ -202,15 +202,26 @@
     </changeSet>
     <changeSet author="yuzhanfeng" id="20231114-1" dbms="mysql" failOnError="true">
         <sql dbms="mysql">
-            INSERT INTO da_role (role_name, role_key, role_sort, is_default, status, remark) VALUES('系统管理员', 'admin', 0, 1, 1, '系统管理员');
-            INSERT INTO da_role (role_name, role_key, role_sort, is_default, status, remark) VALUES('默认角色', 'default_role', 0, 1, 1, '系统默认角色');
+            INSERT INTO da_role (id, role_name, role_key, role_sort, is_default, status, remark) VALUES(1, '系统管理员', 'admin', 0, 1, 1, '系统管理员');
+            INSERT INTO da_role (id, role_name, role_key, role_sort, is_default, status, remark) VALUES(2, '默认角色', 'default_role', 0, 1, 1, '系统默认角色');
             INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(1, 0, '首页', 'home', '/home', '', 0, '', NULL, 1, 1, '', 0);
-            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(2, 0, '每日签到', 'signin', '/signin', '', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(2, 0, '签到配置', 'signin', '/signin', '', 0, '', NULL, 1, 1, '', 0);
             INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(3, 0, '物品管理', 'item', '/item', '', 0, '', NULL, 1, 1, '', 0);
             INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(4, 0, '游戏公告', 'notice', '/notice', '', 0, '', NULL, 1, 1, '', 0);
             INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(5, 0, '邮件系统', 'mail', '/mail', '', 0, '', NULL, 1, 1, '', 0);
             INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(6, 0, '系统配置', 'conf', '/conf', '', 0, '', NULL, 1, 1, '', 0);
             INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(7, 0, '角色管理', 'role', '/role', '', 0, '', NULL, 1, 1, '', 0);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231120" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 1);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 2);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 3);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 4);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 5);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 6);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 7);
         </sql>
     </changeSet>
 </databaseChangeLog>

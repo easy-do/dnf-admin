@@ -57,9 +57,9 @@ public class GamePostalServiceImpl implements GamePostalService {
 
     @Override
     public boolean sendSignInRoleMail(Integer roleId, SignInConfigDate configData) {
-        List<SignInConfigDate.Conf> data = configData.getData();
-        Letter letter = createLetter(roleId);
-        data.forEach(conf -> sendPortal(letter,roleId,conf.getItemId(),conf.getItemType(),conf.getQuantity()));
+//        List<SignInConfigDate.Conf> data = configData.getData();
+//        Letter letter = createLetter(roleId);
+//        data.forEach(conf -> sendPortal(letter,roleId,conf.getItemId(),conf.getItemType(),conf.getQuantity()));
         return true;
     }
 

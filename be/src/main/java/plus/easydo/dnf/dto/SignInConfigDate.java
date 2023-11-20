@@ -2,7 +2,6 @@ package plus.easydo.dnf.dto;
 
 import lombok.Data;
 
-import java.util.List;
 
 /**
  * @author laoyu
@@ -13,22 +12,13 @@ import java.util.List;
 @Data
 public class SignInConfigDate {
 
-    private Integer type;
-
-    private List<Conf> data;
-
-    @Data
-    public static class Conf{
-
-        /**物品名称*/
-        private String name;
-        /**物品id*/
-        private Long itemId;
-        /**物品数量*/
-        private Long quantity;
-        /**物品类型*/
-        private Integer itemType;
-
-    }
+    /**物品名称*/
+    private String name;
+    /**物品id*/
+    private Long itemId;
+    /**物品数量*/
+    private Long quantity;
+    /**物品类型*/
+    private Integer itemType;
 
 }

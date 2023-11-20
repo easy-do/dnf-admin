@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  *  实体类。
@@ -27,7 +28,7 @@ public class DaSignInConfDto implements Serializable {
 
     private Date configDate;
 
-    private String configJson;
+    private List<SignInConfigDate> configJson;
 
     private String remark;
 

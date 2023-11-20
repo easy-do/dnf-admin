@@ -60,7 +60,6 @@ function downloadTemplateFile() {
     action: '/api/item/importItem',
     onChange(info) {
       if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
       }
       if (info.file.status === 'done') {
         message.success(`${info.file.name} 文件上传成功`);
@@ -70,7 +69,7 @@ function downloadTemplateFile() {
       }
     },
     beforeUpload: (file) => {
-      const isPNG = file.type === 'xlsx';
+      const isPNG = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
       if (!isPNG) {
         message.error(`只支持.xlsx文件`);
       }

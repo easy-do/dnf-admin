@@ -120,12 +120,15 @@ const RoleList: React.FC = () => {
         <a
           key="id"
           onClick={() => {
-            console.log(record)
-            roleResourceIds({roleId:record.id}).then((res) => {
-              setCurrentRowSelect(res.data)
-              setCurrentRow(record);
-              handleAuthRoleModalVisible(true);
-            })
+            if (record.roleKey == 'admin') {
+              message.error('不能修改管理员角色！');
+            }else{
+              roleResourceIds({roleId:record.id}).then((res) => {
+                setCurrentRowSelect(res.data)
+                setCurrentRow(record);
+                handleAuthRoleModalVisible(true);
+              })
+            }
           }}
         >
           授权

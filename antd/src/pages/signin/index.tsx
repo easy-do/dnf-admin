@@ -1,11 +1,12 @@
 import { Button, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import type { ProColumns, ActionType } from '@ant-design/pro-table';
+import { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { ModalForm, ProFormDatePicker, ProFormText } from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
+import { ModalForm, ProFormDatePicker, ProFormGroup, ProFormList, ProFormSelect, ProFormText } from '@ant-design/pro-form';
+import { CloseCircleOutlined, CopyOutlined, PlusOutlined } from '@ant-design/icons';
 import { saveSignIn, signInPage, updateSignIn } from '@/services/dnf-admin/signInController';
+import { listItem } from '@/services/dnf-admin/daItemController';
 
 const Signin: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -13,6 +14,7 @@ const Signin: React.FC = () => {
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  
   /**
    * 添加节点
    *
@@ -68,7 +70,6 @@ const Signin: React.FC = () => {
     {
       title: '签到日期',
       dataIndex: 'configDate',
-      valueType: 'dateRange',
     },
     {
       title: '备注',
@@ -82,6 +83,13 @@ const Signin: React.FC = () => {
         <a
           key="id"
           onClick={() => {
+            if(record.configJson){
+              try{
+                record.configJson = JSON.parse(record.configJson);
+              }catch{
+                
+              }
+            }
             setCurrentRow(record);
             handleUpdateModalVisible(true);
           }}
@@ -143,7 +151,7 @@ const Signin: React.FC = () => {
           ]}
         />
         <ProFormDatePicker
-          name="confDate"
+          name="configDate"
           label="签到日期"
           rules={[
             {
@@ -162,9 +170,40 @@ const Signin: React.FC = () => {
             },
           ]}
         />
+        <ProFormList
+          name="configJson"
+          label="签到奖励"
+          initialValue={[
+          ]}
+          copyIconProps={{ Icon: CopyOutlined, tooltipText: '复制' }}
+          deleteIconProps={{
+            Icon: CloseCircleOutlined,
+            tooltipText: '删除',
+          }}
+        >
+          <ProFormGroup key="group">
+          <ProFormSelect 
+            name="itemId"
+            label="物品"
+            fieldProps={{
+              suffixIcon: null,
+              showSearch: true,
+              labelInValue: false,
+              autoClearSearchValue: true,
+              fieldNames: {
+                label: 'name',
+                value: 'id',
+              },
+            }}
+            request={()=>listItem({}).then(res=>{
+              return res.data
+            })}/>
+            <ProFormText name="quantity" label="数量" />
+          </ProFormGroup>
+        </ProFormList>
       </ModalForm>
       <ModalForm
-        title="编辑配置"
+        title="编辑签到配置"
         visible={updateModalVisible}
         modalProps={{
           destroyOnClose: true,
@@ -185,7 +224,7 @@ const Signin: React.FC = () => {
           ]}
         />
         <ProFormDatePicker
-          name="confDate"
+          name="configDate"
           label="签到日期"
           rules={[
             {
@@ -204,6 +243,37 @@ const Signin: React.FC = () => {
             },
           ]}
         />
+        <ProFormList
+          name="configJson"
+          label="签到奖励"
+          initialValue={[
+          ]}
+          copyIconProps={{ Icon: CopyOutlined, tooltipText: '复制' }}
+          deleteIconProps={{
+            Icon: CloseCircleOutlined,
+            tooltipText: '删除',
+          }}
+        >
+          <ProFormGroup key="group">
+          <ProFormSelect 
+            name="itemId"
+            label="物品"
+            fieldProps={{
+              suffixIcon: null,
+              showSearch: true,
+              labelInValue: false,
+              autoClearSearchValue: true,
+              fieldNames: {
+                label: 'name',
+                value: 'id',
+              },
+            }}
+            request={()=>listItem({}).then(res=>{
+              return res.data
+            })}/>
+            <ProFormText name="quantity" label="数量" />
+          </ProFormGroup>
+        </ProFormList>
       </ModalForm>
     </PageContainer>
   );

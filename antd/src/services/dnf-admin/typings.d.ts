@@ -163,7 +163,7 @@ declare namespace API {
     id?: string;
     configName?: string;
     configDate?: string;
-    configJson?: string;
+    configJson?: SignInConfigDate[];
     remark?: string;
     signInTime?: string;
   };
@@ -395,6 +395,13 @@ declare namespace API {
 
   type sendNoticeParams = {
     message: string;
+  };
+
+  type SignInConfigDate = {
+    name?: string;
+    itemId?: string;
+    quantity?: string;
+    itemType?: number;
   };
 
   type signInInfoParams = {

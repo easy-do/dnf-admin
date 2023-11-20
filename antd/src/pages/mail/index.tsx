@@ -1,10 +1,10 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Card, message } from 'antd';
+import { CloseCircleOutlined, CopyOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import type { ProColumns, ActionType, EditableFormInstance } from '@ant-design/pro-table';
-import ProTable, { EditableProTable } from '@ant-design/pro-table';
-import ProForm, { ModalForm, ProFormMoney, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import type { ProColumns, ActionType } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
+import { ModalForm, ProFormGroup, ProFormList, ProFormMoney, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { sendMail } from '@/services/dnf-admin/gameToolController';
 import { pageMailSendLog } from '@/services/dnf-admin/daMailSendLogController';
 import { roleList } from '@/services/dnf-admin/gameRoleController';
@@ -12,7 +12,6 @@ import { listItem } from '@/services/dnf-admin/daItemController';
 
 const ItemList: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const editableFormRef = useRef<EditableFormInstance>();
   
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
@@ -63,51 +62,6 @@ const ItemList: React.FC = () => {
     },
   ];
 
-  const itemColumns: ProColumns<API.MailItemDto>[] = [
-    {
-      title: '物品',
-      dataIndex: 'itemId',
-      renderFormItem: () => {
-        return <ProFormSelect 
-        name="itemId"
-        label="物品"
-        fieldProps={{
-          suffixIcon: null,
-          showSearch: true,
-          labelInValue: false,
-          autoClearSearchValue: true,
-          fieldNames: {
-            label: 'name',
-            value: 'id',
-          },
-        }}
-        request={()=>listItem({}).then(res=>{
-          return res.data
-        })}/>
-      }
-    },
-    {
-      title: '数量',
-      dataIndex: 'count',
-    },
-    {
-      title: '操作',
-      key: 'action',
-      valueType: 'option',
-      render: (_, record: API.MailItemDto, index, action) => {
-        return [
-          <a
-            key="eidit"
-            onClick={() => {
-              action?.startEditable(record.key);
-            }}
-          >
-            编辑
-          </a>,
-        ];
-      },
-    },
-  ];
 
   return (
     <PageContainer>
@@ -192,6 +146,7 @@ const ItemList: React.FC = () => {
         <ProFormMoney
           name="gold"
           label="金币"
+          initialValue={0}
           rules={[
             {
               required: true,
@@ -199,22 +154,37 @@ const ItemList: React.FC = () => {
             },
           ]}
         />
-        <Card title="物品信息" bordered={false}>
-          <ProForm.Item name="itemList">
-            <EditableProTable<API.MailItemDto>
-              editableFormRef={editableFormRef}
-              recordCreatorProps={{
-                record: () => {
-                  return {
-                    key: `0${Date.now()}`,
-                  };
-                },
-              }}
-              columns={itemColumns}
-              rowKey="key"
-            />
-          </ProForm.Item>
-        </Card>
+        <ProFormList
+          name="itemList"
+          label="发送物品"
+          initialValue={[
+          ]}
+          copyIconProps={{ Icon: CopyOutlined, tooltipText: '复制' }}
+          deleteIconProps={{
+            Icon: CloseCircleOutlined,
+            tooltipText: '删除',
+          }}
+        >
+          <ProFormGroup key="group">
+          <ProFormSelect 
+            name="itemId"
+            label="物品"
+            fieldProps={{
+              suffixIcon: null,
+              showSearch: true,
+              labelInValue: false,
+              autoClearSearchValue: true,
+              fieldNames: {
+                label: 'name',
+                value: 'id',
+              },
+            }}
+            request={()=>listItem({}).then(res=>{
+              return res.data
+            })}/>
+            <ProFormText name="count" label="数量" />
+          </ProFormGroup>
+        </ProFormList>
       </ModalForm>
     </PageContainer>
   );
