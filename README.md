@@ -142,7 +142,7 @@ docker-compose up dnfadmin -d
 
 - 查看后台日志
 ```shell
-docker logs -f dnf-admin 
+docker logs -f dnfadmin 
 ```
 当日志里面出现 "Completed initialization in 1 ms" 字样则代表正常启动完成,初次启动会加载pvf文件并导入数据库
 ,如果看到 INSERT INTO `da_item`(`id`, `name`, `type`, `rarity`) VALUES 这样的日志则代表正在导入数据库,可以不用管，往下走启动服务端
@@ -182,7 +182,7 @@ http://ip:8888 # 请使用游戏注册的账号密码登录，管理员为第一
 cd /root/dnf-admin
 # 编辑docker-compose.yaml，一般在第59行 将registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0 修改为 registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
 docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
-docker rm -f dnf-admin
+docker rm -f dnfadmin
 docker-compose up dnfadmin -d
 docker restart dnfserver
 ```
@@ -192,7 +192,7 @@ docker restart dnfserver
 ```shell
 cd /root/dnf-admin
 docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
-docker rm -f dnf-admin
+docker rm -f dnfadmin
 docker-compose up dnfadmin -d
 docker restart dnfserver
 ```
@@ -275,7 +275,7 @@ LD_PRELOAD=/lib/libdp2pre.so ./df_game_r siroco52 start &
 - 例如:
 ```shell 
 docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
-docker run -dit  -e MYSQL_HOST=127.0.0.1  -e MYSQL_PORT=3306 -e MYSQL_USER=game -e MYSQL_PASS=uu5!^%jg -e ADMIN_USER=123456789 -e DP_GM_KEY=123456789 -p 8888:8888 --name dnf-admin registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
+docker run -dit  -e MYSQL_HOST=127.0.0.1  -e MYSQL_PORT=3306 -e MYSQL_USER=game -e MYSQL_PASS=uu5!^%jg -e ADMIN_USER=123456789 -e DP_GM_KEY=123456789 -p 8888:8888 --name dnf-admin registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
 ```
 
 - 查看后台日志

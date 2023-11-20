@@ -1,5 +1,5 @@
 
-version: "4.3"
+version: "2.3"
 
 # 请修改这里的环境变量
 x-env: &env
@@ -67,7 +67,7 @@ services:
     volumes:
       - /data/dnf:/data
     restart: unless-stopped
-    container_name: dnf-admin
+    container_name: dnfadmin
   dnfserver:
     image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfserver:latest
     depends_on:
