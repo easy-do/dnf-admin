@@ -45,15 +45,10 @@ public class MyApplicationRunner implements ApplicationRunner {
         if(Boolean.parseBoolean(confValue)){
             if(FileUtil.isFile(pvfPath)){
                 try {
-                    List<JSONObject> jsonObjectList = new ArrayList<>();
                     PvfData pvfData = PvfReader.reader(pvfPath);
                     Map<Integer, String> itemMap = pvfData.getItemMap();
-                    itemMap.forEach((key,value)->{
-                        JSONObject res = ItemReaderUtil.readerForStr(value);
-                        res.set("itemId",key);
-                        jsonObjectList.add(res);
-                    });
-                    daItemService.importItemForJson(jsonObjectList);
+
+                    daItemService.importItemForMap(itemMap);
                     conf.setConfData("false");
                     daGameConfigService.updateById(conf);
                 }catch (Exception exception){
@@ -64,5 +59,6 @@ public class MyApplicationRunner implements ApplicationRunner {
                 log.warn("在路径{}下没有找到pvf文件,请检查配置",pvfPath);
             }
         }
+        System.gc();
     }
 }

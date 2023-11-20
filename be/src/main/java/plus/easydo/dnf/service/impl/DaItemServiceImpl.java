@@ -12,8 +12,11 @@ import plus.easydo.dnf.enums.RarityEnum;
 import plus.easydo.dnf.mapper.DaItemMapper;
 import plus.easydo.dnf.qo.DaItemQo;
 import plus.easydo.dnf.service.IDaItemService;
+import plus.easydo.dnf.util.FToJUtil;
+import plus.easydo.dnf.util.ItemReaderUtil;
 
 import java.util.List;
+import java.util.Map;
 
 import static plus.easydo.dnf.entity.table.DaItemEntityTableDef.DA_ITEM_ENTITY;
 
@@ -45,12 +48,18 @@ public class DaItemServiceImpl extends ServiceImpl<DaItemMapper, DaItemEntity> i
     @Override
     public Long importItemForJson(List<JSONObject> res) {
         res.forEach(json -> {
+            importItemForJson(res);
+        });
+        return null;
+    }
+
+    public void importItemForJson(JSONObject json) {
             Long itemId = json.getLong("itemId");
             String name = json.getStr("name");
             if (CharSequenceUtil.isNotBlank(name)) {
                 DaItemEntity entity = new DaItemEntity();
                 entity.setId(itemId);
-                entity.setName(name);
+                entity.setName(FToJUtil.FtoJ(name));
                 entity.setType("自动导入");
                 String rarity = json.getStr("rarity");
                 if(CharSequenceUtil.isNotBlank(rarity)){
@@ -60,8 +69,14 @@ public class DaItemServiceImpl extends ServiceImpl<DaItemMapper, DaItemEntity> i
                     save(entity);
                 }
             }
+    }
 
+    @Override
+    public void importItemForMap(Map<Integer, String> itemMap) {
+        itemMap.forEach((key,value)->{
+            JSONObject res = ItemReaderUtil.readerForStr(value);
+            res.set("itemId",key);
+            importItemForJson(res);
         });
-        return null;
     }
 }

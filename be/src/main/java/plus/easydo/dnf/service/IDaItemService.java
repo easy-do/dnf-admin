@@ -8,6 +8,7 @@ import plus.easydo.dnf.entity.DaItemEntity;
 import plus.easydo.dnf.qo.DaItemQo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 物品缓存 服务层。
@@ -22,4 +23,6 @@ public interface IDaItemService extends IService<DaItemEntity> {
     List<DaItemEntity> listByName(String name);
 
     Long importItemForJson(List<JSONObject> res);
+
+    void importItemForMap(Map<Integer, String> itemMap);
 }
