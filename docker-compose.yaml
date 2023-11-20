@@ -66,6 +66,9 @@ services:
       - dnf
     volumes:
       - /data/dnf:/data
+      - /usr/bin/docker:/usr/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    privileged: true
     restart: unless-stopped
     container_name: dnfadmin
   dnfserver:
