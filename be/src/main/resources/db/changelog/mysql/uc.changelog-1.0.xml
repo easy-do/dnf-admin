@@ -202,7 +202,7 @@
     </changeSet>
     <changeSet author="yuzhanfeng" id="20231114-1" dbms="mysql" failOnError="true">
         <sql dbms="mysql">
-            INSERT INTO da_role (id, role_name, role_key, role_sort, is_default, status, remark) VALUES(1, '系统管理员', 'admin', 0, 1, 1, '系统管理员');
+            INSERT INTO da_role (id, role_name, role_key, role_sort, is_default, status, remark) VALUES(1, '系统管理员', 'admin', 0, 0, 1, '系统管理员');
             INSERT INTO da_role (id, role_name, role_key, role_sort, is_default, status, remark) VALUES(2, '默认角色', 'default_role', 0, 1, 1, '系统默认角色');
             INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(1, 0, '首页', 'home', '/home', '', 0, '', NULL, 1, 1, '', 0);
             INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(2, 0, '签到配置', 'signin', '/signin', '', 0, '', NULL, 1, 1, '', 0);
@@ -223,5 +223,10 @@
             INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 6);
             INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 7);
         </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231120-1" dbms="mysql" failOnError="true">
+    <sql dbms="mysql">
+        UPDATE da_game_config SET conf_name='启动后自动加载pvf数据到数据库', conf_type=3, conf_data='false', conf_key='gm_reader_pvf', remark='后台参数,是否启动后加载pvf文件数据' WHERE conf_key='gm_reader_pvf';
+    </sql>
     </changeSet>
 </databaseChangeLog>
