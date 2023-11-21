@@ -1,6 +1,6 @@
 import { CloseCircleOutlined, CopyOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -10,11 +10,19 @@ import { pageMailSendLog } from '@/services/dnf-admin/daMailSendLogController';
 import { roleList } from '@/services/dnf-admin/gameRoleController';
 import { listItem } from '@/services/dnf-admin/daItemController';
 
-const ItemList: React.FC = () => {
+const Email: React.FC = () => {
   const actionRef = useRef<ActionType>();
   
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  const [itemList, setItemList] = useState<any>([]);
+
+  useEffect(() => {
+      listItem({}).then(res=>{
+        setItemList(res.data);
+      })
+  }, [createModalVisible]);
+  
   /**
    * 添加节点
    *
@@ -179,10 +187,11 @@ const ItemList: React.FC = () => {
                 value: 'id',
               },
             }}
-            request={()=>listItem({}).then(res=>{
-              return res.data
-            })}/>
-            <ProFormText name="count" label="数量" />
+            request={()=>itemList}/>
+            <ProFormText fieldProps={{
+              type: 'number',
+              min: 1,
+            }}  initialValue={1} name="count" label="数量" />
           </ProFormGroup>
         </ProFormList>
       </ModalForm>
@@ -190,4 +199,4 @@ const ItemList: React.FC = () => {
   );
 };
 
-export default ItemList;
+export default Email;

@@ -4,7 +4,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { pageConf, saveConf, updateConf } from '@/services/dnf-admin/daGameConfigController';
-import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
+import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { PlusOutlined } from '@ant-design/icons';
 
 const ConfList: React.FC = () => {
@@ -13,6 +13,7 @@ const ConfList: React.FC = () => {
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  const [confType, setConfType] = useState<number>(1);
   /**
    * 添加节点
    *
@@ -49,6 +50,7 @@ const ConfList: React.FC = () => {
       });
       hide();
       message.success('配置成功');
+      setConfType(1);
       actionRef.current?.reload();
       return true;
     } catch (error) {
@@ -101,6 +103,7 @@ const ConfList: React.FC = () => {
           key="id"
           onClick={() => {
             setCurrentRow(record);
+            setConfType(record.confType);
             handleUpdateModalVisible(true);
           }}
         >
@@ -163,6 +166,12 @@ const ConfList: React.FC = () => {
         <ProFormSelect
           name="confType"
           label="配置类型"
+          initialValue={1}
+          fieldProps={{
+            onChange:(value)=>{
+              setConfType(value);
+            }
+          }}
           options={[
             {
               label: '数值',
@@ -192,7 +201,10 @@ const ConfList: React.FC = () => {
             },
           ]}
         />
-        <ProFormText
+        {confType == 1 && <ProFormText
+        fieldProps={{
+          type: 'number',
+        }}
           name="confData"
           label="配置参数"
           rules={[
@@ -201,7 +213,42 @@ const ConfList: React.FC = () => {
               message: '配置参数！',
             },
           ]}
-        />
+        />}
+          {confType == 2 && <ProFormText
+          name="confData"
+          label="配置参数"
+          rules={[
+            {
+              required: true,
+              message: '配置参数！',
+            },
+          ]}
+        />}
+          {confType == 3 && <ProFormSelect
+          name="confData"
+          label="配置参数"
+          valueEnum={{
+            'true':'是',
+            'false':'否',
+          }}
+          rules={[
+            {
+              required: true,
+              message: '配置参数！',
+            },
+          ]}
+        />}
+          {confType == 4 && <ProFormTextArea
+          name="confData"
+          label="配置参数"
+          rules={[
+            {
+              required: true,
+              message: '配置参数！',
+            },
+          ]}
+        />}
+
         <ProFormText
           name="remark"
           label="备注"
@@ -220,7 +267,12 @@ const ConfList: React.FC = () => {
           destroyOnClose: true,
         }}
         initialValues={currentRow}
-        onVisibleChange={handleUpdateModalVisible}
+        onVisibleChange={(value)=>{
+          handleUpdateModalVisible(value);
+          if(!value){
+            setConfType(1);
+          }
+        }}
         onFinish={handleUpdate}
       >
         <ProFormText name="id" hidden />
@@ -237,6 +289,12 @@ const ConfList: React.FC = () => {
         <ProFormSelect
           name="confType"
           label="配置类型"
+          initialValue={1}
+          fieldProps={{
+            onChange:(value)=>{
+              setConfType(value);
+            }
+          }}
           options={[
             {
               label: '数值',
@@ -266,7 +324,10 @@ const ConfList: React.FC = () => {
             },
           ]}
         />
-        <ProFormText
+        {confType == 1 && <ProFormText
+        fieldProps={{
+          type: 'number',
+        }}
           name="confData"
           label="配置参数"
           rules={[
@@ -275,7 +336,41 @@ const ConfList: React.FC = () => {
               message: '配置参数！',
             },
           ]}
-        />
+        />}
+          {confType == 2 && <ProFormText
+          name="confData"
+          label="配置参数"
+          rules={[
+            {
+              required: true,
+              message: '配置参数！',
+            },
+          ]}
+        />}
+          {confType == 3 && <ProFormSelect
+          name="confData"
+          label="配置参数"
+          valueEnum={{
+            'true':'是',
+            'false':'否',
+          }}
+          rules={[
+            {
+              required: true,
+              message: '配置参数！',
+            },
+          ]}
+        />}
+          {confType == 4 && <ProFormTextArea
+          name="confData"
+          label="配置参数"
+          rules={[
+            {
+              required: true,
+              message: '配置参数！',
+            },
+          ]}
+        />}
         <ProFormText
           name="remark"
           label="备注"

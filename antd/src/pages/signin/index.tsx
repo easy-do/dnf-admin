@@ -1,8 +1,7 @@
 import { Button, message } from 'antd';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
+import ProTable,{ ProColumns, ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormDatePicker, ProFormGroup, ProFormList, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import { CloseCircleOutlined, CopyOutlined, PlusOutlined } from '@ant-design/icons';
 import { saveSignIn, signInPage, updateSignIn } from '@/services/dnf-admin/signInController';
@@ -14,6 +13,15 @@ const Signin: React.FC = () => {
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+
+  const [itemList, setItemList] = useState<any>([]);
+
+  useEffect(() => {
+      listItem({}).then(res=>{
+        setItemList(res.data);
+      })
+  }, [createModalVisible,updateModalVisible]);
+
   
   /**
    * 添加节点
@@ -195,10 +203,11 @@ const Signin: React.FC = () => {
                 value: 'id',
               },
             }}
-            request={()=>listItem({}).then(res=>{
-              return res.data
-            })}/>
-            <ProFormText name="quantity" label="数量" />
+            request={()=>itemList}/>
+            <ProFormText fieldProps={{
+              type: 'number',
+              min: 1,
+            }}  initialValue={1} name="quantity" label="数量" />
           </ProFormGroup>
         </ProFormList>
       </ModalForm>
@@ -268,10 +277,11 @@ const Signin: React.FC = () => {
                 value: 'id',
               },
             }}
-            request={()=>listItem({}).then(res=>{
-              return res.data
-            })}/>
-            <ProFormText name="quantity" label="数量" />
+            request={()=>itemList}/>
+            <ProFormText fieldProps={{
+              type: 'number',
+              min: 1,
+            }} initialValue={1} name="quantity" label="数量" />
           </ProFormGroup>
         </ProFormList>
       </ModalForm>
