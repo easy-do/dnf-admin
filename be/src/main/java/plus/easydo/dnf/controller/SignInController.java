@@ -1,9 +1,9 @@
 package plus.easydo.dnf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.hutool.core.bean.BeanUtil;
-import com.mybatisflex.core.paginate.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,24 +47,25 @@ public class SignInController {
     }
 
     @SaCheckRole("admin")
+    @SaCheckPermission("signIn")
     @PostMapping("/page")
     public R<List<DaSignInConf>> signInPage(@RequestBody DaSignInConfQo daSignInConfQo){
         return DataResult.ok(signInService.signInPage(daSignInConfQo));
     }
 
-    @SaCheckRole("admin")
+    @SaCheckPermission("signIn")
     @GetMapping("/info/{id}")
     public R<DaSignInConfVo> signInInfo(@PathVariable("id")Long id){
         return DataResult.ok(BeanUtil.copyProperties(signInService.info(id), DaSignInConfVo.class));
     }
 
-    @SaCheckRole("admin")
+    @SaCheckPermission("signIn.save")
     @PostMapping("/save")
     public R<Boolean> saveSignIn(@RequestBody DaSignInConfDto daSignInConf){
         return DataResult.ok(signInService.insert(daSignInConf));
     }
 
-    @SaCheckRole("admin")
+    @SaCheckPermission("signIn.update")
     @PostMapping("/update")
     public R<Boolean> updateSignIn(@RequestBody DaSignInConfDto daSignInConf){
         return DataResult.ok(signInService.update(daSignInConf));

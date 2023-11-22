@@ -1,7 +1,7 @@
 package plus.easydo.dnf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
-import cn.dev33.satoken.annotation.SaCheckRole;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.json.JSONObject;
 import com.alibaba.excel.EasyExcelFactory;
 import jakarta.servlet.ServletOutputStream;
@@ -46,7 +46,7 @@ public class DaItemController {
      * @param file file
      * @throws IOException
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("item.importItem")
     @PostMapping("/importItem")
     public void importItem(@RequestParam("file") MultipartFile file) throws IOException {
         EasyExcelFactory.read(file.getInputStream(), DaItemEntity.class, new ItemDataListener(daItemService)).sheet().doRead();
@@ -57,7 +57,7 @@ public class DaItemController {
      * @param file file
      * @throws IOException
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("item.importItemFor7z")
     @PostMapping("/importItemFor7z")
     public void importItemFor7z(@RequestParam("file") MultipartFile file) throws IOException {
         List<JSONObject> res = ItemReaderUtil.reader(file);
@@ -71,7 +71,7 @@ public class DaItemController {
      * @author laoyu
      * @date 2023/10/29
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("item")
     @GetMapping("/downloadTemplate")
     public void downloadTemplate(HttpServletResponse response) throws IOException {
         ServletOutputStream opt = response.getOutputStream();
@@ -85,7 +85,7 @@ public class DaItemController {
      * @param daItem 物品缓存
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("item.save")
     @PostMapping("/save")
     public boolean saveItem(@RequestBody DaItemEntity daItem) {
         return daItemService.save(daItem);
@@ -98,7 +98,7 @@ public class DaItemController {
      * @param ids 主键
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("item.remove")
     @PostMapping("/remove")
     public boolean removeItem(@RequestBody List<String> ids) {
         return daItemService.removeByIds(ids);
@@ -111,7 +111,7 @@ public class DaItemController {
      * @param daItem 物品缓存
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("item.update")
     @PostMapping("/update")
     public boolean updateItem(@RequestBody DaItemEntity daItem) {
         return daItemService.updateById(daItem);
@@ -137,7 +137,7 @@ public class DaItemController {
      * @param daItemQo 分页对象
      * @return 分页对象
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("item")
     @PostMapping("/page")
     public R<List<DaItemEntity>> pageItem(@RequestBody DaItemQo daItemQo) {
         return DataResult.ok(daItemService.itemPage(daItemQo));

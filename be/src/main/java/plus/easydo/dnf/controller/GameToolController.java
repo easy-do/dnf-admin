@@ -1,6 +1,6 @@
 package plus.easydo.dnf.controller;
 
-import cn.dev33.satoken.annotation.SaCheckRole;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +30,7 @@ public class GameToolController {
 
     private final IDaMailSendLogService iDaMailSendLogService;
 
-    @SaCheckRole("admin")
+    @SaCheckPermission("mail.sendMail")
     @PostMapping("/sendMail")
     public R<Object> sendMail(@RequestBody SendMailDto sendMailDto){
         CacheManager.addFirstOptExecList(ExecCallBuildUtil.buildSendMultiMail(sendMailDto));

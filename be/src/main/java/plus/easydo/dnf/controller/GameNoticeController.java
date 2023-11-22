@@ -1,7 +1,6 @@
 package plus.easydo.dnf.controller;
 
-import cn.dev33.satoken.annotation.SaCheckRole;
-import com.mybatisflex.core.paginate.Page;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +33,7 @@ public class GameNoticeController {
     private IDaNoticeSendLogService daNoticeSendLogService;
 
 
-    @SaCheckRole("admin")
+    @SaCheckPermission("notice.sendNotice")
     @GetMapping("/sendNotice")
     public R<Object> sendNotice(@RequestParam("message")String message){
         CacheManager.addAllOptExecList(ExecCallBuildUtil.buildNotice(message));
@@ -50,6 +49,7 @@ public class GameNoticeController {
      * @author laoyu
      * @date 2023/10/29
      */
+    @SaCheckPermission("notice")
     @PostMapping("/page")
     public  R<List<DaNoticeSendLog>> pageGameNotice(@RequestBody PageQo pageQo) {
         return DataResult.ok(daNoticeSendLogService.noticePage(pageQo));

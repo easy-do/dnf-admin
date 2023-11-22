@@ -1,7 +1,7 @@
 package plus.easydo.dnf.controller;
 
-import cn.dev33.satoken.annotation.SaCheckRole;
-import com.mybatisflex.core.paginate.Page;
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +38,7 @@ public class DaGameConfigController {
      * @param gameConfigQo gameConfigQo
      * @return 分页对象
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("conf")
     @PostMapping("/page")
     public R<List<DaGameConfig>> pageConf(@RequestBody DaGameConfigQo gameConfigQo) {
         return DataResult.ok(daGameConfigService.confPage(gameConfigQo));
@@ -50,6 +50,7 @@ public class DaGameConfigController {
      * @param id daGameConfig主键
      * @return 游戏配置详情
      */
+    @SaCheckLogin
     @GetMapping("/info/{id}")
     public R<DaGameConfig> getConfInfo(@PathVariable Serializable id) {
         return DataResult.ok(daGameConfigService.getById(id));
@@ -61,7 +62,7 @@ public class DaGameConfigController {
      * @param daGameConfig 游戏配置
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("conf.save")
     @PostMapping("/save")
     public R<Object> saveConf(@RequestBody DaGameConfig daGameConfig) {
         return DataResult.ok(daGameConfigService.saveConf(daGameConfig));
@@ -75,7 +76,7 @@ public class DaGameConfigController {
      * @param daGameConfig 游戏配置
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("conf.update")
     @PostMapping("/update")
     public R<Object> updateConf(@RequestBody DaGameConfig daGameConfig) {
         return DataResult.ok(daGameConfigService.updateConf(daGameConfig));

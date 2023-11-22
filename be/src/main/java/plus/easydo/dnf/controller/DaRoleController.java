@@ -1,13 +1,10 @@
 package plus.easydo.dnf.controller;
 
-import cn.dev33.satoken.annotation.SaCheckRole;
-import com.mybatisflex.core.paginate.Page;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import plus.easydo.dnf.qo.DaRoleQo;
@@ -41,7 +38,7 @@ public class DaRoleController {
      * @param daRoleQo daRoleQo
      * @return 分页对象
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("role")
     @PostMapping("/page")
     public R<List<DaRole>> pageRole(@RequestBody DaRoleQo daRoleQo) {
         return DataResult.ok(daRoleService.pageRole(daRoleQo));
@@ -53,7 +50,7 @@ public class DaRoleController {
      * @param id daRole主键
      * @return 角色信息表详情
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("role")
     @GetMapping("/info/{id}")
     public R<DaRole> getRoleInfo(@PathVariable Serializable id) {
         return DataResult.ok(daRoleService.getById(id));
@@ -65,7 +62,7 @@ public class DaRoleController {
      * @param daRole 角色信息表
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("role.update")
     @PostMapping("/update")
     public R<Boolean> updateRole(@RequestBody DaRole daRole) {
         return DataResult.ok(daRoleService.updateById(daRole));
@@ -77,7 +74,7 @@ public class DaRoleController {
      * @param daRole 角色信息表
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("role.save")
     @PostMapping("/save")
     public R<Boolean> saveRole(@RequestBody DaRole daRole) {
         return DataResult.ok(daRoleService.save(daRole));

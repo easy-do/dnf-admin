@@ -1,5 +1,6 @@
 package plus.easydo.dnf.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import com.mybatisflex.core.paginate.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class DaMailSendLogController {
      * @param pageQo 分页对象
      * @return 分页对象
      */
-    @SaCheckRole("admin")
+    @SaCheckPermission("mail")
     @PostMapping("/page")
     public R<List<DaMailSendLog>> pageMailSendLog(@RequestBody  PageQo pageQo) {
         return DataResult.ok(daMailSendLogService.sendLogpage(pageQo));

@@ -9,20 +9,21 @@ import { sendMail } from '@/services/dnf-admin/gameToolController';
 import { pageMailSendLog } from '@/services/dnf-admin/daMailSendLogController';
 import { roleList } from '@/services/dnf-admin/gameRoleController';
 import { listItem } from '@/services/dnf-admin/daItemController';
+import { Access, useAccess } from 'umi';
 
 const Email: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  
+
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [itemList, setItemList] = useState<any>([]);
-
+  const access = useAccess();
   useEffect(() => {
-      listItem({}).then(res=>{
-        setItemList(res.data);
-      })
+    listItem({}).then(res => {
+      setItemList(res.data);
+    })
   }, [createModalVisible]);
-  
+
   /**
    * 添加节点
    *
@@ -50,7 +51,7 @@ const Email: React.FC = () => {
     {
       title: '标题',
       dataIndex: 'sendDetails.title',
-      render: (_,record) => {
+      render: (_, record) => {
         const sendDetails = JSON.parse(record.sendDetails);
         return sendDetails.title;
       }
@@ -58,7 +59,7 @@ const Email: React.FC = () => {
     {
       title: '正文',
       dataIndex: 'sendDetails.content',
-      render: (_,record) => {
+      render: (_, record) => {
         const sendDetails = JSON.parse(record.sendDetails);
         return sendDetails.content;
       }
@@ -81,9 +82,10 @@ const Email: React.FC = () => {
           labelWidth: 120,
         }}
         toolBarRender={() => [
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => handleModalVisible(true)}>
-            发送邮件
-          </Button>,
+          <Access accessible={access.hashPre('mail.sendMail')}>
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => handleModalVisible(true)}>
+              发送邮件
+            </Button></Access>,
         ]}
         request={pageMailSendLog}
         columns={columns}
@@ -118,7 +120,7 @@ const Email: React.FC = () => {
               value: 'characNo',
             },
           }}
-          request={()=>roleList({}).then(res=>{
+          request={() => roleList({}).then(res => {
             return res.data
           })}
           rules={[
@@ -174,24 +176,24 @@ const Email: React.FC = () => {
           }}
         >
           <ProFormGroup key="group">
-          <ProFormSelect 
-            name="itemId"
-            label="物品"
-            fieldProps={{
-              suffixIcon: null,
-              showSearch: true,
-              labelInValue: false,
-              autoClearSearchValue: true,
-              fieldNames: {
-                label: 'name',
-                value: 'id',
-              },
-            }}
-            request={()=>itemList}/>
+            <ProFormSelect
+              name="itemId"
+              label="物品"
+              fieldProps={{
+                suffixIcon: null,
+                showSearch: true,
+                labelInValue: false,
+                autoClearSearchValue: true,
+                fieldNames: {
+                  label: 'name',
+                  value: 'id',
+                },
+              }}
+              request={() => itemList} />
             <ProFormText fieldProps={{
               type: 'number',
               min: 1,
-            }}  initialValue={1} name="count" label="数量" />
+            }} initialValue={1} name="count" label="数量" />
           </ProFormGroup>
         </ProFormList>
       </ModalForm>

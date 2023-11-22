@@ -14,7 +14,6 @@ import plus.easydo.dnf.manager.PostalManager;
 import plus.easydo.dnf.service.GamePostalService;
 import plus.easydo.dnf.util.Latin1ConvertUtil;
 
-import java.util.List;
 
 /**
  * @author laoyu

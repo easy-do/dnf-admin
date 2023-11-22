@@ -6,8 +6,8 @@ import cn.hutool.core.util.CharsetUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author yuzhanfeng
@@ -35,11 +35,11 @@ public class ResponseUtil {
      * @author laoyu
      * @date 2023/2/7
      */
-    public static void setImgResponse(HttpServletResponse response, String filePath) throws UnsupportedEncodingException {
+    public static void setImgResponse(HttpServletResponse response, String filePath)  {
         response.setContentType(IMAGE_PNG);
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, FILE_NAME
-                + URLEncoder.encode(CharSequenceUtil.subAfter(filePath,"/",false), CharsetUtil.UTF_8).replace("\\+", "%20"));
+                + URLEncoder.encode(CharSequenceUtil.subAfter(filePath,"/",false), StandardCharsets.UTF_8).replace("\\+", "%20"));
     }
 
     /**
@@ -49,11 +49,11 @@ public class ResponseUtil {
      * @author laoyu
      * @date 2023/2/7
      */
-    public static void setFileResponse(HttpServletResponse response) throws UnsupportedEncodingException {
+    public static void setFileResponse(HttpServletResponse response) {
         response.setContentType(FORM_DATA);
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, FILE_NAME
-                + URLEncoder.encode(UUID.fastUUID().toString(), CharsetUtil.UTF_8).replace("\\+", "%20"));
+                + URLEncoder.encode(UUID.fastUUID().toString(), StandardCharsets.UTF_8).replace("\\+", "%20"));
     }
 
     /**
@@ -63,11 +63,11 @@ public class ResponseUtil {
      * @author laoyu
      * @date 2023/2/7
      */
-    public static void setFileResponse(HttpServletResponse response,String fileName) throws UnsupportedEncodingException {
+    public static void setFileResponse(HttpServletResponse response,String fileName) {
         response.setContentType(FORM_DATA);
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, FILE_NAME
-                + URLEncoder.encode(fileName, CharsetUtil.UTF_8).replace("\\+", "%20"));
+                + URLEncoder.encode(fileName, StandardCharsets.UTF_8).replace("\\+", "%20"));
     }
 
 }

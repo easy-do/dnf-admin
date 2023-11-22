@@ -7,6 +7,7 @@ import { pageRole, saveRole, updateRole } from '@/services/dnf-admin/daRoleContr
 import { ModalForm, ProFormCheckbox, ProFormSelect, ProFormText, ProFormTreeSelect } from '@ant-design/pro-form';
 import { PlusOutlined } from '@ant-design/icons';
 import { authRoleResource, resourceTree, roleResourceIds } from '@/services/dnf-admin/daResourceController';
+import { Access, useAccess } from 'umi';
 
 const RoleList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -16,6 +17,7 @@ const RoleList: React.FC = () => {
   const [currentRowSelect, setCurrentRowSelect] = useState<number[]>([]);
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  const access = useAccess();
 
   /**
    * 添加节点
@@ -66,21 +68,21 @@ const RoleList: React.FC = () => {
    *
    * @param fields
    */
-    const authRole = async (values?: API.AuthRoleResourceDto) => {
-      const hide = message.loading('正在配置');
-  
-      try {
-        await authRoleResource(values);
-        hide();
-        message.success('配置成功');
-        actionRef.current?.reload();
-        return true;
-      } catch (error) {
-        hide();
-        message.error('配置失败请重试！');
-        return false;
-      }
-    };
+  const authRole = async (values?: API.AuthRoleResourceDto) => {
+    const hide = message.loading('正在配置');
+
+    try {
+      await authRoleResource(values);
+      hide();
+      message.success('配置成功');
+      actionRef.current?.reload();
+      return true;
+    } catch (error) {
+      hide();
+      message.error('配置失败请重试！');
+      return false;
+    }
+  };
 
   /** 国际化配置 */
 
@@ -117,35 +119,39 @@ const RoleList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="id"
-          onClick={() => {
-            if (record.roleKey == 'admin') {
-              message.error('不能修改管理员角色！');
-            }else{
-              roleResourceIds({roleId:record.id}).then((res) => {
-                setCurrentRowSelect(res.data)
+        <Access accessible={access.hashPre('role.authRoleResource')}>
+          <a
+            key="id"
+            onClick={() => {
+              if (record.roleKey == 'admin') {
+                message.error('不能修改管理员角色！');
+              } else {
+                roleResourceIds({ roleId: record.id }).then((res) => {
+                  setCurrentRowSelect(res.data)
+                  setCurrentRow(record);
+                  handleAuthRoleModalVisible(true);
+                })
+              }
+            }}
+          >
+            授权
+          </a>
+        </Access>,
+        <Access accessible={access.hashPre('role.update')}>
+          <a 
+            key="id"
+            onClick={() => {
+              if (record.roleKey == 'admin') {
+                message.error('不能修改管理员角色！');
+              } else {
                 setCurrentRow(record);
-                handleAuthRoleModalVisible(true);
-              })
-            }
-          }}
-        >
-          授权
-        </a>,
-        <a
-          key="id"
-          onClick={() => {
-            if (record.roleKey == 'admin') {
-              message.error('不能修改管理员角色！');
-            } else {
-              setCurrentRow(record);
-              handleUpdateModalVisible(true);
-            }
-          }}
-        >
-          编辑
-        </a>,        
+                handleUpdateModalVisible(true);
+              }
+            }}
+          >
+            编辑
+          </a>
+        </Access>,
 
       ],
     },
@@ -163,15 +169,17 @@ const RoleList: React.FC = () => {
         request={pageRole}
         columns={columns}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalVisible(true);
-            }}
-          >
-            <PlusOutlined /> 新建
-          </Button>,
+          <Access accessible={access.hashPre('role.save')}>
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                handleModalVisible(true);
+              }}
+            >
+              <PlusOutlined /> 新建
+            </Button>
+          </Access>,
         ]}
       />
       <ModalForm
@@ -283,6 +291,7 @@ const RoleList: React.FC = () => {
           request={() => resourceTree().then((res) => res.data)}
           initialValue={currentRowSelect}
           fieldProps={{
+            treeCheckable: true,
             suffixIcon: null,
             filterTreeNode: true,
             showSearch: true,

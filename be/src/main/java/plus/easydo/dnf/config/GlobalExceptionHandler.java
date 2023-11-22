@@ -1,10 +1,11 @@
 package plus.easydo.dnf.config;
 
 import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.SaTokenException;
-import cn.hutool.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -88,7 +89,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SaTokenException.class)
     public Object authException(SaTokenException e) {
         log.error(e.getMessage(), e);
-        return DataResult.fail(HttpStatus.HTTP_UNAUTHORIZED,e.getMessage());
+        return DataResult.fail(HttpStatus.UNAUTHORIZED,e.getMessage());
     }
 
     /**
@@ -101,7 +102,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotLoginException.class)
     public Object notLoginException(NotLoginException e) {
         log.error(e.getMessage(), e);
-        return DataResult.fail(HttpStatus.HTTP_UNAUTHORIZED,"未登录，或授权过期");
+        return DataResult.fail(HttpStatus.UNAUTHORIZED,"未登录，或授权过期");
+    }
+
+    /**
+     * 自定义验证异常
+     *
+     * @param e e
+     * @return java.lang.Object
+     * @author laoyu
+     */
+    @ExceptionHandler(NotPermissionException.class)
+    public Object notLoginException(NotPermissionException e) {
+        log.error(e.getMessage(), e);
+        return DataResult.fail(HttpStatus.UNAUTHORIZED,e.getMessage());
     }
 
 }

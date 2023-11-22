@@ -39,12 +39,11 @@ public class PvfReader {
         String baseDir = "stackable";
         PvfFileListData stackable = pvfData.getPvfFileListMap().get(baseDir + "/" + "stackable.lst");
         Map<Integer, String> stackableRes = readLstFile(stackable, pvfData, baseDir);
-        Map<Integer, String> itemMap = new HashMap<>(stackableRes);
         baseDir = "equipment";
         PvfFileListData equipment = pvfData.getPvfFileListMap().get(baseDir + "/" + "equipment.lst");
         Map<Integer, String> equipmentRes = readLstFile(equipment, pvfData, baseDir);
-        itemMap.putAll(equipmentRes);
-        pvfData.setItemMap(itemMap);
+        stackableRes.putAll(equipmentRes);
+        pvfData.setItemMap(stackableRes);
         return pvfData;
     }
 
@@ -100,8 +99,8 @@ public class PvfReader {
     public static String readFile(PvfFileListData file, PvfData pvfData) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(file.getDecodeFileContent());
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("#PVF_File\r");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("#PVF_File\r");
         //先读取两位
         byteBuffer.getShort();
         while (byteBuffer.hasRemaining()) {
@@ -115,24 +114,24 @@ public class PvfReader {
                     str = stringTableData.getContext();
                 }
                 switch (be) {
-                    case 2 -> stringBuffer.append(fe).append(" ");
+                    case 2 -> stringBuilder.append(fe).append(" ");
                     case 5 -> {
                         if (CharSequenceUtil.isNotBlank(str)) {
-                            stringBuffer.append("\r\n").append(str).append("\r\n");
+                            stringBuilder.append("\r\n").append(str).append("\r\n");
                         }
                     }
                     case 7 -> {
                         if (CharSequenceUtil.isNotBlank(str)) {
-                            stringBuffer.append("`").append(str).append("` ");
+                            stringBuilder.append("`").append(str).append("` ");
                         }
                     }
-                    default -> stringBuffer.append("\r").append(be).append("\r");
+                    default -> stringBuilder.append("\r").append(be).append("\r");
                 }
             } else {
                 break;
             }
         }
-       return stringBuffer.toString();
+       return stringBuilder.toString();
     }
 
     /**

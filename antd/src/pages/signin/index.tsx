@@ -1,11 +1,12 @@
 import { Button, message } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProTable,{ ProColumns, ActionType } from '@ant-design/pro-table';
+import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormDatePicker, ProFormGroup, ProFormList, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import { CloseCircleOutlined, CopyOutlined, PlusOutlined } from '@ant-design/icons';
 import { saveSignIn, signInPage, updateSignIn } from '@/services/dnf-admin/signInController';
 import { listItem } from '@/services/dnf-admin/daItemController';
+import { Access, useAccess } from 'umi';
 
 const Signin: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -16,13 +17,15 @@ const Signin: React.FC = () => {
 
   const [itemList, setItemList] = useState<any>([]);
 
-  useEffect(() => {
-      listItem({}).then(res=>{
-        setItemList(res.data);
-      })
-  }, [createModalVisible,updateModalVisible]);
+  const access = useAccess();
 
-  
+  useEffect(() => {
+    listItem({}).then(res => {
+      setItemList(res.data);
+    })
+  }, [createModalVisible, updateModalVisible]);
+
+
   /**
    * 添加节点
    *
@@ -88,22 +91,24 @@ const Signin: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="id"
-          onClick={() => {
-            if(record.configJson){
-              try{
-                record.configJson = JSON.parse(record.configJson);
-              }catch{
-                
+        <Access accessible={access.hashPre('signIn.update')}>
+          <a
+            key="id"
+            onClick={() => {
+              if (record.configJson) {
+                try {
+                  record.configJson = JSON.parse(record.configJson);
+                } catch {
+
+                }
               }
-            }
-            setCurrentRow(record);
-            handleUpdateModalVisible(true);
-          }}
-        >
-          编辑
-        </a>,
+              setCurrentRow(record);
+              handleUpdateModalVisible(true);
+            }}
+          >
+            编辑
+          </a>
+        </Access>,
       ],
     },
   ];
@@ -120,7 +125,8 @@ const Signin: React.FC = () => {
         request={signInPage}
         columns={columns}
         toolBarRender={() => [
-          <Button
+          <Access accessible={access.hashPre('signIn.save')}>
+            <Button
             type="primary"
             key="primary"
             onClick={() => {
@@ -128,7 +134,8 @@ const Signin: React.FC = () => {
             }}
           >
             <PlusOutlined /> 新建
-          </Button>,
+          </Button>
+          </Access>,
         ]}
       />
       <ModalForm
@@ -190,24 +197,24 @@ const Signin: React.FC = () => {
           }}
         >
           <ProFormGroup key="group">
-          <ProFormSelect 
-            name="itemId"
-            label="物品"
-            fieldProps={{
-              suffixIcon: null,
-              showSearch: true,
-              labelInValue: false,
-              autoClearSearchValue: true,
-              fieldNames: {
-                label: 'name',
-                value: 'id',
-              },
-            }}
-            request={()=>itemList}/>
+            <ProFormSelect
+              name="itemId"
+              label="物品"
+              fieldProps={{
+                suffixIcon: null,
+                showSearch: true,
+                labelInValue: false,
+                autoClearSearchValue: true,
+                fieldNames: {
+                  label: 'name',
+                  value: 'id',
+                },
+              }}
+              request={() => itemList} />
             <ProFormText fieldProps={{
               type: 'number',
               min: 1,
-            }}  initialValue={1} name="quantity" label="数量" />
+            }} initialValue={1} name="quantity" label="数量" />
           </ProFormGroup>
         </ProFormList>
       </ModalForm>
@@ -264,20 +271,20 @@ const Signin: React.FC = () => {
           }}
         >
           <ProFormGroup key="group">
-          <ProFormSelect 
-            name="itemId"
-            label="物品"
-            fieldProps={{
-              suffixIcon: null,
-              showSearch: true,
-              labelInValue: false,
-              autoClearSearchValue: true,
-              fieldNames: {
-                label: 'name',
-                value: 'id',
-              },
-            }}
-            request={()=>itemList}/>
+            <ProFormSelect
+              name="itemId"
+              label="物品"
+              fieldProps={{
+                suffixIcon: null,
+                showSearch: true,
+                labelInValue: false,
+                autoClearSearchValue: true,
+                fieldNames: {
+                  label: 'name',
+                  value: 'id',
+                },
+              }}
+              request={() => itemList} />
             <ProFormText fieldProps={{
               type: 'number',
               min: 1,
@@ -290,3 +297,4 @@ const Signin: React.FC = () => {
 };
 
 export default Signin;
+

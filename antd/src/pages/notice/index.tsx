@@ -6,11 +6,13 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { pageGameNotice, sendNotice } from '@/services/dnf-admin/gameNoticeController';
 import { ModalForm, ProFormTextArea } from '@ant-design/pro-form';
+import { Access, useAccess } from 'umi';
 
 const ItemList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  const access = useAccess();
   /**
    * 添加节点
    *
@@ -56,9 +58,10 @@ const ItemList: React.FC = () => {
           labelWidth: 120,
         }}
         toolBarRender={() => [
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => handleModalVisible(true)}>
-            发送公告
-          </Button>,
+          <Access accessible={access.hashPre('notice.sendNotice')}>
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => handleModalVisible(true)}>
+              发送公告
+            </Button></Access>,
         ]}
         request={pageGameNotice}
         columns={columns}

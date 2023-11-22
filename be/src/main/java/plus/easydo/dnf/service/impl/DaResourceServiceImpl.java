@@ -86,7 +86,7 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
         if(roles.isEmpty()){
             return Collections.emptyList();
         }
-        List<DaResource> resourceList = getRoleResourceList(roles);
+        List<DaResource> resourceList = getRoleResourceForType(roles,"M");
         return buildResourceTree(resourceList);
     }
 
@@ -140,6 +140,27 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
         }
         List<Long> resourceIds = roleResources.stream().map(DaRoleResource::getResourceId).toList();
         QueryWrapper queryWrapper = query().and(DA_RESOURCE.ID.in(resourceIds)).and(DA_RESOURCE.STATUS.eq(true));
+        return list(queryWrapper);
+    }
+
+    /**
+     * 获取角色资源列表
+     *
+     * @param roleIds roleIds
+     * @return java.util.List<plus.easydo.dnf.entity.DaResource>
+     * @author laoyu
+     * @date 2023-11-14
+     */
+    private List<DaResource> getRoleResourceForType(List<Long> roleIds,String resourceType) {
+        List<DaRoleResource> roleResources = roleResourceService.listByRoleIds(roleIds);
+        if (roleResources.isEmpty()) {
+            return ListUtil.empty();
+        }
+        List<Long> resourceIds = roleResources.stream().map(DaRoleResource::getResourceId).toList();
+        QueryWrapper queryWrapper = query()
+                .and(DA_RESOURCE.ID.in(resourceIds))
+                .and(DA_RESOURCE.STATUS.eq(true))
+                .and(DA_RESOURCE.RESOURCE_TYPE.eq(resourceType));
         return list(queryWrapper);
     }
 }

@@ -6,6 +6,7 @@ import ProTable from '@ant-design/pro-table';
 import { pageConf, saveConf, updateConf } from '@/services/dnf-admin/daGameConfigController';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { PlusOutlined } from '@ant-design/icons';
+import { Access, useAccess } from 'umi';
 
 const ConfList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -14,6 +15,7 @@ const ConfList: React.FC = () => {
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [confType, setConfType] = useState<number>(1);
+  const access = useAccess();
   /**
    * 添加节点
    *
@@ -99,16 +101,19 @@ const ConfList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="id"
-          onClick={() => {
-            setCurrentRow(record);
-            setConfType(record.confType);
-            handleUpdateModalVisible(true);
-          }}
-        >
-          编辑
-        </a>,
+        <Access accessible={access.hashPre('conf.update')}>
+          <a
+            key="id"
+            onClick={() => {
+              setCurrentRow(record);
+              setConfType(record.confType);
+              handleUpdateModalVisible(true);
+            }}
+          >
+            编辑
+          </a>
+        </Access>
+        ,
       ],
     },
   ];
@@ -125,15 +130,18 @@ const ConfList: React.FC = () => {
         request={pageConf}
         columns={columns}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalVisible(true);
-            }}
-          >
-            <PlusOutlined /> 新建
-          </Button>,
+          <Access accessible={access.hashPre('conf.update')}>
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                handleModalVisible(true);
+              }}
+            >
+              <PlusOutlined /> 新建
+            </Button>
+          </Access>
+          ,
         ]}
       />
       <ModalForm
@@ -168,7 +176,7 @@ const ConfList: React.FC = () => {
           label="配置类型"
           initialValue={1}
           fieldProps={{
-            onChange:(value)=>{
+            onChange: (value) => {
               setConfType(value);
             }
           }}
@@ -202,9 +210,9 @@ const ConfList: React.FC = () => {
           ]}
         />
         {confType == 1 && <ProFormText
-        fieldProps={{
-          type: 'number',
-        }}
+          fieldProps={{
+            type: 'number',
+          }}
           name="confData"
           label="配置参数"
           rules={[
@@ -214,7 +222,7 @@ const ConfList: React.FC = () => {
             },
           ]}
         />}
-          {confType == 2 && <ProFormText
+        {confType == 2 && <ProFormText
           name="confData"
           label="配置参数"
           rules={[
@@ -224,12 +232,12 @@ const ConfList: React.FC = () => {
             },
           ]}
         />}
-          {confType == 3 && <ProFormSelect
+        {confType == 3 && <ProFormSelect
           name="confData"
           label="配置参数"
           valueEnum={{
-            'true':'是',
-            'false':'否',
+            'true': '是',
+            'false': '否',
           }}
           rules={[
             {
@@ -238,7 +246,7 @@ const ConfList: React.FC = () => {
             },
           ]}
         />}
-          {confType == 4 && <ProFormTextArea
+        {confType == 4 && <ProFormTextArea
           name="confData"
           label="配置参数"
           rules={[
@@ -267,9 +275,9 @@ const ConfList: React.FC = () => {
           destroyOnClose: true,
         }}
         initialValues={currentRow}
-        onVisibleChange={(value)=>{
+        onVisibleChange={(value) => {
           handleUpdateModalVisible(value);
-          if(!value){
+          if (!value) {
             setConfType(1);
           }
         }}
@@ -291,7 +299,7 @@ const ConfList: React.FC = () => {
           label="配置类型"
           initialValue={1}
           fieldProps={{
-            onChange:(value)=>{
+            onChange: (value) => {
               setConfType(value);
             }
           }}
@@ -325,9 +333,9 @@ const ConfList: React.FC = () => {
           ]}
         />
         {confType == 1 && <ProFormText
-        fieldProps={{
-          type: 'number',
-        }}
+          fieldProps={{
+            type: 'number',
+          }}
           name="confData"
           label="配置参数"
           rules={[
@@ -337,7 +345,7 @@ const ConfList: React.FC = () => {
             },
           ]}
         />}
-          {confType == 2 && <ProFormText
+        {confType == 2 && <ProFormText
           name="confData"
           label="配置参数"
           rules={[
@@ -347,12 +355,12 @@ const ConfList: React.FC = () => {
             },
           ]}
         />}
-          {confType == 3 && <ProFormSelect
+        {confType == 3 && <ProFormSelect
           name="confData"
           label="配置参数"
           valueEnum={{
-            'true':'是',
-            'false':'否',
+            'true': '是',
+            'false': '否',
           }}
           rules={[
             {
@@ -361,7 +369,7 @@ const ConfList: React.FC = () => {
             },
           ]}
         />}
-          {confType == 4 && <ProFormTextArea
+        {confType == 4 && <ProFormTextArea
           name="confData"
           label="配置参数"
           rules={[
