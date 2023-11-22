@@ -127,8 +127,8 @@ const RoleList: React.FC = () => {
           <a
             key="id"
             onClick={() => {
-              if (record.roleKey == 'admin') {
-                message.error('不能修改管理员角色！');
+              if (record.roleKey == 'admin' || record.roleKey == 'default_role') {
+                message.error('不允许修改的系统角色！');
               } else {
                 roleResourceIds({ roleId: record.id }).then((res) => {
                   setCurrentRowSelect(res.data)
