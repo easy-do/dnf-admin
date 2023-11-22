@@ -20,7 +20,7 @@ public class AccountsManager extends ServiceImpl<AccountsMapper, Accounts> {
         return QueryChain.of(getMapper())
                 .select(ACCOUNTS.ALL_COLUMNS)
                 .from(ACCOUNTS)
-                .where(ACCOUNTS.ACCOUNTNAME.ge(userName))
+                .where(ACCOUNTS.ACCOUNTNAME.eq(userName))
                 .one();
     }
 }
