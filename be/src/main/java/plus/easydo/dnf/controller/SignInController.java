@@ -2,7 +2,6 @@ package plus.easydo.dnf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.hutool.core.bean.BeanUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +45,6 @@ public class SignInController {
         return DataResult.ok(signInService.pcCharacSign(characNo));
     }
 
-    @SaCheckRole("admin")
     @SaCheckPermission("signIn")
     @PostMapping("/page")
     public R<List<DaSignInConf>> signInPage(@RequestBody DaSignInConfQo daSignInConfQo){
