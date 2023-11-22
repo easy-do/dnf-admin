@@ -10,9 +10,11 @@ import cn.hutool.core.lang.tree.parser.NodeParser;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import plus.easydo.dnf.constant.SystemConstant;
 import plus.easydo.dnf.dto.AuthRoleResourceDto;
 import plus.easydo.dnf.entity.DaRole;
 import plus.easydo.dnf.entity.DaRoleResource;
+import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.service.IDaResourceService;
 import plus.easydo.dnf.entity.DaResource;
 import plus.easydo.dnf.mapper.DaResourceMapper;
@@ -24,6 +26,7 @@ import plus.easydo.dnf.service.IDaUserRoleService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static plus.easydo.dnf.entity.table.DaResourceTableDef.DA_RESOURCE;
 
@@ -45,6 +48,13 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
 
     @Override
     public boolean authRoleResource(AuthRoleResourceDto authRoleResourceDto) {
+        DaRole role = roleService.getById(authRoleResourceDto.getRoleId());
+        if(Objects.isNull(role)){
+            throw new BaseException("角色不存在");
+        }
+        if(role.getRoleKey().equals(SystemConstant.ADMIN_ROLE)){
+            throw new BaseException("不允许修改系统管理员");
+        }
         ArrayList<DaRoleResource> entityList = new ArrayList<>();
         Long roleId = authRoleResourceDto.getRoleId();
         List<Long> resourceIds = authRoleResourceDto.getResourceIds();
@@ -113,7 +123,6 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
             return ListUtil.empty();
         }
         TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
-//        treeNodeConfig.setNameKey("label");
         NodeParser<DaResource, Long> nodeParser = (daResource, treeNode) -> {
             treeNode.setId(daResource.getId());
             treeNode.setParentId(daResource.getParentId());
@@ -121,8 +130,7 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
             treeNode.setWeight(daResource.getOrderNumber());
             treeNode.putExtra("path", daResource.getResourcePath());
         };
-        Long min = resourceList.stream().min((a, b) -> (int) (a.getParentId() - b.getParentId())).get().getParentId();
-        return TreeUtil.build(resourceList, min, treeNodeConfig, nodeParser);
+        return TreeUtil.build(resourceList, 0L, treeNodeConfig, nodeParser);
     }
 
      /**
