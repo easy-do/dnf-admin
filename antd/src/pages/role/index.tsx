@@ -72,7 +72,11 @@ const RoleList: React.FC = () => {
     const hide = message.loading('正在配置');
 
     try {
-      await authRoleResource(values);
+      const resourceIds = [];
+      values?.resourceIds.map((v,i)=>{
+        resourceIds.push(v.value);
+      })
+      await authRoleResource({roleId:values?.roleId,resourceIds:resourceIds});
       hide();
       message.success('配置成功');
       actionRef.current?.reload();
@@ -292,13 +296,10 @@ const RoleList: React.FC = () => {
           initialValue={currentRowSelect}
           fieldProps={{
             treeCheckable: true,
-            suffixIcon: null,
-            filterTreeNode: true,
-            showSearch: true,
+            treeCheckStrictly:true,
             labelInValue: false,
             autoClearSearchValue: true,
             multiple: true,
-            treeNodeFilterProp: 'name',
             fieldNames: {
               label: 'name',
               value: 'id',
