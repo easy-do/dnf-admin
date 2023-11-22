@@ -7,6 +7,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plus.easydo.dnf.entity.DaUserRole;
+import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.qo.DaRoleQo;
 import plus.easydo.dnf.service.IDaRoleService;
 import plus.easydo.dnf.entity.DaRole;
@@ -64,7 +65,7 @@ public class DaRoleServiceImpl extends ServiceImpl<DaRoleMapper, DaRole> impleme
     }
 
     @Override
-    public void bindUserRole(Long userId, String roleKey) {
+    public void bindingUserRole(Long userId, String roleKey) {
         DaRole role = getByRoleKey(roleKey);
         if(Objects.nonNull(role)){
             DaUserRole entity = new DaUserRole();
@@ -82,5 +83,19 @@ public class DaRoleServiceImpl extends ServiceImpl<DaRoleMapper, DaRole> impleme
                 .and(DA_ROLE.IS_DEFAULT.eq(daRoleQo.getIsDefault()))
                 .and(DA_ROLE.REMARK.like(daRoleQo.getRemark()));
         return page(new Page<>(daRoleQo.getCurrent(),daRoleQo.getPageSize()),query);
+    }
+
+    @Override
+    public void bindingDefaultRole(Long uid) {
+        QueryWrapper query = query().and(DA_ROLE.IS_DEFAULT.eq(true));
+        DaRole defaultRole = getOne(query);
+        if(Objects.nonNull(defaultRole)){
+            DaUserRole entity = new DaUserRole();
+            entity.setUserId(uid);
+            entity.setRoleId(defaultRole.getId());
+            userRoleService.save(entity);
+        }else {
+            throw new BaseException("没有找到默认角色");
+        }
     }
 }

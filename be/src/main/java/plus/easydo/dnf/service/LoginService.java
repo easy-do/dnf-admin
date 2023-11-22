@@ -56,9 +56,12 @@ public class LoginService {
         if (CharSequenceUtil.equals(md5Password, accounts.getPassword())) {
             boolean userNameIsAdmin = loginDto.getUserName().equals(adminUser);
             List<String> roles = roleService.userRoleCodes(accounts.getUid());
+            if(roles.isEmpty()){
+                roleService.bindingDefaultRole(accounts.getUid());
+            }
             boolean roleInAdmin = roles.contains(ADMIN_ROLE);
             if(userNameIsAdmin && !roleInAdmin){
-                roleService.bindUserRole(accounts.getUid(),ADMIN_ROLE);
+                roleService.bindingUserRole(accounts.getUid(),ADMIN_ROLE);
             }
             boolean isAdmin =  userNameIsAdmin || roleInAdmin;
             accounts.setAdmin(isAdmin);

@@ -21,7 +21,9 @@ public interface IDaRoleService extends IService<DaRole> {
     List<String> userRoleCodes(Long userId);
     List<String> userRoleCodes();
 
-    void bindUserRole(Long userId, String roleName);
+    void bindingUserRole(Long userId, String roleName);
 
     Page<DaRole> pageRole(DaRoleQo daRoleQo);
+
+    void bindingDefaultRole(Long uid);
 }
