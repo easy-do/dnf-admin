@@ -7,6 +7,7 @@ import styles from './style.less';
 import { roleList } from '@/services/dnf-admin/gameRoleController';
 // import {exec} from 'child_process';
 import { spawn } from 'node:child_process'
+import { getGameToken } from '@/services/dnf-admin/gameToolController';
 
 const PageHeaderContent: FC<{ currentUser: API.CurrentUser}> = ({ currentUser }) => {
 
@@ -56,8 +57,11 @@ const Home: React.FC = () => {
 
   const startGame = () => {
     const client = window.daGameClient;
-    console.log(client)
-    client.startGame()
+    const path = localStorage.getItem('daClientPath');
+    getGameToken().then((res)=>{
+      const args = (path+' '+res.data)
+      client.startGame(args)
+    })
    }
 
   return (

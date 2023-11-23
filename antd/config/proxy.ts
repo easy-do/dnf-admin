@@ -7,7 +7,8 @@
  * https://pro.ant.design/docs/deploy
  */
  const serveUrlMap = {
-  dev: 'http://da.easydo.plus',
+  // dev: 'http://da.easydo.plus',
+  dev: 'http://localhost:8888',
   pre: 'http://da.easydo.plus',
   test: 'http://da.easydo.plus',
   idc: 'http://da.easydo.plus',
