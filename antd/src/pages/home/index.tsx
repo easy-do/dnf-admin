@@ -55,14 +55,9 @@ const Home: React.FC = () => {
   const { loading: roleLoading, data: roleListData = [] } = useRequest(roleList);
 
   const startGame = () => {
-    // console.log(spawn)
-    // try{
-      const nodeCmd = require('node-cmd');
-      nodeCmd.run('D:\RunningCheeseChrome\App\chrome.exe');
-    // }catch(err){
-    //   message.error(''+err)
-    // }
-
+    const client = window.daGameClient;
+    console.log(client)
+    client.startGame()
    }
 
   return (

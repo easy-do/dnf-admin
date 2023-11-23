@@ -135,6 +135,7 @@ const Login: React.FC = () => {
          onVisibleChange={handlerSettingModal}
          onFinish={(values)=>{
           localStorage.setItem('daCustomUrl',values.daCustomUrl);
+          localStorage.setItem('daClientPath',values.daClientPath);
           message.success('配置成功');
           handlerSettingModal(false);
          }}
@@ -145,6 +146,12 @@ const Login: React.FC = () => {
            label="服务地址"
            initialValue={localStorage.getItem('daCustomUrl')}
            placeholder={'http://localhost:8888'}
+          />
+          <ProFormText           
+           name="daClientPath"
+           label="客户端地址"
+           initialValue={localStorage.getItem('daClientPath')}
+           placeholder={'示例:D:\dnf\dnf.exe'}
           />
         </ModalForm>
       </div>

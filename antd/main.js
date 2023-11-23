@@ -1,26 +1,41 @@
 const {
     app,
-    BrowserWindow
+    BrowserWindow,
+    ipcMain
   } = require('electron')
   const path = require('path')
   const url = require('url')
+  const exec = require( 'child_process').exec
   
   // Keep a global reference of the window object, if you don't, the window will
   // be closed automatically when the JavaScript object is garbage collected.
   let win
   
   function createWindow() {
+    ipcMain.handle('startGame',()=>{
+      const token = '123123';
+      // let path = localStorage.getItem('daClientPath');
+      return new Promise((resolve,reject)=>{
+          exec("ls" + ' ' + token,(err,stdout,stderr)=>{
+            if (err) {
+              reject(err)
+              return
+            }
+            resolve(stdout)})
+        })
+    })
     // Create the browser window.
     win = new BrowserWindow({
-      width: 1920,
-      height: 1080,
+      width: 960,
+      height: 540,
       webPreferences: {
-        webSecurity: false
+        webSecurity: false,
+        preload: path.join(__dirname, 'preload.js')
       }
     })
     
     // 生产环境
-    win.loadURL(path.join('file://', __dirname, 'dist/index.html'))
+    // win.loadURL(path.join('file://', __dirname, 'dist/index.html'))
     // 本地环境
     // win.loadURL('https://da.easydo.plus');
     win.loadURL('http://localhost:8000');

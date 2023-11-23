@@ -15,7 +15,8 @@ const {
       width: 1920,
       height: 1080,
       webPreferences: {
-        webSecurity: false
+        webSecurity: false,
+        preload: path.join(__dirname, 'preload.js')
       }
     })
     // 生产环境
