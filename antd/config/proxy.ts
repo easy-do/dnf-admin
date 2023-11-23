@@ -6,12 +6,22 @@
  * For details, please see
  * https://pro.ant.design/docs/deploy
  */
+ const serveUrlMap = {
+  dev: 'http://da.easydo.plus',
+  pre: 'http://da.easydo.plus',
+  test: 'http://da.easydo.plus',
+  idc: 'http://da.easydo.plus',
+};
+
+const { SERVE_ENV = 'dev' } = process.env;
+
 export default {
   dev: {
     // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
     '/api/': {
       // 要代理的地址
-      target: 'http://localhost:8888',
+      // target: 'https://da.easydo.plus',
+      target: serveUrlMap[SERVE_ENV],
       // 配置了这个可以从 http 代理到 https
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,
@@ -19,7 +29,7 @@ export default {
   },
   test: {
     '/api/': {
-      target: 'http://localhost:8888',
+      target: serveUrlMap[SERVE_ENV],
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },

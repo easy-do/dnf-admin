@@ -1,7 +1,7 @@
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { SettingDrawer } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import type { RunTimeLayoutConfig } from 'umi';
+import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
@@ -11,6 +11,24 @@ import defaultSettings from '../config/defaultSettings';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+
+const updateUrlInterceptor = (url: string, options: any) => {
+  let authHeader = {};
+  const daCustomUrl = localStorage.getItem('daCustomUrl');
+  if(daCustomUrl){
+    url = daCustomUrl + url
+    authHeader = { Authorization: localStorage.getItem('Authorization') };
+  }
+  return {
+    url: `${url}`,
+    options: { ...options, interceptors: true, headers: authHeader},
+  };
+};
+
+export const request: RequestConfig = {
+  // 新增处理请求地址的请求前拦截器
+  requestInterceptors: [updateUrlInterceptor],
+};
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {

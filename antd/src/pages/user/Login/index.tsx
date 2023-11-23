@@ -1,7 +1,7 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { message, Tabs } from 'antd';
+import { LockOutlined, SettingTwoTone, UserOutlined } from '@ant-design/icons';
+import { message, Space, Tabs } from 'antd';
 import React, { useState } from 'react';
-import { ProFormText, LoginForm } from '@ant-design/pro-form';
+import { ProFormText, LoginForm, ModalForm } from '@ant-design/pro-form';
 import { useIntl, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import Footer from '@/components/Footer';
 import { login } from '@/services/dnf-admin/userController';
@@ -12,6 +12,7 @@ import styles from './index.less';
 const Login: React.FC = () => {
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
+  const [settingModal, handlerSettingModal] = useState<boolean>(false);
 
   const intl = useIntl();
 
@@ -29,6 +30,7 @@ const Login: React.FC = () => {
     // 登录
     const res = await login({ ...values });
     if (res.success) {
+      localStorage.setItem('Authorization',res.data);
       const defaultLoginSuccessMessage = intl.formatMessage({
         id: 'pages.login.success',
         defaultMessage: '登录成功！',
@@ -60,6 +62,12 @@ const Login: React.FC = () => {
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginDto);
           }}
+          actions={
+            <Space>
+              服务设置
+              <SettingTwoTone onClick={()=>handlerSettingModal(true)}/>
+            </Space>
+          }
         >
           <Tabs activeKey={type} onChange={setType}>
             <Tabs.TabPane
@@ -118,6 +126,27 @@ const Login: React.FC = () => {
             />
           </>
         </LoginForm>
+        <ModalForm
+                modalProps={{
+                  destroyOnClose: true,
+                }}
+                title="服务配置"
+         visible={settingModal}
+         onVisibleChange={handlerSettingModal}
+         onFinish={(values)=>{
+          localStorage.setItem('daCustomUrl',values.daCustomUrl);
+          message.success('配置成功');
+          handlerSettingModal(false);
+         }}
+         
+        >
+          <ProFormText           
+           name="daCustomUrl"
+           label="服务地址"
+           initialValue={localStorage.getItem('daCustomUrl')}
+           placeholder={'http://localhost:8888'}
+          />
+        </ModalForm>
       </div>
       <Footer />
     </div>

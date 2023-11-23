@@ -121,4 +121,8 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
+  history: {
+     type: 'hash',
+   },
+   publicPath: './',
 });

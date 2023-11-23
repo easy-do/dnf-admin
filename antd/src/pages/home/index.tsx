@@ -1,13 +1,12 @@
 import type { FC } from 'react';
-import { Avatar, Card, Skeleton, Row, Statistic } from 'antd';
+import { Skeleton, Row, Statistic, Button, message } from 'antd';
 
-import { Link, useRequest,useModel } from 'umi';
+import { useRequest,useModel } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
-import moment from 'moment';
 import styles from './style.less';
-import { queryProjectNotice} from './service';
 import { roleList } from '@/services/dnf-admin/gameRoleController';
-
+// import {exec} from 'child_process';
+import { spawn } from 'node:child_process'
 
 const PageHeaderContent: FC<{ currentUser: API.CurrentUser}> = ({ currentUser }) => {
 
@@ -55,6 +54,17 @@ const Home: React.FC = () => {
 
   const { loading: roleLoading, data: roleListData = [] } = useRequest(roleList);
 
+  const startGame = () => {
+    // console.log(spawn)
+    // try{
+      const nodeCmd = require('node-cmd');
+      nodeCmd.run('D:\RunningCheeseChrome\App\chrome.exe');
+    // }catch(err){
+    //   message.error(''+err)
+    // }
+
+   }
+
   return (
     <PageContainer
       content={
@@ -64,6 +74,7 @@ const Home: React.FC = () => {
       }
       extraContent={<ExtraContent />}
     >
+      <Button onClick={startGame}>DNF,启动!</Button>
       <Row gutter={24}>
           {/* <Card
             className={styles.projectList}

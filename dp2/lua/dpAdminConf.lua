@@ -91,8 +91,8 @@ end
 
 DpAdminConf.flushedConf = function()
     local adminResult = dpReport.run('get_conf', 'ping');
-    logger.info("dp flushedConf: %s", json.encode(adminResult.value))
     if adminResult ~= nil then
+        logger.info("dp flushedConf: %s", json.encode(adminResult.value))
         for i, v in ipairs(adminResult.value) do
             local key = v.confKey;
             local confType = v.confType;
