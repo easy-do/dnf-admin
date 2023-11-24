@@ -5,7 +5,7 @@ import { Access, useAccess, useModel } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './style.less';
 import { roleList } from '@/services/dnf-admin/gameRoleController';
-import { getGameToken, restartAdmin, restartDb, restartServer } from '@/services/dnf-admin/gameToolController';
+import { generateKeyPem, getGameToken, restartAdmin, restartDb, restartServer } from '@/services/dnf-admin/gameToolController';
 import ProList from '@ant-design/pro-list';
 
 const PageHeaderContent: FC<{ currentUser: API.CurrentUser}> = ({ currentUser }) => {
@@ -84,6 +84,11 @@ const Home: React.FC = () => {
       message.success(res.message)
     })
   }
+  const generateKey = ()=> {
+    generateKeyPem().then((res)=>{
+      message.success(res.message)
+    })
+  }
 
 
    const ExtraContent: FC<Record<string, any>> = () => (
@@ -102,6 +107,11 @@ const Home: React.FC = () => {
       <Access accessible={access.hashPre('tool.restartDa')}>
       <div className={styles.statItem}>
         <Button size='large' type='primary' onClick={restartDa}>重启后台</Button>
+      </div>
+      </Access>
+      <Access accessible={access.hashPre('tool.generateKeyPem')}>
+      <div className={styles.statItem}>
+        <Button size='large' type='primary' onClick={generateKey}>更换密钥</Button>
       </div>
       </Access>
       <div className={styles.statItem}>

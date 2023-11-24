@@ -57,28 +57,28 @@ public class GameToolController {
         RSAUtils.generatePemFile(CacheManager.GAME_CONF_MAP.get(SystemConstant.PEM_PATH).getConfData());
         restartServer();
         CompletableFuture.runAsync(this::restartAdmin);
-        return DataResult.ok();
+        return DataResult.okMsg("生成密钥完成,将重启服务端和后台.");
     }
 
     @SaCheckPermission("tool.restartServer")
     @GetMapping("/restartServer")
     public R<String> restartServer() {
-        String rs = RuntimeUtil.execForStr(CacheManager.GAME_CONF_MAP.get(SystemConstant.RESTART_SERVER).getConfData());
-        return DataResult.ok(rs);
+        RuntimeUtil.execForStr(CacheManager.GAME_CONF_MAP.get(SystemConstant.RESTART_SERVER).getConfData());
+        return DataResult.okMsg("重启命令执行完成.");
     }
 
     @SaCheckPermission("tool.restartDb")
     @GetMapping("/restartDb")
     public R<String> restartDb() {
-        String rs = RuntimeUtil.execForStr(CacheManager.GAME_CONF_MAP.get(SystemConstant.RESTART_DB).getConfData());
-        return DataResult.ok(rs);
+        RuntimeUtil.execForStr(CacheManager.GAME_CONF_MAP.get(SystemConstant.RESTART_DB).getConfData());
+        return DataResult.okMsg("重启数据库命令执行完成.");
     }
 
     @SaCheckPermission("tool.restartDa")
     @GetMapping("/restartDa")
     public R<String> restartAdmin() {
         CompletableFuture.runAsync(()->RuntimeUtil.exec(CacheManager.GAME_CONF_MAP.get(SystemConstant.RESTART_DA).getConfData()));
-        return DataResult.ok();
+        return DataResult.okMsg("重启后台命令执行完成,请注意刷新网页.");
     }
 
     @SaCheckPermission("tool.recharge")
@@ -111,11 +111,9 @@ public class GameToolController {
     @SaCheckLogin
     @GetMapping("/getGameToken")
     public R<String> getGameToken() {
-        // 得到待加密的用户标识
         String data = String.format("%08x0101010101010101010101010101010101010101010101010101010101010101559145100" +
                 "10403030101", StpUtil.getLoginIdAsLong());
-        // 加密计算出用户授权Key
-        String privateKey = RSAUtils.privateKeyContentByPath("E:\\buhui70\\privatekey.pem");
+        String privateKey = RSAUtils.privateKeyContentByPath(CacheManager.GAME_CONF_MAP.get(SystemConstant.PEM_PATH).getConfData());
         String token = RSAUtils.encryptByPrivateKey(data, privateKey);
         return DataResult.ok(token);
     }

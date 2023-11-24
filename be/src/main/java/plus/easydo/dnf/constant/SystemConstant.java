@@ -20,7 +20,9 @@ public class SystemConstant {
     public static final String RESTART_DA = "da_restart_da";
     public static final String COPY_DP2 = "da_copy_dp2";
     public static final String DP2_PATH = "da_dp2_path";
-
-
+    public static final String RSA_PRIVATE_KEY = "PRIVATE KEY";
+    public static final String RSA_PUBLIC_KEY = "PUBLIC KEY";
+    public static final String PRIVATE_KEY_PEM = "privatekey.pem";
+    public static final String PUBLIC_KEY_PEM = "publickey.pem";
 
 }

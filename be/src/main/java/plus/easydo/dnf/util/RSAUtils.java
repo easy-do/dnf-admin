@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import plus.easydo.dnf.constant.SystemConstant;
 import plus.easydo.dnf.exception.BaseException;
 
 import javax.crypto.Cipher;
@@ -31,10 +32,9 @@ import java.security.spec.PKCS8EncodedKeySpec;
 @Slf4j
 public class RSAUtils {
 
-    private static final String RSA_PRIVATE_KEY = "PRIVATE KEY";
-    private static final String RSA_PUBLIC_KEY = "PUBLIC KEY";
-    private static final String PRIVATE_KEY_PEM = "privatekey.pem";
-    private static final String PUBLIC_KEY_PEM = "publickey.pem";
+    private RSAUtils() {
+    }
+
 
     /**
      * 生成秘钥对
@@ -45,7 +45,7 @@ public class RSAUtils {
      */
     public static Pem generateKey() {
         RSA rsa = new RSA(AsymmetricAlgorithm.RSA.getValue());
-       return Pem.builder().privateKey(rsa.getPrivateKeyBase64()).publicKey(rsa.getPublicKeyBase64()).build();
+        return Pem.builder().privateKey(rsa.getPrivateKeyBase64()).publicKey(rsa.getPublicKeyBase64()).build();
     }
 
     /**
@@ -58,8 +58,8 @@ public class RSAUtils {
     public static Pem generateKeyPem() {
         RSA rsa = new RSA(AsymmetricAlgorithm.RSA.getValue());
         return Pem.builder()
-                .privateKey(PemUtil.toPem(RSA_PRIVATE_KEY,rsa.getPrivateKey().getEncoded()))
-                .publicKey(PemUtil.toPem(RSA_PUBLIC_KEY,rsa.getPublicKey().getEncoded()))
+                .privateKey(PemUtil.toPem(SystemConstant.RSA_PRIVATE_KEY, rsa.getPrivateKey().getEncoded()))
+                .publicKey(PemUtil.toPem(SystemConstant.RSA_PUBLIC_KEY, rsa.getPublicKey().getEncoded()))
                 .build();
     }
 
@@ -72,35 +72,38 @@ public class RSAUtils {
      */
     public static void generatePemFile(String path) {
         Pem pem = generateKeyPem();
-        writePrivateKeyByPath(path + PRIVATE_KEY_PEM, pem);
-        writePublicKeyByPath(path + PUBLIC_KEY_PEM, pem);
+        if (!path.endsWith(FileUtil.FILE_SEPARATOR)) {
+            path = path + FileUtil.FILE_SEPARATOR;
+        }
+        writePrivateKeyByPath(path + SystemConstant.PRIVATE_KEY_PEM, pem);
+        writePublicKeyByPath(path + SystemConstant.PUBLIC_KEY_PEM, pem);
     }
 
     /**
      * 向指定路径写入公钥信息
      *
      * @param path path
-     * @param pem pem
+     * @param pem  pem
      * @return void
      * @author laoyu
      * @date 2023-11-24
      */
-    public static void writePublicKeyByPath(String path, Pem pem){
+    private static void writePublicKeyByPath(String path, Pem pem) {
         File file = FileUtil.file(path);
-        FileUtil.writeString(pem.getPublicKey(),file, CharsetUtil.defaultCharset());
+        FileUtil.writeString(pem.getPublicKey(), file, CharsetUtil.defaultCharset());
     }
 
     /**
      * 向指定路径写入私钥内容
      *
      * @param path path
-     * @param pem pem
+     * @param pem  pem
      * @author laoyu
      * @date 2023-11-24
      */
-    public static void writePrivateKeyByPath(String path, Pem pem){
+    private static void writePrivateKeyByPath(String path, Pem pem) {
         File file = FileUtil.file(path);
-        FileUtil.writeString(pem.getPrivateKey(),file, CharsetUtil.defaultCharset());
+        FileUtil.writeString(pem.getPrivateKey(), file, CharsetUtil.defaultCharset());
     }
 
 
@@ -112,8 +115,11 @@ public class RSAUtils {
      * @author laoyu
      * @date 2023-11-22
      */
-    public static String privateKeyContentByPath(String path){
-        File file = FileUtil.file(path);
+    public static String privateKeyContentByPath(String path) {
+        if (!path.endsWith(FileUtil.FILE_SEPARATOR)) {
+            path = path + FileUtil.FILE_SEPARATOR;
+        }
+        File file = FileUtil.file(path + SystemConstant.PRIVATE_KEY_PEM);
         PrivateKey privateKey = PemUtil.readPemPrivateKey(FileUtil.getInputStream(file));
         return KeyUtil.toBase64(privateKey);
     }
@@ -122,7 +128,7 @@ public class RSAUtils {
     /**
      * 私钥加密
      *
-     * @param data data
+     * @param data       data
      * @param privateKey privateKey
      * @return java.lang.String
      * @author laoyu
@@ -133,12 +139,12 @@ public class RSAUtils {
             Cipher cipher = Cipher.getInstance(AsymmetricAlgorithm.RSA.getValue());
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.decode(privateKey));
             KeyFactory keyFactory = KeyFactory.getInstance(AsymmetricAlgorithm.RSA.getValue());
-            RSAPrivateKey key =  (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
+            RSAPrivateKey key = (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] bytes = cipher.doFinal(HexUtil.decodeHex(data));
             return Base64.encode(bytes);
         } catch (Exception e) {
-            throw new BaseException("获取token失败:"+ ExceptionUtil.getMessage(e));
+            throw new BaseException("获取token失败:" + ExceptionUtil.getMessage(e));
         }
     }
 
