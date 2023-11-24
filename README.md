@@ -7,13 +7,13 @@
 欢迎感兴趣的同学加入贡献代码，本项目保证一直开源，不会进行停更、闭源收费等操作，但不保证以后不会加入广告，哈哈，毕竟为爱发电。
 - 演示视频: 其他说明.txt
 
+- 1.0.2版本现已发布，推荐升级体验
 - 演示地址： https://da.easydo.plus/
-- 账号: demo 
-- 密码: 123456789
+
 
 #### 软件架构
 - 服务端：spring boot + mybatisflex + sa-token
-- 前端：React Semi Admin
+- 前端：ANTD PRO
 - dp插件：2.8.2集成frida通信
 
 #### 特色功能
@@ -59,7 +59,13 @@
 - 支持掉落时随机赋予红字的装备最低等级-2023.11.11
 - 修复绝望之塔金币异常-2023.11.11
 - 支持读取pvf文件自动导入物品数据-2023.11.12
-
+- 支持系统页面重构、支持桌面端-2023.11.25
+- 支持角色管理、菜单授权-2023.11.25
+- 支持重启后台、数据库、服务端-2023.11.25
+- 支持自动生成和替换密钥-2023.11.25
+- 支持注册账号-2023.11.25
+- 支持一键登录,免去集成其他登陆器-2023.11.25
+- 
 #### docker服务端加后台一键部署教程
 
 - 视频教程：
@@ -67,7 +73,7 @@
 
 - 整体流程为下载 docker-compose.yaml  编辑环境变量、启动容器编排
 
-- 克隆代码 如果服务器git需要安装一下，以centos为例
+- 克隆代码 如果服务器没有git需要安装一下，以centos为例
 ```shell
 yum install git -y
 ```
@@ -184,7 +190,7 @@ http://ip:8888 # 请使用游戏注册的账号密码登录，管理员为第一
 ```shell
 cd /root/dnf-admin
 # 编辑docker-compose.yaml，一般在第59行 将registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0 修改为 registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
-docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.2
 docker rm -f dnfadmin
 docker-compose up dnfadmin -d
 docker restart dnfserver
@@ -194,7 +200,7 @@ docker restart dnfserver
 
 ```shell
 cd /root/dnf-admin
-docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+docker-compose pull 
 docker rm -f dnfadmin
 docker-compose up dnfadmin -d
 docker restart dnfserver
@@ -207,7 +213,7 @@ docker-compose stop
 docker-compose rm -f
 rm -rf /data/dnf/*
 docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfmysql:5.6
-docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.2
 docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfserver:latest
 ```
 
@@ -219,8 +225,7 @@ MYSQL_HOST #游戏数据库ip 默认 dnfmysql
 MYSQL_PORT #游戏数据库端口 默认 3306
 MYSQL_PASS 3游戏数据库密码 默认 88888888
 ADMIN_USER 3超级管理员对应的游戏账号 默认123456789
-DP_GM_KEY #与dp插件通信的安全密钥 默认123456789
-PVF_PATH #服务端读取pvf文件的路径，默认 /data/server/data/Script.pvf 
+DP_GM_KEY #与dp插件通信的安全密钥 默认123456789 
 ```
 - 后台端口默认为 8888 使用游戏的账号密码登录
 - 其他教程待补充
@@ -277,14 +282,14 @@ LD_PRELOAD=/lib/libdp2pre.so ./df_game_r siroco52 start &
 - docker run -dit  -e MYSQL_HOST=你的数据库ip  -e MYSQL_PORT=数据库端口 -e MYSQL_USER=数据库账号 -e MYSQL_PASS=数据库密码 -e ADMIN_USER=超级管理员游戏账号(游戏的账号) -e DP_GM_KEY=与后台的通讯密钥 -p 后台的端口号:8888 --name dnf-admin registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0
 - 例如:
 ```shell 
-docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
-docker run -dit  -e MYSQL_HOST=127.0.0.1  -e MYSQL_PORT=3306 -e MYSQL_USER=game -e MYSQL_PASS=uu5!^%jg -e ADMIN_USER=123456789 -e DP_GM_KEY=123456789 -p 8888:8888 --name dnf-admin registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.2
+docker run -dit  -e MYSQL_HOST=127.0.0.1  -e MYSQL_PORT=3306 -e MYSQL_USER=game -e MYSQL_PASS=uu5!^%jg -e ADMIN_USER=123456789 -e DP_GM_KEY=123456789 -p 8888:8888 --name dnfadmin registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.2
 ```
 
 - 查看后台日志
 
 ```shell
-docker logs -f dnf-admin
+docker logs -f dnfadmin
 ```
 
 - 访问后台
@@ -294,18 +299,18 @@ http://服务器ip:8888     使用游戏的账号密码登录，超管权限账�
 
 - 升级后台
 ```shell
-docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
-docker rm -f dnf-admin
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.2
+docker rm -f dnfadmin
 # 这里在执行一遍你之前的启动命令
 ```
 - 重启后台
 ```shell
-docker restart dnf-admin
+docker restart dnfadmin
 ```
 - 卸载后台
 ```shell
-docker rm -f dnf-admin
-docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
+docker rm -f dnfadmin
+docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.2
 ```
 
 #### 参与贡献
@@ -315,7 +320,7 @@ docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
 3.  提交代码
 4.  新建 Pull Request
 
-#### 反馈相关共呢个
+#### 反馈相关
 1.  在仓库提交is
 2.  在群内找我反馈
 3.  提供使用的dp功能代码，我来集成实现
