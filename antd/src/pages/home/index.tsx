@@ -1,13 +1,12 @@
-import type { FC } from 'react';
-import { Skeleton, Row, Statistic, Button, message } from 'antd';
+import { FC, useEffect, useState } from 'react';
+import { Skeleton,  Statistic, Button, Tag, Progress } from 'antd';
 
-import { useRequest,useModel } from 'umi';
+import { useModel } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './style.less';
 import { roleList } from '@/services/dnf-admin/gameRoleController';
-// import {exec} from 'child_process';
-import { spawn } from 'node:child_process'
 import { getGameToken } from '@/services/dnf-admin/gameToolController';
+import ProList from '@ant-design/pro-list';
 
 const PageHeaderContent: FC<{ currentUser: API.CurrentUser}> = ({ currentUser }) => {
 
@@ -37,6 +36,9 @@ const PageHeaderContent: FC<{ currentUser: API.CurrentUser}> = ({ currentUser })
 const ExtraContent: FC<Record<string, any>> = () => (
   <div className={styles.extraContent}>
     <div className={styles.statItem}>
+      <Button size='large' type='primary'>DNF,启动!</Button>
+    </div>
+    <div className={styles.statItem}>
       <Statistic title="角色数" value={88} />
     </div>
     <div className={styles.statItem}>
@@ -52,8 +54,12 @@ const Home: React.FC = () => {
 
   const { initialState } = useModel('@@initialState');
 
+  const [ghost, setGhost] = useState<boolean>(false);
 
-  const { loading: roleLoading, data: roleListData = [] } = useRequest(roleList);
+  const [cardActionProps, setCardActionProps] = useState<'actions' | 'extra'>(
+    'extra',
+  );
+  
 
   const startGame = () => {
     const client = window.daGameClient;
@@ -63,6 +69,40 @@ const Home: React.FC = () => {
       client.startGame(args)
     })
    }
+   const [roleListData,setRoleListData] = useState<any>([]);
+
+   const [roleCardData,setRoleCardData] = useState<any>([]);
+
+
+   useEffect(()=>{
+    roleList({}).then((res)=>{
+      if(res.success){
+        setRoleListData(res.data)
+       const data =  res.data.map((role) => ({
+          title: role.characName,
+          subTitle: <Tag color="#5BD8A6">{role.expertJobName}</Tag>,
+          actions: [<a key="delete">详情</a>],
+          content: (
+            <div
+              style={{
+                flex: 1,
+              }}
+            >
+              <div
+                style={{
+                  width: 200,
+                }}
+              >
+                <Progress percent={role.lev} />
+              </div>
+            </div>
+          ),
+        }))
+        setRoleCardData(data)
+      }
+    })
+   },[])
+
 
   return (
     <PageContainer
@@ -73,41 +113,41 @@ const Home: React.FC = () => {
       }
       extraContent={<ExtraContent />}
     >
-      <Button onClick={startGame}>DNF,启动!</Button>
-      <Row gutter={24}>
-          {/* <Card
-            className={styles.projectList}
-            style={{ marginBottom: 24 }}
-            title="角色信息"
-            bordered={false}
-            loading={roleLoading}
-            bodyStyle={{ padding: 0 }}
-          >
-            {roleListData.map((item) => (
-              <Card.Grid className={styles.projectGrid} key={item.characNo}>
-                <Card bodyStyle={{ padding: 0 }} bordered={false}>
-                  <Card.Meta
-                    title={
-                      <div className={styles.cardTitle}>
-                        <Avatar size="small" src={item.logo} />
-                        <Link to='/singin'>{item.characName}</Link>
-                      </div>
-                    }
-                    description={item.jobName}
-                  />
-                  <div className={styles.projectItemContent}>
-                    <Link to={item.memberLink}>{item.member || ''}</Link>
-                    {item.createTime && (
-                      <span className={styles.datetime} title={item.createTime}>
-                        {moment(item.createTime).fromNow()}
-                      </span>
-                    )}
-                  </div>
-                </Card>
-              </Card.Grid>
-            ))}
-          </Card> */}
-      </Row>
+      <ProList<any>
+        ghost={ghost}
+        itemCardProps={{
+          ghost,
+        }}
+        pagination={{
+          defaultPageSize: 100,
+          showSizeChanger: false,
+        }}
+        showActions="hover"
+        rowSelection={{}}
+        grid={{ gutter: 16, column: 2 }}
+        onItem={(record: any) => {
+          return {
+            onMouseEnter: () => {
+              console.log(record);
+            },
+            onClick: () => {
+              console.log(record);
+            },
+          };
+        }}
+        metas={{
+          title: {},
+          subTitle: {},
+          type: {},
+          avatar: {},
+          content: {},
+          actions: {
+            cardActionProps,
+          },
+        }}
+        headerTitle="角色列表"
+        dataSource={roleCardData}
+      />
     </PageContainer>
   );
 };

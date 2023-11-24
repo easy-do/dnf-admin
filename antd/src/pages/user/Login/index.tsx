@@ -4,15 +4,17 @@ import React, { useState } from 'react';
 import { ProFormText, LoginForm, ModalForm } from '@ant-design/pro-form';
 import { useIntl, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import Footer from '@/components/Footer';
-import { login } from '@/services/dnf-admin/userController';
+import { login, reg } from '@/services/dnf-admin/userController';
 
 import styles from './index.less';
+import Link from 'antd/lib/typography/Link';
 
 
 const Login: React.FC = () => {
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
   const [settingModal, handlerSettingModal] = useState<boolean>(false);
+  const [regModal, handlerRegModal] = useState<boolean>(false);
 
   const intl = useIntl();
 
@@ -30,7 +32,7 @@ const Login: React.FC = () => {
     // 登录
     const res = await login({ ...values });
     if (res.success) {
-      localStorage.setItem('Authorization',res.data);
+      localStorage.setItem('Authorization', res.data);
       const defaultLoginSuccessMessage = intl.formatMessage({
         id: 'pages.login.success',
         defaultMessage: '登录成功！',
@@ -64,8 +66,8 @@ const Login: React.FC = () => {
           }}
           actions={
             <Space>
-              服务设置
-              <SettingTwoTone onClick={()=>handlerSettingModal(true)}/>
+              <Link onClick={() => handlerSettingModal(true)} >服务设置 </Link>
+              <Link onClick={() => handlerRegModal(true)} >账号注册 </Link>
             </Space>
           }
         >
@@ -127,31 +129,69 @@ const Login: React.FC = () => {
           </>
         </LoginForm>
         <ModalForm
-                modalProps={{
-                  destroyOnClose: true,
-                }}
-                title="服务配置"
-         visible={settingModal}
-         onVisibleChange={handlerSettingModal}
-         onFinish={(values)=>{
-          localStorage.setItem('daCustomUrl',values.daCustomUrl);
-          localStorage.setItem('daClientPath',values.daClientPath);
-          message.success('配置成功');
-          handlerSettingModal(false);
-         }}
-         
+          modalProps={{
+            destroyOnClose: true,
+          }}
+          title="服务配置"
+          visible={settingModal}
+          onVisibleChange={handlerSettingModal}
+          onFinish={(values) => {
+            localStorage.setItem('daCustomUrl', values.daCustomUrl);
+            localStorage.setItem('daClientPath', values.daClientPath);
+            message.success('配置成功');
+            handlerSettingModal(false);
+          }}
+
         >
-          <ProFormText           
-           name="daCustomUrl"
-           label="服务地址"
-           initialValue={localStorage.getItem('daCustomUrl')}
-           placeholder={'http://localhost:8888'}
+          <ProFormText
+            name="daCustomUrl"
+            label="服务地址"
+            initialValue={localStorage.getItem('daCustomUrl')}
+            placeholder={'http://localhost:8888'}
           />
-          <ProFormText           
-           name="daClientPath"
-           label="客户端地址"
-           initialValue={localStorage.getItem('daClientPath')}
-           placeholder={'示例:D:\dnf\dnf.exe'}
+          <ProFormText
+            name="daClientPath"
+            label="客户端地址"
+            initialValue={localStorage.getItem('daClientPath')}
+            placeholder={'示例:D:\dnf\dnf.exe'}
+          />
+        </ModalForm>
+        <ModalForm
+          modalProps={{
+            destroyOnClose: true,
+          }}
+          title="账号注册"
+          visible={regModal}
+          onVisibleChange={handlerRegModal}
+          onFinish={(values:API.RegDto)=>{
+            reg(values).then((res=>{
+              if(res.success){
+                message.success('注册成功')
+                handlerRegModal(false)
+              }
+            }))
+          }
+          }
+        >
+          <ProFormText
+            name="userName"
+            label="账户"
+            rules={[
+              {
+                required: true,
+                message: '请输入账号'
+              },
+            ]}
+          />
+          <ProFormText
+            name="password"
+            label="密码"
+            rules={[
+              {
+                required: true,
+                message: '请输入密码'
+              },
+            ]}
           />
         </ModalForm>
       </div>

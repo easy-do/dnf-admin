@@ -185,6 +185,14 @@ declare namespace API {
     signInTime?: string;
   };
 
+  type disableAccParams = {
+    uid: string;
+  };
+
+  type enableAccParams = {
+    uid: string;
+  };
+
   type getConfInfoParams = {
     id: Record<string, any>;
   };
@@ -256,6 +264,18 @@ declare namespace API {
     errorMessage?: string;
     success?: boolean;
     total?: string;
+  };
+
+  type rechargeBondsParams = {
+    type?: number;
+    uid: string;
+    count?: string;
+  };
+
+  type RegDto = {
+    userName: string;
+    password: string;
+    verificationCode?: string;
   };
 
   type RListCharacInfo = {
