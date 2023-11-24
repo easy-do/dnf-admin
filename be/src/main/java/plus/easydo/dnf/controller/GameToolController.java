@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import plus.easydo.dnf.config.SystemConfig;
 import plus.easydo.dnf.constant.SystemConstant;
 import plus.easydo.dnf.dto.SendMailDto;
 import plus.easydo.dnf.entity.DaMailSendLog;
@@ -42,7 +41,6 @@ public class GameToolController {
 
     private final AccountsService accountsService;
 
-    private final SystemConfig systemConfig;
 
 
     @SaCheckPermission("mail.sendMail")

@@ -150,10 +150,10 @@ const Login: React.FC = () => {
             placeholder={'http://localhost:8888'}
           />
           <ProFormText
-            name="daClientPath"
-            label="客户端地址"
-            initialValue={localStorage.getItem('daClientPath')}
-            placeholder={'示例:D:\dnf\dnf.exe'}
+           name="daClientPath"
+           label="客户端地址"
+           initialValue={localStorage.getItem('daClientPath')}
+           placeholder={'客户端根目录'}
           />
         </ModalForm>
         <ModalForm

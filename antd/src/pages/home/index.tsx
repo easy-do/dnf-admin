@@ -1,14 +1,16 @@
 import { FC, useEffect, useState } from 'react';
-import { Skeleton,  Statistic, Button, Tag, Progress } from 'antd';
+import { Skeleton,  Statistic, Button, Tag, Progress, message } from 'antd';
 
-import { useModel } from 'umi';
+import { Access, useAccess, useModel } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './style.less';
 import { roleList } from '@/services/dnf-admin/gameRoleController';
-import { getGameToken } from '@/services/dnf-admin/gameToolController';
+import { getGameToken, restartAdmin, restartDb, restartServer } from '@/services/dnf-admin/gameToolController';
 import ProList from '@ant-design/pro-list';
 
 const PageHeaderContent: FC<{ currentUser: API.CurrentUser}> = ({ currentUser }) => {
+
+
 
   const loading = currentUser && Object.keys(currentUser).length;
   if (!loading) {
@@ -21,7 +23,7 @@ const PageHeaderContent: FC<{ currentUser: API.CurrentUser}> = ({ currentUser })
       </div> */}
       <div className={styles.content}>
         <div className={styles.contentTitle}>
-          早安，
+          你好，
           {currentUser.accountname}
           ，祝你开心每一天！
         </div>
@@ -33,22 +35,7 @@ const PageHeaderContent: FC<{ currentUser: API.CurrentUser}> = ({ currentUser })
   );
 };
 
-const ExtraContent: FC<Record<string, any>> = () => (
-  <div className={styles.extraContent}>
-    <div className={styles.statItem}>
-      <Button size='large' type='primary'>DNF,启动!</Button>
-    </div>
-    <div className={styles.statItem}>
-      <Statistic title="角色数" value={88} />
-    </div>
-    <div className={styles.statItem}>
-      <Statistic title="排名" value={1} suffix="/ 88" />
-    </div>
-    <div className={styles.statItem}>
-      <Statistic title="战力" value={999999999} />
-    </div>
-  </div>
-);
+
 
 const Home: React.FC = () => {
 
@@ -59,19 +46,78 @@ const Home: React.FC = () => {
   const [cardActionProps, setCardActionProps] = useState<'actions' | 'extra'>(
     'extra',
   );
-  
 
-  const startGame = () => {
-    const client = window.daGameClient;
-    const path = localStorage.getItem('daClientPath');
-    getGameToken().then((res)=>{
-      const args = (path+' '+res.data)
-      client.startGame(args)
-    })
-   }
    const [roleListData,setRoleListData] = useState<any>([]);
 
    const [roleCardData,setRoleCardData] = useState<any>([]);
+
+   const access = useAccess();
+
+   const startGame = ()=> {
+    const client = window.daGameClient;
+    const path = localStorage.getItem('daClientPath');
+    getGameToken().then((res)=>{
+      if(res.success){
+        const args = (path+' '+res.data)
+        client.startGame(args)
+        message.success('启动客户端。。。。')
+      }else{
+        message.success('获取客户端token失败')
+      }
+
+    })
+  }
+
+
+  const restartMysql = ()=> {
+    restartDb().then((res)=>{
+      message.success(res.message)
+    })
+  }
+  const restartServer1 = ()=> {
+    restartServer().then((res)=>{
+      message.success(res.message)
+    })
+  }
+  const restartDa = ()=> {
+    restartAdmin().then((res)=>{
+      message.success(res.message)
+    })
+  }
+
+
+   const ExtraContent: FC<Record<string, any>> = () => (
+    <div className={styles.extraContent}>
+
+      <Access accessible={access.hashPre('tool.restartServer')}>
+      <div className={styles.statItem}>
+        <Button size='large' type='primary' onClick={restartServer1}>重启服务端</Button>
+      </div>
+      </Access>
+      <Access accessible={access.hashPre('tool.tool.restartDb')}>
+      <div className={styles.statItem}>
+        <Button size='large' type='primary' onClick={restartMysql}>重启数据库</Button>
+      </div>
+      </Access>
+      <Access accessible={access.hashPre('tool.tool.restartDa')}>
+      <div className={styles.statItem}>
+        <Button size='large' type='primary' onClick={restartDa}>重启后台</Button>
+      </div>
+      </Access>
+      <div className={styles.statItem}>
+        <Button size='large' type='primary' onClick={startGame}>启动DNF</Button>
+      </div>
+      <div className={styles.statItem}>
+        <Statistic title="角色数" value={roleListData.length} />
+      </div>
+      <div className={styles.statItem}>
+        <Statistic title="排名" value={1} suffix="/ 88" />
+      </div>
+      <div className={styles.statItem}>
+        <Statistic title="战力" value={999999999} />
+      </div>
+    </div>
+  );
 
 
    useEffect(()=>{
@@ -79,9 +125,9 @@ const Home: React.FC = () => {
       if(res.success){
         setRoleListData(res.data)
        const data =  res.data.map((role) => ({
-          title: role.characName,
-          subTitle: <Tag color="#5BD8A6">{role.expertJobName}</Tag>,
-          actions: [<a key="delete">详情</a>],
+          title: <><Tag color="#5BD8A6">{role.characName}</Tag></>,
+          subTitle: <>职业: <Tag color="#5BD8A6">{role.jobName}</Tag></>,
+          actions: [<>等级: <Tag color="#5BD8A6">{role.lev}</Tag></>],
           content: (
             <div
               style={{
@@ -93,7 +139,7 @@ const Home: React.FC = () => {
                   width: 200,
                 }}
               >
-                <Progress percent={role.lev} />
+                副职: <Tag color="#5BD8A6">{role.expertJobName}</Tag>
               </div>
             </div>
           ),
@@ -114,16 +160,15 @@ const Home: React.FC = () => {
       extraContent={<ExtraContent />}
     >
       <ProList<any>
-        ghost={ghost}
-        itemCardProps={{
-          ghost,
-        }}
+        // ghost={ghost}
+        // itemCardProps={{
+        //   ghost,
+        // }}
         pagination={{
           defaultPageSize: 100,
           showSizeChanger: false,
         }}
         showActions="hover"
-        rowSelection={{}}
         grid={{ gutter: 16, column: 2 }}
         onItem={(record: any) => {
           return {
@@ -153,3 +198,6 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
+
+
