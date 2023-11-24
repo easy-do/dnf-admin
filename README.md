@@ -143,7 +143,7 @@ x-env: &env
 ```
 - 启动数据库
 ```shell
-docker-compose up dnfmysql -d
+docker-compose up -d dnfmysql
 ```
 查看数据库日志,使用相关工具连接数据库，因为首次加载比较慢，需要确保数据库初始化完成在继续启动其他服务才能启动服务端和后台
 
@@ -153,7 +153,7 @@ docker logs -f dnfmysql
 - 数据库初始化完成后启动后台
 
 ```shell
-docker-compose up dnfadmin -d  
+docker-compose up -d dnfadmin
 ```
 
 - 查看后台日志
@@ -166,7 +166,7 @@ docker logs -f dnfadmin
 - 启动服务端
 
 ```shell
-docker-compose up dnfserver -d 
+docker-compose up -d dnfserver
 ```
 - 查看服务端日志
 ```shell
@@ -199,7 +199,7 @@ cd /root/dnf-admin
 # 编辑docker-compose.yaml，一般在第59行 将registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0 修改为 registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
 docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.2
 docker rm -f dnfadmin
-docker-compose up dnfadmin -d
+docker-compose up -d dnfadmin
 docker restart dnfserver
 ```
 
@@ -209,7 +209,7 @@ docker restart dnfserver
 cd /root/dnf-admin
 docker-compose pull 
 docker rm -f dnfadmin
-docker-compose up dnfadmin -d
+docker-compose up -d dnfadmin
 docker restart dnfserver
 ```
 
