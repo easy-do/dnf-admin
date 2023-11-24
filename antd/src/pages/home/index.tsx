@@ -175,7 +175,7 @@ const Home: React.FC = () => {
         //   ghost,
         // }}
         pagination={{
-          defaultPageSize: 100,
+          defaultPageSize: 6,
           showSizeChanger: false,
         }}
         showActions="hover"

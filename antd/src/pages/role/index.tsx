@@ -170,6 +170,10 @@ const RoleList: React.FC = () => {
         search={{
           labelWidth: 120,
         }}
+        pagination={{
+          defaultPageSize: 10,
+          showSizeChanger: false,
+        }}
         request={pageRole}
         columns={columns}
         toolBarRender={() => [

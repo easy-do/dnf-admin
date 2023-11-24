@@ -2,7 +2,8 @@ const {
   app,
   BrowserWindow,
   Notification,
-  ipcMain
+  ipcMain,
+  Menu
 } = require('electron')
 const path = require('path')
 const url = require('url')
@@ -20,7 +21,7 @@ function createWindow() {
       body: 'DNF 启动!',
     }).show();
     let cmds = cmdStr.split(' ')
-    exec(cmds[0] + '\DNF.exe ' + cmds[1], { cwd: cmds[0] }, (err, stdout, stderr) => {
+    exec(cmds[0] + '\\DNF.exe ' + cmds[1], { cwd: cmds[0] }, (err, stdout, stderr) => {
       if (err) {
         console.log(err)
         new Notification({
@@ -31,10 +32,13 @@ function createWindow() {
       }
     })
   })
+  Menu.setApplicationMenu(null) // null值取消顶部菜单栏
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1344,
-    height: 756,
+    width: 1100,
+    height: 900,
+    // frame: false, // 去掉窗口边框
+    // titleBarStyle: 'hidden', // 隐藏标题栏
     webPreferences: {
       webSecurity: false,
       preload: path.join(__dirname, 'preload.js')

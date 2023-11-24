@@ -122,6 +122,10 @@ const Signin: React.FC = () => {
         search={{
           labelWidth: 120,
         }}
+        pagination={{
+          defaultPageSize: 10,
+          showSizeChanger: false,
+        }}
         request={signInPage}
         columns={columns}
         toolBarRender={() => [

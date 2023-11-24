@@ -57,6 +57,10 @@ const ItemList: React.FC = () => {
         search={{
           labelWidth: 120,
         }}
+        pagination={{
+          defaultPageSize: 10,
+          showSizeChanger: false,
+        }}
         toolBarRender={() => [
           <Access accessible={access.hashPre('notice.sendNotice')}>
             <Button type="primary" icon={<PlusOutlined />} onClick={() => handleModalVisible(true)}>

@@ -81,6 +81,10 @@ const Email: React.FC = () => {
         search={{
           labelWidth: 120,
         }}
+        pagination={{
+          defaultPageSize: 10,
+          showSizeChanger: false,
+        }}
         toolBarRender={() => [
           <Access accessible={access.hashPre('mail.sendMail')}>
             <Button type="primary" icon={<PlusOutlined />} onClick={() => handleModalVisible(true)}>

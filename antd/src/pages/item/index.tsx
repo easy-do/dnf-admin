@@ -172,6 +172,10 @@ const ItemList: React.FC = () => {
         search={{
           labelWidth: 120,
         }}
+        pagination={{
+          defaultPageSize: 10,
+          showSizeChanger: false,
+        }}
         toolBarRender={() => [
           <Access accessible={access.hashPre('conf.save')}>
             <Button type="primary" icon={<PlusOutlined />} onClick={() => {
