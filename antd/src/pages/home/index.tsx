@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Skeleton,  Statistic, Button, Tag, Progress, message } from 'antd';
+import { Skeleton,  Statistic, Button, Tag, message } from 'antd';
 
 import { Access, useAccess, useModel } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -93,7 +93,9 @@ const Home: React.FC = () => {
 
    const ExtraContent: FC<Record<string, any>> = () => (
     <div className={styles.extraContent}>
-
+      <div className={styles.statItem}>
+        <Button size='large' type='primary' onClick={startGame}>启动DNF</Button>
+      </div>
       <Access accessible={access.hashPre('tool.restartServer')}>
       <div className={styles.statItem}>
         <Button size='large' type='primary' onClick={restartServer1}>重启服务端</Button>
@@ -114,9 +116,7 @@ const Home: React.FC = () => {
         <Button size='large' type='primary' onClick={generateKey}>更换密钥</Button>
       </div>
       </Access>
-      <div className={styles.statItem}>
-        <Button size='large' type='primary' onClick={startGame}>启动DNF</Button>
-      </div>
+
       <div className={styles.statItem}>
         <Statistic title="角色数" value={roleListData.length} />
       </div>

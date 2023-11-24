@@ -262,10 +262,11 @@
             INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(23, 1, '重启数据库', 'tool.restartDb', 'tool.restartServer', 'F', 0, '', NULL, 1, 1, '', 0);
             INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(24, 1, '重启后台', 'tool.restartDa', 'tool.restartServer', 'F', 0, '', NULL, 1, 1, '', 0);
             INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(25, 1, '重新生成密钥', 'tool.generateKeyPem', 'tool.generateKeyPem', 'F', 0, '', NULL, 1, 1, '', 0);
-            INSERT INTO da_role_resource (role_id, resource_id) VALUES(2, 22);
-            INSERT INTO da_role_resource (role_id, resource_id) VALUES(2, 23);
-            INSERT INTO da_role_resource (role_id, resource_id) VALUES(2, 24);
-            INSERT INTO da_role_resource (role_id, resource_id) VALUES(2, 25);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 22);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 23);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 24);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 25);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(2, 1);
         </sql>
     </changeSet>
 </databaseChangeLog>
