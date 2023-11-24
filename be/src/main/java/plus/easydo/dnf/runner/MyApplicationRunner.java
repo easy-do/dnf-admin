@@ -2,6 +2,7 @@ package plus.easydo.dnf.runner;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.RuntimeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -40,7 +41,7 @@ public class MyApplicationRunner implements ApplicationRunner {
         DaGameConfig dp2PthConf = CacheManager.GAME_CONF_MAP.get(SystemConstant.DP2_PATH);
         if (Boolean.parseBoolean(copyDp2Conf.getConfData())) {
             //将dp2文件copy到指定的目录
-            FileUtil.copy("/home/dp2/*", dp2PthConf.getConfData(), true);
+            RuntimeUtil.exec("cp -r /home/dp2/* " + dp2PthConf.getConfData());
         }
         DaGameConfig readConf = CacheManager.GAME_CONF_MAP.get(SystemConstant.READER_PVF);
         String confValue = readConf.getConfData();
