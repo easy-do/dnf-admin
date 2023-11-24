@@ -94,12 +94,12 @@ const Home: React.FC = () => {
         <Button size='large' type='primary' onClick={restartServer1}>重启服务端</Button>
       </div>
       </Access>
-      <Access accessible={access.hashPre('tool.tool.restartDb')}>
+      <Access accessible={access.hashPre('tool.restartDb')}>
       <div className={styles.statItem}>
         <Button size='large' type='primary' onClick={restartMysql}>重启数据库</Button>
       </div>
       </Access>
-      <Access accessible={access.hashPre('tool.tool.restartDa')}>
+      <Access accessible={access.hashPre('tool.restartDa')}>
       <div className={styles.statItem}>
         <Button size='large' type='primary' onClick={restartDa}>重启后台</Button>
       </div>
