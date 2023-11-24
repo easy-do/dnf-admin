@@ -6,8 +6,8 @@ spring:
   servlet:
     multipart:
       #限制报文大小，post请求大小限制,undertow里的设置不会生效
-      max-request-size: 200MB
-      max-file-size: 500MB
+      max-request-size: 1000MB
+      max-file-size: 1000MB
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
@@ -42,17 +42,32 @@ mybatis-flex:
       password: ${MYSQL_PASS:88888888}
       connectionInitSqls:
         - SET NAMES latin1
+    taiwan_login:
+      type: druid
+      url: jdbc:mysql://${MYSQL_HOST:dnfmysql}:${MYSQL_PORT:3306}/taiwan_login?useUnicode=true&characterEncoding=latin1&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+      username: ${MYSQL_USER:root}
+      password: ${MYSQL_PASS:88888888}
+      connectionInitSqls:
+        - SET NAMES latin1
+    taiwan_billing:
+      type: druid
+      url: jdbc:mysql://${MYSQL_HOST:dnfmysql}:${MYSQL_PORT:3306}/taiwan_billing?useUnicode=true&characterEncoding=latin1&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+      username: ${MYSQL_USER:root}
+      password: ${MYSQL_PASS:88888888}
+      connectionInitSqls:
+        - SET NAMES latin1
   configuration:
     call-setters-on-nulls:
+da:
+  admin-user: ${ADMIN_USER:123456789}
+  dp-gm-key: ${DP_GM_KEY:123456789}
+  admin-role: ${ADMIN_ROLE:admin}
 
-admin: ${ADMIN_USER:123456789}
-dpGmKey: ${DP_GM_KEY:123456789}
-pvfPath: ${PVF_PATH:/data/server/data/Script.pvf}
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
   # jwt秘钥
-  jwt-secret-key: ${JWT_SECRET_KEY:123456789qweasdzxc}
+  jwt-secret-key: ${random.uuid}
   # token 名称（同时也是 cookie 名称）
   token-name: Authorization
   # token 有效期（单位：秒） 默认30天，-1 代表永久有效

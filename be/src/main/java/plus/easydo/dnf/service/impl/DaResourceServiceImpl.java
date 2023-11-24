@@ -1,7 +1,6 @@
 package plus.easydo.dnf.service.impl;
 
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
@@ -10,7 +9,7 @@ import cn.hutool.core.lang.tree.parser.NodeParser;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import plus.easydo.dnf.constant.SystemConstant;
+import plus.easydo.dnf.config.SystemConfig;
 import plus.easydo.dnf.dto.AuthRoleResourceDto;
 import plus.easydo.dnf.entity.DaRole;
 import plus.easydo.dnf.entity.DaRoleResource;
@@ -46,13 +45,15 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
 
     private final IDaUserRoleService userRoleService;
 
+    private final SystemConfig systemConfig;
+
     @Override
     public boolean authRoleResource(AuthRoleResourceDto authRoleResourceDto) {
         DaRole role = roleService.getById(authRoleResourceDto.getRoleId());
         if(Objects.isNull(role)){
             throw new BaseException("角色不存在");
         }
-        if(role.getRoleKey().equals(SystemConstant.ADMIN_ROLE)){
+        if(role.getRoleKey().equals(systemConfig.getAdminRole())){
             throw new BaseException("不允许修改系统管理员");
         }
         ArrayList<DaRoleResource> entityList = new ArrayList<>();

@@ -249,4 +249,15 @@
             INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 21);
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20231124" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('重启数据库命令', 2, 'docker restart dnfmysql', 'da_restart_db', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('重启后台命令', 2, 'docker restart dnfadmin', 'da_restart_da', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('重启服务端命令', 2, 'docker restart dnfserver', 'da_restart_server', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('pvf文件路径', 2, '/data/server/data/Script.pvf', 'da_pvf_path', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('证书存放路径', 2, '/data/server/data/', 'da_pem_path', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('dp2插件路径', 2, '/data/dp2', 'da_dp2_path', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('启动自动复制dp2插件', 2, 'true', 'da_copy_dp2', '立即生效');
+        </sql>
+    </changeSet>
 </databaseChangeLog>

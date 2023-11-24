@@ -1,6 +1,8 @@
 package plus.easydo.dnf.manager;
 
 import com.mybatisflex.core.query.QueryChain;
+import com.mybatisflex.core.query.QueryCondition;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 import plus.easydo.dnf.entity.Accounts;
@@ -22,5 +24,10 @@ public class AccountsManager extends ServiceImpl<AccountsMapper, Accounts> {
                 .from(ACCOUNTS)
                 .where(ACCOUNTS.ACCOUNTNAME.eq(userName))
                 .one();
+    }
+
+    public boolean existsByUserName(String userName) {
+        QueryWrapper query = query().and(ACCOUNTS.ACCOUNTNAME.eq(userName));
+        return exists(query);
     }
 }

@@ -64,12 +64,13 @@ public class DaGameConfigServiceImpl extends ServiceImpl<DaGameConfigMapper, DaG
     }
 
 
-    @PostConstruct
+    @Override
     public void cacheGameConf() {
         log.info("初始化缓存游戏配置 start");
         List<DaGameConfig> confList  = list();
         CacheManager.GAME_CONF_LIST.clear();
         CacheManager.GAME_CONF_LIST.addAll(confList);
+        confList.forEach(conf-> CacheManager.GAME_CONF_MAP.put(conf.getConfKey(),conf));
         log.info("初始化缓存游戏配置 end");
     }
 }

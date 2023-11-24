@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import plus.easydo.dnf.config.SystemConfig;
 import plus.easydo.dnf.handler.DpReportHandler;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
@@ -32,6 +33,8 @@ public class DpController {
     @Value("${dpGmKey:123456789}")
     private String dpGmKey;
 
+    private final SystemConfig systemConfig;
+
     @Autowired
     private Map<String, DpReportHandler> reportHandlerMap;
 
@@ -52,7 +55,7 @@ public class DpController {
             @RequestParam("opt")String opt,
             @RequestParam("type")String type,
             @RequestParam("value")String value){
-        if(!this.dpGmKey.equals(gmKey)){
+        if(!systemConfig.getDpGmKey().equals(gmKey)){
             return DataResult.fail("gmKey错误,请检查配置.");
         }
         value = URLUtil.decode(value);

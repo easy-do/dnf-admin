@@ -8,6 +8,7 @@ import plus.easydo.dnf.vo.CallResult;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,8 @@ public class CacheManager {
     public static final Map<String, Map<LocalDateTime, List<CallResult>>> EXEC_LIST_MAP = new ConcurrentHashMap<>();
 
     public static final List<DaGameConfig> GAME_CONF_LIST = new ArrayList<>();
+
+    public static final Map<String,DaGameConfig> GAME_CONF_MAP = new HashMap<>();
 
     private CacheManager() {
     }

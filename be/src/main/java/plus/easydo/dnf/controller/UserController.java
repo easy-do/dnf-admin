@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.dnf.dto.LoginDto;
+import plus.easydo.dnf.dto.RegDto;
+import plus.easydo.dnf.service.AccountsService;
 import plus.easydo.dnf.service.IDaResourceService;
 import plus.easydo.dnf.service.LoginService;
 import plus.easydo.dnf.vo.CurrentUser;
@@ -32,12 +34,21 @@ public class UserController {
 
     private final LoginService loginService;
 
+    private final AccountsService accountsService;
+
     private final IDaResourceService resourceService;
 
     @SaIgnore
     @PostMapping("/login")
     public R<String> login(@Validated @RequestBody LoginDto loginDto){
         return DataResult.ok(loginService.login(loginDto));
+    }
+
+    @SaIgnore
+    @PostMapping("/reg")
+    public R<Boolean> reg(@Validated @RequestBody RegDto regDto){
+        accountsService.regAcc(regDto);
+        return DataResult.ok();
     }
 
     @GetMapping("/logout")

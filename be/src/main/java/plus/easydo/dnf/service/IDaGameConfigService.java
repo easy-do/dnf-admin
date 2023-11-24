@@ -21,4 +21,6 @@ public interface IDaGameConfigService extends IService<DaGameConfig> {
     boolean updateConf(DaGameConfig daGameConfig);
 
     DaGameConfig getByConfKey(String confKey);
+
+    void cacheGameConf();
 }

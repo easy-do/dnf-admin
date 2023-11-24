@@ -2,23 +2,21 @@ package plus.easydo.dnf.runner;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import plus.easydo.dnf.constant.SystemConstant;
 import plus.easydo.dnf.entity.DaGameConfig;
+import plus.easydo.dnf.manager.CacheManager;
 import plus.easydo.dnf.service.IDaGameConfigService;
 import plus.easydo.dnf.service.IDaItemService;
-import plus.easydo.dnf.util.ItemReaderUtil;
 import plus.easydo.dnf.util.pvf.PvfData;
 import plus.easydo.dnf.util.pvf.PvfReader;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author laoyu
@@ -35,28 +33,31 @@ public class MyApplicationRunner implements ApplicationRunner {
 
     private final IDaGameConfigService daGameConfigService;
 
-    @Value("${pvfPath:/data/server/data/Script.pvf}")
-    private String pvfPath;
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        DaGameConfig conf = daGameConfigService.getByConfKey("gm_reader_pvf");
-        String confValue = conf.getConfData();
-        if(Boolean.parseBoolean(confValue)){
-            if(FileUtil.isFile(pvfPath)){
+        daGameConfigService.cacheGameConf();
+        DaGameConfig copyDp2Conf = CacheManager.GAME_CONF_MAP.get(SystemConstant.COPY_DP2);
+        DaGameConfig dp2PthConf = CacheManager.GAME_CONF_MAP.get(SystemConstant.DP2_PATH);
+        if (Boolean.parseBoolean(copyDp2Conf.getConfData())) {
+            //将dp2文件copy到指定的目录
+            FileUtil.copy("/home/dp2", dp2PthConf.getConfData(), true);
+        }
+        DaGameConfig readConf = CacheManager.GAME_CONF_MAP.get(SystemConstant.READER_PVF);
+        String confValue = readConf.getConfData();
+        if (Boolean.parseBoolean(confValue)) {
+            String pvfPath = CacheManager.GAME_CONF_MAP.get(SystemConstant.PVF_PATH).getConfData();
+            if (FileUtil.isFile(pvfPath)) {
                 try {
                     PvfData pvfData = PvfReader.reader(pvfPath);
                     Map<Integer, String> itemMap = pvfData.getItemMap();
-
                     daItemService.importItemForMap(itemMap);
-                    conf.setConfData("false");
-                    daGameConfigService.updateById(conf);
-                }catch (Exception exception){
+                    readConf.setConfData("false");
+                    daGameConfigService.updateById(readConf);
+                } catch (Exception exception) {
                     log.warn("解析pvf文件发生错误{}", ExceptionUtil.getMessage(exception));
                 }
-
-            }else {
-                log.warn("在路径{}下没有找到pvf文件,请检查配置",pvfPath);
+            } else {
+                log.warn("在路径{}下没有找到pvf文件,请检查配置", pvfPath);
             }
         }
         System.gc();

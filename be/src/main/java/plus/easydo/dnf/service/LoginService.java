@@ -9,6 +9,7 @@ import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import plus.easydo.dnf.config.SystemConfig;
 import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.exception.BaseException;
@@ -34,10 +35,8 @@ public class LoginService {
 
     private final IDaResourceService resourceService;
 
-    private static final String ADMIN_ROLE = "admin";
+    private final SystemConfig systemConfig;
 
-    @Value("${adminUser:123456789}")
-    private String adminUser;
 
     /**
      * 登录
@@ -54,19 +53,19 @@ public class LoginService {
         }
         String md5Password = SecureUtil.md5().digestHex(loginDto.getPassword());
         if (CharSequenceUtil.equals(md5Password, accounts.getPassword())) {
-            boolean userNameIsAdmin = loginDto.getUserName().equals(adminUser);
+            boolean userNameIsAdmin = loginDto.getUserName().equals(systemConfig.getAdminUser());
             List<String> roles = roleService.userRoleCodes(accounts.getUid());
             if(roles.isEmpty()){
                 roleService.bindingDefaultRole(accounts.getUid());
             }
-            boolean roleInAdmin = roles.contains(ADMIN_ROLE);
+            boolean roleInAdmin = roles.contains(systemConfig.getAdminRole());
             if(userNameIsAdmin && !roleInAdmin){
-                roleService.bindingUserRole(accounts.getUid(),ADMIN_ROLE);
+                roleService.bindingUserRole(accounts.getUid(),systemConfig.getAdminRole());
             }
             boolean isAdmin =  userNameIsAdmin || roleInAdmin;
             accounts.setAdmin(isAdmin);
             StpUtil.login(accounts.getUid(), SaLoginConfig
-                    .setExtra("userInfo", JSONUtil.toJsonPrettyStr(accounts)).setExtra(ADMIN_ROLE, isAdmin));
+                    .setExtra("userInfo", JSONUtil.toJsonPrettyStr(accounts)).setExtra("admin", isAdmin));
             return StpUtil.getTokenValue();
         }
         throw new BaseException("账号不存在或密码错误");
