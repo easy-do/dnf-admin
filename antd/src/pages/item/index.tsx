@@ -81,7 +81,7 @@ const ItemList: React.FC = () => {
 
   const props: UploadProps = {
     name: 'file',
-    action: '/api/item/importItem',
+    action: localStorage.getItem('daCustomUrl')?localStorage.getItem('daCustomUrl')+'/api/item/importItem':'/api/item/importItem',
     onChange(info) {
       if (info.file.status !== 'uploading') {
       }
@@ -103,7 +103,7 @@ const ItemList: React.FC = () => {
 
   const zpProps: UploadProps = {
     name: 'file',
-    action: '/api/item/importItemFor7z',
+    action: localStorage.getItem('daCustomUrl')?localStorage.getItem('daCustomUrl')+'/api/item/importItemFor7z':'/api/item/importItemFor7z',
     onChange(info) {
       if (info.file.status !== 'uploading') {
         console.log(info.file, info.fileList);
@@ -297,9 +297,6 @@ const ItemList: React.FC = () => {
         <ProFormText
           name="name"
           label="物品名称"
-          fieldProps={{
-            type: 'number',
-          }}
           rules={[
             {
               required: true,
@@ -310,9 +307,6 @@ const ItemList: React.FC = () => {
         <ProFormText
           name="type"
           label="物品类型"
-          fieldProps={{
-            type: 'number',
-          }}
           rules={[
             {
               required: true,
@@ -323,9 +317,6 @@ const ItemList: React.FC = () => {
         <ProFormText
           name="rarity"
           label="稀有度"
-          fieldProps={{
-            type: 'number',
-          }}
           rules={[
             {
               required: true,
