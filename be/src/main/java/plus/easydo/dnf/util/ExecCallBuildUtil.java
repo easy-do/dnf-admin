@@ -39,7 +39,14 @@ public class ExecCallBuildUtil {
         args.add(sendMailDto.getTitle());
         args.add(sendMailDto.getContent());
         args.add(sendMailDto.getGold());
-        args.add(sendMailDto.getItemList());
+        List<List<Long>> itemList = new ArrayList<>();
+        sendMailDto.getItemList().forEach(mailItemDto->{
+            List<Long> item = new ArrayList<>();
+            item.add(mailItemDto.getItemId());
+            item.add(mailItemDto.getCount());
+            itemList.add(item);
+        });
+        args.add(itemList);
         return CallResult.builder().callDp(false).callFrida(true).debug(true).funName(CallFunEnum.SEND_MULTI_MAIL.getFunName()).args(args).build();
     }
 

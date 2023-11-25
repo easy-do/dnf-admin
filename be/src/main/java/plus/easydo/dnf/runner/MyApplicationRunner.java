@@ -41,6 +41,7 @@ public class MyApplicationRunner implements ApplicationRunner {
         DaGameConfig dp2PthConf = CacheManager.GAME_CONF_MAP.get(SystemConstant.DP2_PATH);
         if (Boolean.parseBoolean(copyDp2Conf.getConfData())) {
             //将dp2文件copy到指定的目录
+            log.info("复制dp2插件");
             RuntimeUtil.exec("cp -r /home/dp2/* " + dp2PthConf.getConfData());
         }
         DaGameConfig readConf = CacheManager.GAME_CONF_MAP.get(SystemConstant.READER_PVF);

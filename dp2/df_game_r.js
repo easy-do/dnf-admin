@@ -3554,16 +3554,9 @@ function frida_handler(ls, arg1, arg2, _arg3) {
 			case 'game_world_send_notice_packet_message':
 				api_GameWorld_SendNotiPacketMessage(args[0]+'',14)
 				break;
-		   case 'send_multi_mail':
-			     //target_charac_no, title, text, gold, item_list
-			   var itemList = [];
-			   args[4].map((item,index)=>{
-				   var itemInfo = []
-			       itemInfo.push(item.itemId)
-				   itemInfo.push(item.count)
-				   itemList.push(itemInfo)
-		       })
-			     api_WongWork_CMailBoxHelper_ReqDBSendNewSystemMultiMail(args[0],args[1],args[2],args[3],itemList)
+			case 'send_multi_mail':
+				//target_charac_no, title, text, gold, item_list
+				api_WongWork_CMailBoxHelper_ReqDBSendNewSystemMultiMail(args[0],args[1],args[2],args[3],args[4])
 				break;
 			default:
 				break;
