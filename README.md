@@ -10,6 +10,7 @@
 
 - https://github.com/easy-do/dnf-admin
 - https://gitee.com/yuzhanfeng/dnf-admin
+- 常用教程、游戏版本、相关工具：https://www.dafschool.site/
 
 - 演示视频: 其他说明.txt
 
