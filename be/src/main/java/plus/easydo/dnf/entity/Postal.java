@@ -52,13 +52,13 @@ public class Postal implements Serializable {
     private Integer endurance = 1;
 
     /**强化*/
-    private Integer upgrade;
+    private Integer upgrade = 0;
 
     /**锻造*/
-    private Integer seperateUpgrade;
+    private Integer seperateUpgrade = 0;
 
     /**增幅类型 空-0','异次元体力-1','异次元精神-2','异次元力量-3','异次元智力-4'*/
-    private Integer amplifyOption;
+    private Integer amplifyOption = 0;
 
     /**增幅数值*/
     private Integer amplifyValue = 0;
@@ -76,7 +76,7 @@ public class Postal implements Serializable {
     private Integer sealFlag = 0;
 
     /**生物标识 默认是0，宠物是1*/
-    private Integer creatureFlag;
+    private Integer creatureFlag = 0;
 
     /**信件id*/
     private Integer letterId;

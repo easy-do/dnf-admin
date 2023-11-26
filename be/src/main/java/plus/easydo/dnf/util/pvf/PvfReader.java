@@ -51,40 +51,79 @@ public class PvfReader {
     /**
      * 读取lst文件
      *
-     * @param equipment equipment
+     * @param itemListFile itemListFile
      * @param pvfData pvfData
      * @param baseDir baseDir
      * @return java.util.Map<java.lang.Integer,java.lang.String>
      * @author laoyu
      * @date 2023/11/12
      */
-    private static Map<Integer,String> readLstFile(PvfFileListData equipment, PvfData pvfData, String baseDir) {
-        byte[] content = equipment.getDecodeFileContent();
-        ByteBuffer byteBuffer = ByteBuffer.wrap(content);
+    private static Map<Integer,String> readLstFile(PvfFileListData itemListFile, PvfData pvfData, String baseDir) {
+        Map<Integer, String> map = readLstFileMap(itemListFile, pvfData);
+        map.forEach((key,value)->{
+            String filePathStr = baseDir + "/" + value;
+            log.info("readItemFile {}:{}", key,filePathStr);
+            PvfFileListData file = pvfData.getPvfFileListMap().get(filePathStr);
+            if(Objects.nonNull(file)){
+                String res = readFile(file, pvfData);
+                map.put(key,res);
+            }
+        });
+        return map;
+    }
+
+    /**
+     * 专门读lst文件，拿到编号和文件的对应关系 ,后面物品id从这个结果取
+     *
+     * @param file file
+     * @param pvfData pvfData
+     * @return java.lang.String
+     * @author laoyu
+     * @date 2023/11/26
+     */
+    public static Map<Integer,String> readLstFileMap(PvfFileListData file, PvfData pvfData) {
+        Map<Integer,String> itemMap = new HashMap<>();
+        ByteBuffer byteBuffer = ByteBuffer.wrap(file.getDecodeFileContent());
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        //是否读完一对
+        int currentCount = 0;
+        int currentItemId = 0;
+        String filePath = null;
         //先读取两位
         byteBuffer.getShort();
-        Map<Integer,String> resultMap = new HashMap<>();
         while (byteBuffer.hasRemaining()) {
+            if(currentCount == 2){
+                itemMap.put(currentItemId,filePath);
+                currentCount = 0;
+            }
             if (byteBuffer.remaining() >= 5) {
                 byte be = byteBuffer.get();
-                int itemId = byteBuffer.getInt();
-                //字典对应的文字
-                String filePathStr = getFilePathStr(pvfData, itemId);
-                if (CharSequenceUtil.isNotBlank(filePathStr)) {
-                    filePathStr = baseDir + "/" + filePathStr;
-                    PvfFileListData file = pvfData.getPvfFileListMap().get(filePathStr);
-                    log.info("readLstFile filePathStr:{}", filePathStr);
-                    if (Objects.nonNull(file)) {
-                        String res = readFile(file, pvfData);
-                        resultMap.put(itemId,res);
+                int fe = byteBuffer.getInt();
+                List<PvfData.StringTableData> stringTableDataList = pvfData.getStringTableDataList();
+
+                if(be == 2){
+                    //装备id
+                    currentItemId = fe;
+                    currentCount++;
+                }
+                if(be == 7){
+                    //物品文件路径
+                    if (fe >= 0 && fe < stringTableDataList.size()) {
+                        PvfData.StringTableData stringTableData = stringTableDataList.get(fe);
+                        String str = stringTableData.getContext();
+                        if(Objects.nonNull(str)){
+                            filePath = str;
+                            currentCount++;
+                        }
+                    }else {
+                        currentCount = 0;
                     }
                 }
             } else {
                 break;
             }
         }
-        return resultMap;
+        return itemMap;
     }
 
     /**

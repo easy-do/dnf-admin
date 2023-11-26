@@ -191,11 +191,11 @@ public class ItemReaderUtil {
     }
 
     private static String getString(JSONObject jsonObject, String currentKey, String line) {
-        line = line.replace("\t", "").replace("\r","").replace("`", "");
+        line = line.replace("\t", "").replace("\r","");
         if (line.contains("[/")) {
             // 什么都不做
-        } else if (line.contains("[") || line.contains("]")) {
-            currentKey = line.replace("[", "").replace("]", "");
+        } else if (line.startsWith("[") || line.endsWith("]")) {
+            currentKey = line.replace("[", "").replace("]", "").replace("`", "");
         } else {
             if (CharSequenceUtil.isNotBlank(line)) {
                 jsonObject.set(currentKey, line.trim());

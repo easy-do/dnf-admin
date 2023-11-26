@@ -62,7 +62,7 @@ public class PvfData extends PvfCrc {
     public void readPvfFileData(){
         //解密头文件获取目录数据
         crcDecode(indexHeaderData,indexHeaderCrc);
-        List<PvfFileListData> result = new ArrayList<>();
+        List<PvfFileListData> pvfFileList = new ArrayList<>();
         int currentPos = 0;
         // +56 是指读取pvf头部信息时共读取了56字节长度
         int startPost = alignedIndexHeaderSize +56;
@@ -70,7 +70,7 @@ public class PvfData extends PvfCrc {
             PvfFileListData pvfFileListData = new PvfFileListData();
             int fileLength = pvfFileListData.readTree(indexHeaderData, currentPos, pvfByte,startPost);
             if(CharSequenceUtil.isNotBlank(pvfFileListData.getFilePath())){
-                result.add(pvfFileListData);
+                pvfFileList.add(pvfFileListData);
             }
             currentPos += fileLength;
             //如果是字符串字典则直接初始化
@@ -78,8 +78,7 @@ public class PvfData extends PvfCrc {
                 initStringTable(pvfFileListData.getDecodeFileContent());
             }
         }
-        this.pvfFileListData = result;
-        this.pvfFileListMap = this.pvfFileListData.stream().collect(Collectors.toMap(PvfFileListData::getFilePath,s->s));
+        this.pvfFileListMap = pvfFileList.stream().collect(Collectors.toMap(PvfFileListData::getFilePath,s->s));
     }
 
     /**

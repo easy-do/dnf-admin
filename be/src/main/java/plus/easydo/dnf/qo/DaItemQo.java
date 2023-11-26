@@ -16,6 +16,11 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = false)
 public class DaItemQo extends PageQo{
 
+    /**
+     * id
+     */
+    private Long id;
+
 
     /**
      * 名称
