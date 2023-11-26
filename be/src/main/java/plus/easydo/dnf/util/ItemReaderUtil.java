@@ -198,7 +198,7 @@ public class ItemReaderUtil {
             currentKey = line.replace("[", "").replace("]", "").replace("`", "");
         } else {
             if (CharSequenceUtil.isNotBlank(line)) {
-                jsonObject.set(currentKey, line.trim());
+                jsonObject.set(currentKey, line.replace("`", "").trim());
             }
         }
         return currentKey;
