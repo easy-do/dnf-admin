@@ -36,7 +36,8 @@ x-env: &env
     - ADMIN_USER=123456789
     # dp插件的通信密钥 非外网默认即可，因为还需要同步修改服务端的/dp2/lua/reportDp.lua
     - DP_GM_KEY=123456789
-
+    # 提高java内存上限，防止读取pvf内存溢出
+    - JAVA_OPTS=-Xmx8g -Xms512m
 networks:
   dnf:
     ipam:
