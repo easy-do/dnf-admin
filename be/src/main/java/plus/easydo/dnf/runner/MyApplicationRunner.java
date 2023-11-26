@@ -2,7 +2,6 @@ package plus.easydo.dnf.runner;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.RuntimeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -17,7 +16,6 @@ import plus.easydo.dnf.util.pvf.PvfData;
 import plus.easydo.dnf.util.pvf.PvfReader;
 
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author laoyu
@@ -42,10 +40,10 @@ public class MyApplicationRunner implements ApplicationRunner {
         if (Boolean.parseBoolean(copyDp2Conf.getConfData())) {
             //将dp2文件copy到指定的目录
             log.info("复制dp2插件");
-            if(FileUtil.isDirectory(dp2PthConf.getConfData())){
+            if(!FileUtil.isDirectory(dp2PthConf.getConfData())){
                 FileUtil.mkdir(dp2PthConf.getConfData());
             }
-            RuntimeUtil.exec("cp -r /home/dp2/* " + dp2PthConf.getConfData());
+            FileUtil.copyContent(FileUtil.file("/home/dp2"), FileUtil.file(dp2PthConf.getConfData()), true);
         }
         DaGameConfig readConf = CacheManager.GAME_CONF_MAP.get(SystemConstant.READER_PVF);
         String confValue = readConf.getConfData();
