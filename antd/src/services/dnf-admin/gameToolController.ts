@@ -2,36 +2,6 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 此处后端没有提供注释 GET /api/gameTool/disableAcc */
-export async function disableAcc(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.disableAccParams,
-  options?: { [key: string]: any },
-) {
-  return request<API.RString>('/api/gameTool/disableAcc', {
-    method: 'GET',
-    params: {
-      ...params,
-    },
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 GET /api/gameTool/enableAcc */
-export async function enableAcc(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.enableAccParams,
-  options?: { [key: string]: any },
-) {
-  return request<API.RString>('/api/gameTool/enableAcc', {
-    method: 'GET',
-    params: {
-      ...params,
-    },
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 GET /api/gameTool/generateKeyPem */
 export async function generateKeyPem(options?: { [key: string]: any }) {
   return request<API.RString>('/api/gameTool/generateKeyPem', {

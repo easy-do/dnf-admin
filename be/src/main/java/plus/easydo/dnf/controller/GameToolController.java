@@ -91,23 +91,6 @@ public class GameToolController {
         return DataResult.ok();
     }
 
-    @SaCheckPermission("tool.enableAcc")
-    @GetMapping("/enableAcc")
-    public R<String> enableAcc(
-            @RequestParam(name = "uid") Long uid) {
-        accountsService.enableAcc(uid);
-        return DataResult.ok();
-    }
-
-    @SaCheckPermission("tool.disableAcc")
-    @GetMapping("/disableAcc")
-    public R<String> disableAcc(
-            @RequestParam(name = "uid") Long uid) {
-        accountsService.disableAcc(uid);
-        return DataResult.ok();
-    }
-
-
     @SaCheckLogin
     @GetMapping("/getGameToken")
     public R<String> getGameToken() {
