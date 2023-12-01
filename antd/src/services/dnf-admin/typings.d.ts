@@ -421,6 +421,15 @@ declare namespace API {
     total?: string;
   };
 
+  type RLong = {
+    code?: number;
+    data?: string;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
   type RObject = {
     code?: number;
     data?: Record<string, any>;
