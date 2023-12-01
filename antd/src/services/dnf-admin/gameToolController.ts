@@ -18,26 +18,6 @@ export async function getGameToken(options?: { [key: string]: any }) {
   });
 }
 
-/** 此处后端没有提供注释 GET /api/gameTool/rechargeBonds */
-export async function rechargeBonds(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.rechargeBondsParams,
-  options?: { [key: string]: any },
-) {
-  return request<API.RString>('/api/gameTool/rechargeBonds', {
-    method: 'GET',
-    params: {
-      // type has a default value: 1
-      type: '1',
-
-      // count has a default value: 1
-      count: '1',
-      ...params,
-    },
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 GET /api/gameTool/restartDa */
 export async function restartAdmin(options?: { [key: string]: any }) {
   return request<API.RString>('/api/gameTool/restartDa', {
