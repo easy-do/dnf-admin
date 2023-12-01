@@ -123,12 +123,8 @@ public class AccountsServiceImpl implements AccountsService {
     }
 
     @Override
-    public boolean save(Accounts accounts) {
-        return accountsManager.save(accounts);
-    }
-
-    @Override
     public boolean update(Accounts accounts) {
+        accounts.setPassword(null);
         return accountsManager.updateById(accounts);
     }
 
@@ -144,9 +140,9 @@ public class AccountsServiceImpl implements AccountsService {
         Page<Accounts> page = new Page<>(pageQo.getCurrent(),pageQo.getPageSize());
         QueryWrapper queryWrapper = QueryChain.create()
                 .select(ACCOUNTS.UID, ACCOUNTS.ACCOUNTNAME, ACCOUNTS.QQ, ACCOUNTS.BILLING, ACCOUNTS.VIP)
-                .from(ACCOUNTS).where(ACCOUNTS.UID.eq(pageQo.getUid())
-                        .and(ACCOUNTS.ACCOUNTNAME.eq(pageQo.getAccountname()))
-                        .and(ACCOUNTS.QQ.eq(pageQo.getQq())))
+                .from(ACCOUNTS).where(ACCOUNTS.UID.like(pageQo.getUid())
+                        .and(ACCOUNTS.ACCOUNTNAME.like(pageQo.getAccountname()))
+                        .and(ACCOUNTS.QQ.like(pageQo.getQq())))
                 .and(ACCOUNTS.VIP.eq(pageQo.getVip()));
         return accountsManager.page(page,queryWrapper);
     }

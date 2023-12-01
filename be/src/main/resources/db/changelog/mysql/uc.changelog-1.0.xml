@@ -285,5 +285,10 @@
             INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 31);
         </sql>
     </changeSet>
-
+    <changeSet author="yuzhanfeng" id="20231201" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(32, 26, '充值', 'accounts.recharge', 'accounts.recharge', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 32);
+        </sql>
+    </changeSet>
 </databaseChangeLog>

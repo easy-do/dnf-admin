@@ -63,15 +63,6 @@ public interface AccountsService {
      */
     void disableAcc(Long uid);
 
-    /**
-     * 添加
-     *
-     * @param accounts accounts
-     * @return boolean
-     * @author laoyu
-     * @date 2023-11-29
-     */
-    boolean save(Accounts accounts);
 
     /**
      * 更新
