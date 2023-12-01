@@ -1,8 +1,10 @@
 package plus.easydo.dnf.service;
 
 
+import com.mybatisflex.core.paginate.Page;
 import plus.easydo.dnf.dto.RegDto;
 import plus.easydo.dnf.entity.Accounts;
+import plus.easydo.dnf.qo.AccountsQo;
 
 /**
 * @author yuzhanfeng
@@ -60,4 +62,46 @@ public interface AccountsService {
      * @date 2023-11-24
      */
     void disableAcc(Long uid);
+
+
+    /**
+     * 更新
+     *
+     * @param accounts accounts
+     * @return boolean
+     * @author laoyu
+     * @date 2023-11-29
+     */
+    boolean update(Accounts accounts);
+
+    /**
+     * 详情
+     *
+     * @param id id
+     * @return plus.easydo.dnf.entity.Accounts
+     * @author laoyu
+     * @date 2023-11-29
+     */
+    Accounts getById(Long id);
+
+    /**
+     * 分页查询
+     *
+     * @param page page
+     * @return com.mybatisflex.core.paginate.Page<plus.easydo.dnf.entity.Accounts>
+     * @author laoyu
+     * @date 2023-11-29
+     */
+    Page<Accounts> page(AccountsQo page);
+
+    /**
+     * 重置密码
+     *
+     * @param uid uid
+     * @param password password
+     * @return boolean
+     * @author laoyu
+     * @date 2023-11-29
+     */
+    boolean resetPassword(Long uid, String password);
 }

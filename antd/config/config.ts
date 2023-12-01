@@ -86,6 +86,10 @@ export default defineConfig({
       component: './signin',
     },
     {
+      path: '/accounts',
+      component: './accounts',
+    },
+    {
       component: '404',
     },
   ],

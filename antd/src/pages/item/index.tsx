@@ -82,6 +82,7 @@ const ItemList: React.FC = () => {
   const props: UploadProps = {
     name: 'file',
     action: localStorage.getItem('daCustomUrl')?localStorage.getItem('daCustomUrl')+'/api/item/importItem':'/api/item/importItem',
+    withCredentials:true,
     onChange(info) {
       if (info.file.status !== 'uploading') {
       }
@@ -104,6 +105,7 @@ const ItemList: React.FC = () => {
   const zpProps: UploadProps = {
     name: 'file',
     action: localStorage.getItem('daCustomUrl')?localStorage.getItem('daCustomUrl')+'/api/item/importItemFor7z':'/api/item/importItemFor7z',
+    withCredentials:true,
     onChange(info) {
       if (info.file.status !== 'uploading') {
         console.log(info.file, info.fileList);

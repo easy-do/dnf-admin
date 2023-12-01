@@ -1,7 +1,6 @@
 package plus.easydo.dnf.manager;
 
 import com.mybatisflex.core.query.QueryChain;
-import com.mybatisflex.core.query.QueryCondition;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;

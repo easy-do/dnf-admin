@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.dnf.constant.SystemConstant;
 import plus.easydo.dnf.dto.SendMailDto;
 import plus.easydo.dnf.entity.DaMailSendLog;
 import plus.easydo.dnf.manager.CacheManager;
-import plus.easydo.dnf.service.AccountsService;
 import plus.easydo.dnf.service.IDaMailSendLogService;
 import plus.easydo.dnf.util.ExecCallBuildUtil;
 import plus.easydo.dnf.util.RSAUtils;
@@ -38,9 +36,6 @@ import java.util.concurrent.CompletableFuture;
 public class GameToolController {
 
     private final IDaMailSendLogService iDaMailSendLogService;
-
-    private final AccountsService accountsService;
-
 
 
     @SaCheckPermission("mail.sendMail")
@@ -79,32 +74,6 @@ public class GameToolController {
     public R<String> restartAdmin() {
         CompletableFuture.runAsync(()->RuntimeUtil.exec(CacheManager.GAME_CONF_MAP.get(SystemConstant.RESTART_DA).getConfData()));
         return DataResult.okMsg("重启后台命令执行完成,请注意刷新网页.");
-    }
-
-    @SaCheckPermission("tool.recharge")
-    @GetMapping("/rechargeBonds")
-    public R<String> rechargeBonds(
-            @RequestParam(name = "type", defaultValue = "1") Integer type,
-            @RequestParam(name = "uid") Long uid,
-            @RequestParam(name = "count", defaultValue = "1") Long count ) {
-        accountsService.rechargeBonds(type, uid, count);
-        return DataResult.ok();
-    }
-
-    @SaCheckPermission("tool.enableAcc")
-    @GetMapping("/enableAcc")
-    public R<String> enableAcc(
-            @RequestParam(name = "uid") Long uid) {
-        accountsService.enableAcc(uid);
-        return DataResult.ok();
-    }
-
-    @SaCheckPermission("tool.disableAcc")
-    @GetMapping("/disableAcc")
-    public R<String> disableAcc(
-            @RequestParam(name = "uid") Long uid) {
-        accountsService.disableAcc(uid);
-        return DataResult.ok();
     }
 
 

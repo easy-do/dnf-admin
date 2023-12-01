@@ -3,18 +3,27 @@ package plus.easydo.dnf.service.impl;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.alibaba.druid.pool.DruidDataSource;
+import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryChain;
+import com.mybatisflex.core.query.QueryCondition;
+import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plus.easydo.dnf.dto.RegDto;
 import plus.easydo.dnf.entity.Accounts;
 import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.manager.AccountsManager;
+import plus.easydo.dnf.qo.AccountsQo;
+import plus.easydo.dnf.qo.PageQo;
 import plus.easydo.dnf.service.AccountsService;
 import plus.easydo.dnf.util.FlexDataSourceUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
+
+import static plus.easydo.dnf.entity.table.AccountsTableDef.ACCOUNTS;
 
 
 /**
@@ -111,6 +120,41 @@ public class AccountsServiceImpl implements AccountsService {
         } catch (SQLException e) {
             throw new BaseException("封禁操作失败:{}", ExceptionUtil.getMessage(e));
         }
+    }
+
+    @Override
+    public boolean update(Accounts accounts) {
+        accounts.setPassword(null);
+        return accountsManager.updateById(accounts);
+    }
+
+    @Override
+    public Accounts getById(Long id) {
+        Accounts accounts = accountsManager.getById(id);
+        accounts.setPassword("");
+        return accounts;
+    }
+
+    @Override
+    public Page<Accounts> page(AccountsQo pageQo) {
+        Page<Accounts> page = new Page<>(pageQo.getCurrent(),pageQo.getPageSize());
+        QueryWrapper queryWrapper = QueryChain.create()
+                .select(ACCOUNTS.UID, ACCOUNTS.ACCOUNTNAME, ACCOUNTS.QQ, ACCOUNTS.BILLING, ACCOUNTS.VIP)
+                .from(ACCOUNTS).where(ACCOUNTS.UID.like(pageQo.getUid())
+                        .and(ACCOUNTS.ACCOUNTNAME.like(pageQo.getAccountname()))
+                        .and(ACCOUNTS.QQ.like(pageQo.getQq())))
+                .and(ACCOUNTS.VIP.eq(pageQo.getVip()));
+        return accountsManager.page(page,queryWrapper);
+    }
+
+    @Override
+    public boolean resetPassword(Long uid, String password) {
+        Accounts accounts = accountsManager.getById(uid);
+        if(Objects.isNull(accounts)){
+            throw new BaseException("账户不存在");
+        }
+        accounts.setPassword(SecureUtil.md5().digestHex(password));
+        return accountsManager.updateById(accounts);
     }
 }
 

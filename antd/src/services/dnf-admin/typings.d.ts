@@ -1,4 +1,25 @@
 declare namespace API {
+  type Accounts = {
+    uid?: string;
+    accountname?: string;
+    password?: string;
+    qq?: string;
+    dzuid?: number;
+    billing?: number;
+    vip?: string;
+    admin?: boolean;
+  };
+
+  type AccountsQo = {
+    current?: number;
+    pageSize?: number;
+    uid?: string;
+    accountname?: string;
+    qq?: string;
+    billing?: number;
+    vip?: string;
+  };
+
   type allListParams = {
     name?: string;
   };
@@ -109,6 +130,7 @@ declare namespace API {
   type DaItemQo = {
     current?: number;
     pageSize?: number;
+    id?: string;
     name?: string;
     type?: string;
     rarity?: string;
@@ -185,12 +207,16 @@ declare namespace API {
     signInTime?: string;
   };
 
-  type disableAccParams = {
+  type disableAccountsParams = {
     uid: string;
   };
 
-  type enableAccParams = {
+  type enableAccountsParams = {
     uid: string;
+  };
+
+  type getAccountsParams = {
+    id: string;
   };
 
   type getConfInfoParams = {
@@ -216,9 +242,22 @@ declare namespace API {
     count?: string;
   };
 
+  type pageAccountsParams = {
+    page: AccountsQo;
+  };
+
   type PageQo = {
     current?: number;
     pageSize?: number;
+  };
+
+  type RAccounts = {
+    code?: number;
+    data?: Accounts;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
   };
 
   type RBoolean = {
@@ -276,6 +315,20 @@ declare namespace API {
     userName: string;
     password: string;
     verificationCode?: string;
+  };
+
+  type resetPasswordParams = {
+    uid: string;
+    password: string;
+  };
+
+  type RListAccounts = {
+    code?: number;
+    data?: Accounts[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
   };
 
   type RListCharacInfo = {

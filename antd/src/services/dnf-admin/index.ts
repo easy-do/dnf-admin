@@ -11,6 +11,7 @@ import * as daItemController from './daItemController';
 import * as gameToolController from './gameToolController';
 import * as gameNoticeController from './gameNoticeController';
 import * as daGameConfigController from './daGameConfigController';
+import * as accountsController from './accountsController';
 import * as gameRoleController from './gameRoleController';
 import * as dpController from './dpController';
 export default {
@@ -23,6 +24,7 @@ export default {
   gameToolController,
   gameNoticeController,
   daGameConfigController,
+  accountsController,
   gameRoleController,
   dpController,
 };
