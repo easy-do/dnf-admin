@@ -124,8 +124,8 @@ const Accounts: React.FC = () => {
       dataIndex: 'accountname',
     },
     {
-      title: 'qq',
-      dataIndex: 'QQ',
+      title: 'QQ',
+      dataIndex: 'qq',
     },
     {
       title: '操作',
