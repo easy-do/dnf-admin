@@ -40,10 +40,15 @@ public class MyApplicationRunner implements ApplicationRunner {
         if (Boolean.parseBoolean(copyDp2Conf.getConfData())) {
             //将dp2文件copy到指定的目录
             log.info("复制dp2插件");
-            if(!FileUtil.isDirectory(dp2PthConf.getConfData())){
-                FileUtil.mkdir(dp2PthConf.getConfData());
+            try {
+                if(!FileUtil.isDirectory(dp2PthConf.getConfData())){
+                    FileUtil.mkdir(dp2PthConf.getConfData());
+                }
+                FileUtil.copyContent(FileUtil.file("/home/dp2"), FileUtil.file(dp2PthConf.getConfData()), true);
+                log.info("复制dp2插件完成");
+            }catch (Exception e){
+                log.warn("复制dp2插件失败,跳过复制,{}", ExceptionUtil.getMessage(e));
             }
-            FileUtil.copyContent(FileUtil.file("/home/dp2"), FileUtil.file(dp2PthConf.getConfData()), true);
         }
         DaGameConfig readConf = CacheManager.GAME_CONF_MAP.get(SystemConstant.READER_PVF);
         String confValue = readConf.getConfData();
@@ -54,13 +59,14 @@ public class MyApplicationRunner implements ApplicationRunner {
                     PvfData pvfData = PvfReader.reader(pvfPath);
                     Map<Integer, String> itemMap = pvfData.getItemMap();
                     daItemService.importItemForMap(itemMap);
+                } catch (Exception exception) {
+                    log.warn("解析pvf文件失败,结束解析,{}", ExceptionUtil.getMessage(exception));
+                }finally {
                     readConf.setConfData("false");
                     daGameConfigService.updateById(readConf);
-                } catch (Exception exception) {
-                    log.warn("解析pvf文件发生错误{}", ExceptionUtil.getMessage(exception));
                 }
             } else {
-                log.warn("在路径{}下没有找到pvf文件,请检查配置", pvfPath);
+                log.warn("在路径{}下没有找到pvf文件,跳过pvf解析。", pvfPath);
             }
         }
         System.gc();
