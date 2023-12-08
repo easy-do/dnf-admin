@@ -1,0 +1,128 @@
+
+version: "2.3"
+
+# 请修改这里的环境变量
+x-env: &env
+  environment:
+    - TZ=Asia/Shanghai
+    # game账户ip白名单 默认即可
+    - ALLOW_IP=172.20.0.%
+    # game账户密码 默认即可
+    - GAME_PASSWORD=uu5!^%jg
+    # root账户密码 外网则需要修改
+    - MYSQL_ROOT_PASSWORD=88888888
+    - MYSQL_PASS=88888888
+    # 自动获取mysql容器的ip 默认即可
+    - AUTO_MYSQL_IP=true
+    # mysql容器名称 默认即可
+    - MYSQL_NAME=dnfmysql
+    # mysql的IP地址 默认即可
+    - MYSQL_IP=dnfmysql
+    # 自动获取公网ip 推荐false 手动填写服务器ip
+    - AUTO_PUBLIC_IP=false
+    # 这里填写你的服务器公网或局域网IP地址
+    - PUBLIC_IP=192.168.123.88
+    # 以下是统一登录器相关配置
+    # 网关的登录账号
+    - GM_ACCOUNT=gm_user
+    # 网关的登录密码
+    - GM_PASSWORD=123456
+    # 网关的通信密钥
+    - GM_CONNECT_KEY=763WXRBW3PFTC3IXPFWH
+    # 网关的登录器版本
+    - GM_LANDER_VERSION=20180307
+    # 以下是后台dnf-admin的相关配置
+    # 拥有管理员权限的游戏账号
+    - ADMIN_USER=123456789
+    # dp插件的通信密钥 非外网默认即可，因为还需要同步修改服务端的/dp2/lua/reportDp.lua
+    - DP_GM_KEY=123456789
+    # 提高java内存上限，防止读取pvf内存溢出
+    - JAVA_OPTS=-Xmx8g -Xms512m
+networks:
+  dnf:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+services:
+  dnfmysql:
+    image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfmysql:5.6
+    ports:
+      - 3306:3306
+    <<: *env
+    networks:
+      - dnf
+    volumes:
+      - /data/dnf/mysql:/var/lib/mysql
+    restart: unless-stopped
+    container_name: dnfmysql
+  dnfadmin:
+    image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.2
+    depends_on:
+      - dnfmysql
+    ports:
+      - 8888:8888
+    <<: *env
+    networks:
+      - dnf
+    volumes:
+      - /data/dnf:/data
+      - /usr/bin/docker:/usr/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    privileged: true
+    restart: unless-stopped
+    container_name: dnfadmin
+  dnfserver:
+    image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfserver:latest
+    depends_on:
+      - dnfmysql
+      - dnfadmin
+    <<: *env
+    links:
+      - dnfmysql
+    # privileged: true
+    shm_size: 8g
+    memswap_limit: -1
+    mem_limit: 4g
+    # windows下生效
+    cpu_count: 2
+    # # 占用1个cpu
+    cpus: 2.0
+    networks:
+      - dnf
+    restart: unless-stopped
+    ports:
+      - 7600:7600/tcp       # DnfGateServe 网关
+      - 881:881/tcp         # DnfGateServe 网关
+      - 20303:20303/tcp     # df_dbmw_r
+      - 20303:20303/udp     # df_dbmw_r
+      - 20403:20403/tcp     # df_dbmw_r
+      - 20403:20403/udp     # df_dbmw_r
+      - 40403:40403/tcp     # df_manager_r
+      - 40403:40403/udp     # df_manager_r
+      - 7000:7000/tcp       # df_bridge_r
+      - 7000:7000/udp       # df_bridge_r
+      - 7001:7001/tcp       # df_channel_r
+      - 7001:7001/udp       # df_channel_r
+      - 7200:7200/tcp       # df_relay_r
+      - 7200:7200/udp       # df_relay_r
+      - 10011:10011/tcp     # df_game_r
+      - 31100:31100/tcp     # df_community
+      - 30303:30303/tcp     # df_monitor_r
+      - 30303:30303/udp     # df_monitor_r
+      - 30403:30403/tcp     # df_guild_r
+      - 30403:30403/udp     # df_guild_r
+      - 10052:10052/tcp     # df_game_r
+      - 20011:20011/tcp     # df_game_r
+      - 20203:20203/tcp     # df_dbmw_r
+      - 20203:20203/udp     # df_dbmw_r
+      - 30703:30703/udp     # df_coserver_r
+      - 11011:11011/udp     # df_game_r
+      - 2311-2313:2311-2313/udp   # df_stun_r
+      - 30503:30503/udp     # df_statics_r
+      - 11052:11052/udp     # df_game_r
+    volumes:
+      - /data/dnf/server/data:/data
+      - /data/dnf/server/log:/home/neople/game/log
+      - /data/dnf/dp2:/dp2
+    container_name: dnfserver
