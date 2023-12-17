@@ -5,6 +5,7 @@
 - 本项目致力于打造更便捷可动态配置游戏参数、拓展性更强的增强类后台，解决插件脚本配置麻烦，需要到处找教程，小白看了教程很蒙圈的情况，被倒卖者圈钱的情况，会逐步集成常用插件功能。
 - 因近期被恶意举报导致被封，为尽量避免该类事件再次发生,即日起将停止所有TX相关交流渠道，从1.03版本开始不在公开源代码内容，目前已自建交流渠道,地址请看介绍。暂定仓库仅进行版本发布，以后视情况决定是否继续开源，每个版本的frida研究成果将继续集成于项目中,并承诺永久免费分享。
 - 欢迎兴趣相投的朋友加入一起交流技术
+- 2023.12.17 正式发布1.0.3版本,全面支持frida动态通信,从本版本开始将全面移除dp2相关功能，使用frida-server注入,感谢【菜逗逗】同学提供的思路和示例代码。
 
 
 #### 本项目仅供学习交流，请于下载后的24小时内删除，不得用于商业牟利行为。
@@ -18,23 +19,27 @@
 
 
 - 演示视频: https://www.bilibili.com/video/BV1UH4y1r7Z8/
-- 老版部署教程: https://www.bilibili.com/video/BV1ju4y187SS/
+- 1.02老版部署教程: https://www.bilibili.com/video/BV1ju4y187SS/
 - 技术交流群组： https://im.easydo.plus/invite/l_7xH88A
 
-- 1.0.2版本现已发布，推荐升级体验
+- 1.0.3版本现已正式发布，正式移除dp2插件,如果对dp插件依赖较高升级请慎重，相关功能支持变更请查看下方的更新记录&支持功能！！！！！！！！！
 - 演示地址： https://da.easydo.plus/
+- 视频教程： 待录制
 
-- 1.0.3版本正在完善中，将有重大更新!
 
 #### 软件架构
 - 服务端：spring boot + mybatisflex + sa-token
 - 前端：ANTD PRO
-- dp插件：2.8.2集成frida通信
+- dp插件：
 
 #### 特色功能
 
 #### 图片介绍
 
+<img src="./img/函数管理1.png">
+<img src="./img/函数管理2.png">
+<img src="./img/frida调试.png">
+<img src="./img/频道列表.png">
 <img src="./img/首页.png">
 <img src="./img/签到.png">
 <img src="./img/物品.png">
@@ -43,34 +48,34 @@
 <img src="./img/配置.png">
 
 
+
 #### 更新记录&支持功能
-- 使用游戏账号密码登录
-- 对指定功能进行权限控制，目前仅区分普通用户和超级管理员，后期添加所有功能权限动态配置(可以配置指定账号的权限)
-- 角色登录进行回调记录
-- 支持每日签到配置，可指定特定日期的签到标题，奖励内容（物品无上线，可无限添加），玩家可在网页端签到，登录游戏角色自动签到，方便打卡。
+- 使用游戏账号密码登录,支持注册账号
+- 按钮级别的权限动态配置
+- 支持每日签到配置，可指定特定日期的签到标题，奖励内容（物品无上线，可无限添加），登录游戏角色自动签到发送邮件。
 - 支持发送游戏公告
 - 支持发送邮件,无需小退
 - 支持后台配置游戏相关脚本功能并实时生效
-- 支持配置一键完成主线任务的道具
-- 支持配置指定强化增幅指定等级不失败
+- ~~支持配置一键完成主线任务的道具(下个小版本添加)~~
+- ~~支持配置指定强化增幅指定等级不失败~~
+- ~~支持退出副本免虚弱-2023.11.11~~
+- ~~支持解锁镇魂开门任务-2023.11.11~~
+- ~~支持解除100级及以上的限制-2023.11.11~~
+- ~~支持解除交易限额效-2023.11.11~~
+- ~~支持设置使用拍卖行的最低等级-2023.11.11~~
+- ~~支持修复拍卖行消耗品上架-2023.11.11~~
+- ~~支持关闭NPC回购系统-2023.11.11~~
+- ~~支持禁用支援兵-2023.11.11~~
+- ~~支持禁用道具掉落随机强化-2023.11.11~~
+- ~~支持装备解锁时间-2023.11.11~~
+- ~~支持掉落时随机赋予红字的装备最低等级-2023.11.11~~
 - 支持导入pvfUtility提取的装备和道具压缩包(必须是标准导出)-2023.11.11
 - 支持设置等级上限-2023.11.11
 - 支持绝望之塔通关后仍可继续挑战-2023.11.11
 - 支持设置物品免确认-2023.11.11
-- 支持解除100级及以上的限制-2023.11.11
-- 支持退出副本免虚弱-2023.11.11
-- 支持解锁镇魂开门任务-2023.11.11
 - 支持允许创建缔造者-2023.11.11
 - 支持开启GM功能-2023.11.11
 - 支持关闭新账号发送的契约邮件-2023.11.11
-- 支持解除交易限额效-2023.11.11
-- 支持设置使用拍卖行的最低等级-2023.11.11
-- 支持修复拍卖行消耗品上架-2023.11.11
-- 支持关闭NPC回购系统-2023.11.11
-- 支持禁用支援兵-2023.11.11
-- 支持禁用道具掉落随机强化-2023.11.11
-- 支持装备解锁时间-2023.11.11
-- 支持掉落时随机赋予红字的装备最低等级-2023.11.11
 - 修复绝望之塔金币异常-2023.11.11
 - 支持读取pvf文件自动导入物品数据-2023.11.12
 - 支持系统页面重构、支持桌面端-2023.11.25
@@ -83,7 +88,34 @@
 - 修复pvf物品读取错误-2023.11.26
 - 添加账号管理-2023.12.01
 - 支持账户封禁、解封、重置密码、充值点券-2023.12.01
+- 移除dp2，全面拥抱frida-2023-12-17
+- 添加frida函数管理-2023-12-17
+- 添加frida脚本管理-2023-12-17
+- 添加频道管理-2023-12-17
+- 添加frida调试-2023-12-17
+- 所有角色开启GM功能-2023-12-17
+- 关闭新账号发送的契约邮件-2023-12-17
+- 解除角色创建限制-2023-12-17
+- 赛利亚房间互相可见-2023-12-17
+- 关闭副本门口禁止摆摊-2023-12-17
+- 魔法封印自动解封-2023-12-17
+- 开启深渊模式-2023-12-17
+- +13以上强化券无需小退-2023-12-17
+- 角色登录是否发送欢迎词-2023-12-17
+- 角色登录的欢迎词内容-2023-12-17
+- 角色登录是否发送频道公告-2023-12-17
+- 角色登录发送的公告内容-2023-12-17
+- 角色退出是否发送频道公告-2023-12-17
+- 角色退出发送的公告内容-2023-12-17
+- 深渊强制非常困难-2023-12-17
+- 客户端临时提升技能等级-2023-12-17
+- 副本拾取播报-2023-12-17
+- 副本拾取播报内容-2023-12-17
+- 副本拾取奖励点券数量-2023-12-17
+- 触发副本拾取播报的物品稀有度-2023-12-17
 - 
+
+
 #### docker服务端加后台一键部署教程
 
 
@@ -144,12 +176,17 @@ x-env: &env
     # 以下是后台dnf-admin的相关配置
     # 拥有管理员权限的游戏账号
     - ADMIN_USER=123456789
-    # dp插件的通信密钥 非外网默认即可，因为还需要同步修改服务端的/dp2/lua/reportDp.lua
-    - DP_GM_KEY=123456789
     # 服务端读取pvf文件的路径、docker端编排方式保持默认值即可
     - PVF_PATH=/data/server/data/Script.pvf
 
 ```
+
+- 拉取镜像
+```shell
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/frida-client
+docker-compose pull
+```
+
 - 启动数据库
 ```shell
 docker-compose up -d dnfmysql
@@ -159,20 +196,7 @@ docker-compose up -d dnfmysql
 ```shell
 docker logs -f dnfmysql  
 ```
-- 数据库初始化完成后启动后台
-
-```shell
-docker-compose up -d dnfadmin
-```
-
-- 查看后台日志
-```shell
-docker logs -f dnfadmin 
-```
-当日志里面出现 "Completed initialization in 1 ms" 字样则代表正常启动完成,初次启动会加载pvf文件并导入数据库
-,如果看到 INSERT INTO `da_item`(`id`, `name`, `type`, `rarity`) VALUES 这样的日志则代表正在导入数据库,可以不用管，往下走启动服务端
-
-- 启动服务端
+- 数据库初始化完成后启动服务端
 
 ```shell
 docker-compose up -d dnfserver
@@ -181,6 +205,21 @@ docker-compose up -d dnfserver
 ```shell
 docker logs -f dnfserver
 ```
+
+- 启动dnfadmin
+
+```shell
+docker-compose up -d dnfadmin
+```
+当日志里面出现 "Completed initialization in 1 ms" 字样则代表正常启动完成,初次启动会加载pvf文件并导入数据库
+,如果看到 INSERT INTO `da_item`(`id`, `name`, `type`, `rarity`) VALUES 这样的日志则代表正在导入数据库,可以不用管，往下走启动服务端
+
+- 查看dnfadmin日志
+```shell
+docker logs -f dnfadmin 
+```
+
+
 一般看到"server has been started successfully."字样停留不动，并且cpu占用骤降就代表服务端基本启动完成，再过一阵还能看到五国字样
 
 - 服务端的详细日志日志一般存放在 /data/dnf/server/log下, 可以使用命令tail -f查看详细日志 
@@ -201,25 +240,15 @@ http://ip:8888 # 请使用游戏注册的账号密码登录，管理员为第一
 /data/dnf/server/data
 ```
 
-- 1.0版本升级到1.1最新版后台:
-
-```shell
-cd /root/dnf-admin
-# 编辑docker-compose.yaml，一般在第59行 将registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.0 修改为 registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.1
-docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.2
-docker rm -f dnfadmin
-docker-compose up -d dnfadmin
-docker restart dnfserver
-```
-
 - 升级当前版本后台到最新版:
 
 ```shell
 cd /root/dnf-admin
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/frida-client
 docker-compose pull 
 docker rm -f dnfadmin
-docker-compose up -d dnfadmin
 docker restart dnfserver
+docker-compose up -d dnfadmin
 ```
 
 - 卸载所有数据，彻底清除
@@ -230,6 +259,9 @@ docker-compose rm -f
 rm -rf /data/dnf/*
 docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfmysql:5.6
 docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.2
+docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/frida-client:latest
+docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.3
+docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfserver:frida-server
 docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfserver:latest
 ```
 
@@ -239,9 +271,8 @@ docker rmi registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnfserver:latest
 ``` yaml
 MYSQL_HOST #游戏数据库ip 默认 dnfmysql
 MYSQL_PORT #游戏数据库端口 默认 3306
-MYSQL_PASS 3游戏数据库密码 默认 88888888
-ADMIN_USER 3超级管理员对应的游戏账号 默认123456789
-DP_GM_KEY #与dp插件通信的安全密钥 默认123456789 
+MYSQL_PASS #游戏数据库密码 默认 88888888
+ADMIN_USER #超级管理员对应的游戏账号 默认123456789
 ```
 - 后台端口默认为 8888 使用游戏的账号密码登录
 - 其他教程待补充
@@ -249,7 +280,7 @@ DP_GM_KEY #与dp插件通信的安全密钥 默认123456789
 
 #### 独立部署简易教程
 
-- 之后版本将不再提供独立部署教程，强制要求使用配套服务端,单机推荐、联网慎重。
+- 1.03版本将不再提供独立部署教程，强制要求使用配套服务端,单机推荐、联网慎重,如有适配服务端需求请自行联系定制化开发。
 
 
 #### 参与贡献
