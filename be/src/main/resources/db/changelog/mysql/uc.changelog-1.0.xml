@@ -1,0 +1,495 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="yuzhanfeng" id="20231028" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+
+            -- d_taiwan.da_item definition
+
+            CREATE TABLE `da_item`
+            (
+                `id`     bigint(20)  NOT NULL COMMENT '装备id',
+                `name`   varchar(64) NOT NULL COMMENT '名称',
+                `type`   varchar(12) DEFAULT NULL COMMENT '类型',
+                `rarity` varchar(6)  DEFAULT NULL COMMENT '稀有度',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8 COMMENT ='物品缓存';
+
+
+            -- d_taiwan.da_sign_in_conf definition
+
+            CREATE TABLE `da_sign_in_conf`
+            (
+                `id`          bigint(20)  NOT NULL AUTO_INCREMENT,
+                `config_name` varchar(32) NOT NULL COMMENT '配置名称',
+                `config_date` date        NOT NULL COMMENT '签到时间',
+                `config_json` text        NOT NULL COMMENT '配置数据',
+                `remark`      varchar(100) DEFAULT NULL COMMENT '备注',
+                `create_id`   int(11)      DEFAULT NULL,
+                `create_time` datetime     DEFAULT NULL,
+                `update_time` datetime     DEFAULT NULL,
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              AUTO_INCREMENT = 14
+              DEFAULT CHARSET = utf8mb4 COMMENT ='签到配置';
+
+            -- d_taiwan.da_sign_in_log definition
+
+            CREATE TABLE `da_sign_in_log`
+            (
+                `id`              bigint(20) NOT NULL AUTO_INCREMENT,
+                `config_id`       bigint(20) NOT NULL,
+                `data_json`       text COMMENT '签到信息',
+                `sign_in_role_id` int(11)  DEFAULT NULL COMMENT '签到角色',
+                `create_time`     datetime DEFAULT NULL COMMENT '签到时间',
+                `update_time`     datetime DEFAULT NULL,
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              AUTO_INCREMENT = 17
+              DEFAULT CHARSET = utf8mb4 COMMENT ='签到记录';
+
+            -- d_taiwan.da_game_config definition
+
+            CREATE TABLE `da_game_config`
+            (
+                `id`        bigint(20)  NOT NULL COMMENT 'id',
+                `conf_name` varchar(64) NOT NULL COMMENT '配置名称',
+                `conf_type` int(2)      NOT NULL DEFAULT '0' COMMENT '配置类型',
+                `conf_data` text        NOT NULL COMMENT '配置信息',
+                `conf_key`  varchar(64) NOT NULL COMMENT '配置标签',
+                `remark`    varchar(100)         DEFAULT NULL COMMENT '备注',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8 COMMENT ='游戏配置';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231029" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            -- d_taiwan.da_notice_send_log definition
+
+            CREATE TABLE `da_notice_send_log`
+            (
+                `id`          bigint(20) NOT NULL AUTO_INCREMENT,
+                `message`     text COMMENT '消息',
+                `create_time` datetime DEFAULT NULL COMMENT '发送时间',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='公告发送记录';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231029-1" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            -- d_taiwan.da_mail_send_log definition
+
+            CREATE TABLE `da_mail_send_log`
+            (
+                `id`           bigint(20) NOT NULL AUTO_INCREMENT,
+                `send_details` text COMMENT '发送内容',
+                `create_time`  datetime DEFAULT NULL COMMENT '发送时间',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='邮件发送记录';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231029-2" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            ALTER TABLE da_item MODIFY COLUMN name varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231104" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            ALTER TABLE da_game_config MODIFY COLUMN id bigint(20) auto_increment NOT NULL COMMENT 'id';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231104-1" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_game_config (id, conf_name, conf_type, conf_data, conf_key, remark) VALUES(1, '主线任务完成券', 1, '114154', 'complete_task_id', '主线任务完成券的道具id');
+            INSERT INTO da_game_config (id, conf_name, conf_type, conf_data, conf_key, remark) VALUES(2, '强化增幅必成等级', 1, '15', 'upgrade_success_level', '强化或增幅等级多少以下不失败');
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231105" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            UPDATE da_game_config SET conf_name='主线任务完成券', conf_type=1, conf_data='8070', conf_key='complete_task_item_id', remark='一键完成主线任务的道具id' WHERE id=1;
+            UPDATE da_game_config SET conf_name='强化增幅必成等级', conf_type=1, conf_data='30', conf_key='upgrade_success_level', remark='强化或增幅多少级不失败' WHERE id=2;
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231111" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('等级上限', 1, '100', 'max_level', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('绝望之塔通关后仍可继续挑战(需门票)', 3, 'false', 'unlimit_towerofdespair', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('设置物品免确认(异界装备不影响)', 3, 'true', 'disable_item_routing', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('解除100级及以上的限制', 3, 'false', 'disable_security_protection', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('退出副本免虚弱', 3, 'false', 'disable_giveup_panalty', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('解锁镇魂开门任务', 3, 'false', 'open_timegate', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('允许创建缔造者', 3, 'false', 'enable_creator', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('开启GM功能, (需要添加管理员账号ID至数据库中)', 3, 'false', 'enable_game_master', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('关闭新账号发送的契约邮件', 3, 'false', 'disable_mobile_rewards', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('解除交易限额, 已达上限的第二天生效', 3, 'false', 'disable_trade_limit', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('设置使用拍卖行的最低等级', 1, '1', 'set_auction_min_level', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('修复拍卖行消耗品上架, 设置最大总价, 建议值2E', 1, '200000000', 'fix_auction_regist_item', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('关闭NPC回购系统', 3, 'false', 'disable_redeem_item', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('禁用支援兵', 3, 'false', 'disable_striker', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('禁用道具掉落随机强化', 3, 'false', 'disable_drop_random_upgrade', '开启后再关闭需要重启服务端生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('装备解锁时间(秒)', 1, '86400', 'set_item_unlock_time', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('掉落时随机赋予红字的装备最低等级 (默认55)', 1, '55', 'set_drop_amplify_level', '立即生效,影响洗红字的等级');
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231112" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('启动后自动加载pvf数据到数据库', 3, 'true', 'gm_reader_pvf', '后台参数,是否启动后加载pvf文件数据');
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231114" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            -- da_resource definition
+
+            CREATE TABLE `da_resource`
+            (
+                `id`            bigint(20)    NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                `parent_id`     bigint(20)             DEFAULT 0 COMMENT '父级ID',
+                `resource_name` varchar(50)   NOT NULL COMMENT '资源名称',
+                `resource_code` varchar(100)  NOT NULL COMMENT '资源编码',
+                `resource_path` varchar(2048)          COMMENT '资源id路径，以/开始以/结束，从根节点ID到当点节点ID，节点ID之间以/连接',
+                `resource_type` char(1)                DEFAULT '' COMMENT '资源类型（M菜单 F功能）',
+                `order_number`  int(11)                DEFAULT 0 COMMENT '显示顺序',
+                `url`           varchar(200)           DEFAULT '' COMMENT '路径',
+                `icon`          text                   DEFAULT NULL COMMENT '图标',
+                `status`        tinyint(1)             DEFAULT 1 COMMENT '状态（0停用 1开启）',
+                `auth_flag`     tinyint(1)    NOT NULL DEFAULT 1 COMMENT '是否需要授权访问：1-是、0-否',
+                `resource_desc` varchar(500)           DEFAULT '' COMMENT '备注',
+                `del_flag`      tinyint(1)             DEFAULT 0 COMMENT '删除标记',
+                PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='系统资源';
+
+            -- da_role definition
+
+            CREATE TABLE `da_role`
+            (
+                `id`     bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+                `role_name`   varchar(30)  NOT NULL COMMENT '角色名称',
+                `role_key`    varchar(100) NOT NULL COMMENT '角色权限字符串',
+                `role_sort`   int(11)      NOT NULL DEFAULT 0 COMMENT '显示顺序',
+                `is_default`  int(11)      NOT NULL DEFAULT 0 COMMENT '是否默认角色,0否 1是',
+                `status`      int(11)      NOT NULL DEFAULT 1 COMMENT '角色状态（0停用 1开启）',
+                `remark`      varchar(500)          DEFAULT NULL COMMENT '备注',
+                PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='角色信息表';
+
+            -- da_role_resource definition
+
+            CREATE TABLE `da_role_resource`
+            (
+                `role_id`     bigint(20) NOT NULL COMMENT '角色ID',
+                `resource_id` bigint(20) NOT NULL COMMENT '资源ID'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='角色和资源关联表';
+
+            -- da_user_role definition
+
+            CREATE TABLE `da_user_role`
+            (
+                `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+                `role_id` bigint(20) NOT NULL COMMENT '角色ID',
+                PRIMARY KEY (`user_id`, `role_id`) USING BTREE
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='用户和角色关联表';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231122" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            UPDATE da_game_config SET conf_name='启动后自动加载pvf数据到数据库', conf_type=3, conf_data='false', conf_key='gm_reader_pvf', remark='后台参数,是否启动后加载pvf文件数据' WHERE conf_key='gm_reader_pvf';
+            INSERT INTO da_role (id, role_name, role_key, role_sort, is_default, status, remark) VALUES(1, '系统管理员', 'admin', 0, 0, 1, '系统管理员');
+            INSERT INTO da_role (id, role_name, role_key, role_sort, is_default, status, remark) VALUES(2, '默认角色', 'default_role', 0, 1, 1, '系统默认角色');
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(1, 0, '首页', 'home', '/home', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(2, 0, '签到配置', 'signIn', '/signin', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(3, 2, '添加签到', 'signIn.save', 'signIn.save', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(4, 2, '编辑签到', 'signIn.update', 'signIn.update', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(5, 0, '物品管理', 'item', '/item', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(6, 5, '添加物品', 'item.save', 'item.save', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(7, 5, '删除物品', 'item.remove', 'item.remove', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(8, 5, '模板导入', 'item.importItem', 'item.importItem', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(9, 5, '7z导入', 'item.importItemFor7z', 'item.importItemFor7z', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(10, 5, '编辑物品', 'item.update', 'item.update', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(11, 0, '游戏公告', 'notice', '/notice', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(12, 11, '发送公告', 'notice.sendNotice', 'notice.sendNotice', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(13, 0, '邮件系统', 'mail', '/mail', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(14, 13, '发送邮件', 'mail.sendMail', 'mail.sendMail', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(15, 0, '角色管理', 'role', '/role', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(16, 15, '添加角色', 'role.save', 'role.save', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(17, 15, '编辑角色', 'role.update', 'role.update', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(18, 15, '授权角色', 'role.authRoleResource', 'role.authRoleResource', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(19, 0, '系统配置', 'conf', '/conf', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(20, 19, '添加配置', 'conf.save', 'conf.save', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(21, 19, '更新配置', 'conf.update', 'conf.update', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 1);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 2);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 3);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 4);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 5);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 6);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 7);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 8);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 9);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 10);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 11);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 12);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 13);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 14);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 15);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 16);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 17);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 18);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 19);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 20);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 21);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231124" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('重启数据库命令', 2, 'docker restart dnfmysql', 'da_restart_db', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('重启后台命令', 2, 'docker restart dnfadmin', 'da_restart_da', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('重启服务端命令', 2, 'docker restart dnfserver', 'da_restart_server', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('pvf文件路径', 2, '/data/server/data/Script.pvf', 'da_pvf_path', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('证书存放路径', 2, '/data/server/data/', 'da_pem_path', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('dp2插件路径', 2, '/data/dp2', 'da_dp2_path', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('启动后台复制dp2插件', 3, 'true', 'da_copy_dp2', '重启生效');
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(22, 1, '重启服务端', 'tool.restartServer', 'tool.restartServer', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(23, 1, '重启数据库', 'tool.restartDb', 'tool.restartServer', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(24, 1, '重启后台', 'tool.restartDa', 'tool.restartServer', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(25, 1, '重新生成密钥', 'tool.generateKeyPem', 'tool.generateKeyPem', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 22);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 23);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 24);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 25);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(2, 1);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231129" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(26, 0, '账户管理', 'accounts', '/accounts', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(27, 26, '添加账户', 'accounts.save', 'accounts.save', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(28, 26, '编辑账户', 'accounts.update', 'accounts.update', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(29, 26, '解封账户', 'accounts.enable', 'accounts.enable', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(30, 26, '封禁账户', 'accounts.disable', 'accounts.disable', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(31, 26, '重置密码', 'accounts.resetPass', 'accounts.resetPass', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 26);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 27);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 28);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 29);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 30);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 31);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231201" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(32, 26, '充值', 'accounts.recharge', 'accounts.recharge', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 32);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231202" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('获取服务端进程命令', 2, 'docker exec dnfserver ps -ef', 'get_pid_ps_cmd', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('获取服务端IP命令', 2, 'docker exec dnfserver ping -i 0.1 -c 1 dnfserver', 'get_server_ip_cmd', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('获取后台IP命令', 2, 'docker exec dnfserver ping -i 0.1 -c 1 dnfadmin', 'get_da_ip_cmd', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('获取所有镜像命令', 2, 'docker ps -a', 'get_container_list_all_cmd', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('获取所有运行中容器', 2, 'docker ps', 'get_container_list_run_cmd', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('查看docker容器', 2, 'docker inspect {}', 'docker_inspect_cmd', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('删除容器命令', 2, 'docker rm -f {}', 'remove_container_cmd', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('frida客户端启动命令', 2, 'docker run -dit --net={} -e CHANNEL={} -e PID={} -e SERVER_IP={} -e WS={} -v /data/dnf/server/data/frida/{}:/data --name {} registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-frida', 'start_frida_client_cmd', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('服务端wss地址', 2, 'ws://{}:8888/fc/ws', 'da_wss_address', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('frida脚本路径', 2, '/data/server/data/frida/{}/frida.js', 'frida_js_path', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('python脚本路径', 2, '/data/server/data/frida/{}/main.py', 'main_python_path', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('引入函数开始标识', 2, '//--------------------INTRODUCE_FUNCTIONS_BEGIN----------------------', 'introduce_functions_begin', '立即生效,请勿随便修改');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('引入函数结束标识', 2, '//--------------------INTRODUCE_FUNCTIONS_END----------------------', 'introduce_functions_end', '立即生效,请勿随便修改');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('函数正文开始', 2, '//--------------------FUNCTION_BEGIN {}, 说明:{}----------------------', 'function_context_begin', '立即生效,请勿随意修改');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('函数正文结束标识', 2, '//--------------------FUNCTION_END {},说明:{}----------------------', 'function_context_end', '立即生效,请勿随意修改');
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(33, 0, 'frida管理', 'frida', '/frida', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(34, 33, '函数管理', 'function', '/function', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(35, 34, '添加函数', 'function.save', 'function.save', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(36, 34, '编辑函数', 'function.update', 'function.update', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(37, 33, '脚本管理', 'fridaScript', '/fridaScript', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(38, 37, '添加脚本', 'fridaScript.save', 'fridaScript.save', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(39, 37, '编辑脚本', 'fridaScript.update', 'fridaScript.update', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(40, 0, '频道列表', 'channel', '/channel', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(41, 40, '管理frida', 'channel.frida', 'channel.frida', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 33);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 34);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 35);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 36);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 37);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 38);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 39);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 40);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 41);
+            -- d_taiwan.da_channel definition
+
+            CREATE TABLE `da_channel`
+            (
+                `id`             bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '编号',
+                `pid`            varchar(12) DEFAULT NULL COMMENT 'PID',
+                `channel_name`   varchar(100) NOT NULL COMMENT '频道名',
+                `frida_client`   varchar(64) DEFAULT NULL COMMENT '客户端',
+                `script_context` longtext COMMENT '脚本内容',
+                `main_python`    longtext COMMENT 'python脚本',
+                `channel_status` tinyint(1)  DEFAULT '0' COMMENT '状态 0离线 1在线',
+                `frida_status`   tinyint(1)  DEFAULT '0' COMMENT '状态 0离线 1运行',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              AUTO_INCREMENT = 3
+              DEFAULT CHARSET = utf8 COMMENT ='频道信息';
+
+
+            -- d_taiwan.da_frida_function definition
+
+            CREATE TABLE `da_frida_function`
+            (
+                `id`                bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
+                `children_function` varchar(256) DEFAULT NULL COMMENT '依赖函数',
+                `function_name`     varchar(32)  DEFAULT NULL COMMENT '函数名',
+                `function_context`  longtext     DEFAULT NULL COMMENT '函数内容',
+                `remark`            varchar(256) DEFAULT NULL COMMENT '备注',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8 COMMENT ='frida函数信息';
+
+
+            -- d_taiwan.da_frida_script definition
+
+            CREATE TABLE `da_frida_script`
+            (
+                `id`                bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '编号',
+                `script_name`       varchar(100) NOT NULL COMMENT '脚本名',
+                `script_context`    longtext COMMENT '脚本内容',
+                `children_function` varchar(256) DEFAULT NULL COMMENT '依赖函数',
+                `remark`            varchar(255) DEFAULT NULL COMMENT '备注',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8 COMMENT ='frida脚本信息';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231206" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            ALTER TABLE da_game_config ADD is_system_conf tinyint(1) DEFAULT 0 NULL COMMENT '系统配置';
+            ALTER TABLE da_channel ADD frida_json_context longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '脚本内容';
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('查看docker日志命令', 2, 'docker logs {}', 'docker_log_cmd', '立即生效,请勿随意修改');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('fridaJson配置文件路径', 2, '/data/server/data/frida/{}/frida_conf.json', 'frida_json_path', '立即生效');
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark) VALUES('fridaJson默认内容', 2, '{"db_config":{"account":"game","password":"uu5!^%jg"}}', 'frida_json_default_value', '立即生效');
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231207" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='da_pem_path';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='da_dp2_path';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='da_copy_dp2';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='get_pid_ps_cmd';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='get_server_ip_cmd';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='get_da_ip_cmd';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='get_container_list_all_cmd';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='get_container_list_run_cmd';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='docker_inspect_cmd';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='remove_container_cmd';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='start_frida_client_cmd';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='da_wss_address';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='frida_js_path';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='main_python_path';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='introduce_functions_begin';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='introduce_functions_end';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='function_context_begin';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='function_context_end';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='docker_log_cmd';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='frida_json_path';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='frida_json_default_value';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='da_pvf_path';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='da_restart_server';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='da_restart_db';
+            UPDATE da_game_config SET is_system_conf=1 WHERE conf_key='da_restart_da';
+            ALTER TABLE d_taiwan.da_game_config ADD CONSTRAINT da_game_config_UN UNIQUE KEY (conf_key);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231207-1" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            DELETE FROM da_game_config WHERE conf_key='da_dp2_path';
+            DELETE FROM da_game_config WHERE conf_key='da_copy_dp2';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231209" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('临时引入函数开始标识', 2, '\r\n//--------------------TEMPORARY_INTRODUCE_FUNCTIONS_BEGIN 以下是临时引入的函数内容,将在保存时删除,请勿编辑此行,将导致函数内容保存异常----------------------\r\n', 'temporary_introduce_functions_begin', '立即生效,请勿随便修改',1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('临时引入函数结束标识', 2, '//--------------------TEMPORARY_INTRODUCE_FUNCTIONS_END 以上是临时引入的函数内容,将在保存时删除,请勿编辑此行,将导致函数内容保存异常----------------------', 'temporary_introduce_functions_end', '立即生效,请勿随便修改',1);
+            UPDATE da_game_config SET conf_data='\r\n//--------------------INTRODUCE_FUNCTIONS_BEGIN----------------------\r\n' WHERE conf_key = 'introduce_functions_begin';
+            UPDATE da_game_config SET conf_data='\r\n//--------------------FUNCTION_BEGIN {}, 说明:{}----------------------\r\n' WHERE conf_key ='function_context_begin';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231210" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            ALTER TABLE da_frida_function ADD function_key varchar(64) NOT NULL COMMENT '函数唯一标识';
+            ALTER TABLE da_frida_function ADD CONSTRAINT da_frida_function_UN UNIQUE KEY (function_key);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231211" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            ALTER TABLE da_frida_function ADD is_system_fun tinyint(1) DEFAULT 0 NULL COMMENT '系统函数';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20231217" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            TRUNCATE TABLE da_game_config;
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('启动后自动加载pvf数据到数据库', 3, 'false', 'gm_reader_pvf', '后台参数,是否启动后加载pvf文件数据', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('重启数据库命令', 2, 'docker restart dnfmysql', 'da_restart_db', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('重启后台命令', 2, 'docker restart dnfadmin', 'da_restart_da', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('重启服务端命令', 2, 'docker restart dnfserver', 'da_restart_server', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('pvf文件路径', 2, '/data/server/data/Script.pvf', 'da_pvf_path', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('证书存放路径', 2, '/data/server/data/', 'da_pem_path', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('获取服务端进程命令', 2, 'docker exec dnfserver ps -ef', 'get_pid_ps_cmd', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('获取服务端IP命令', 2, 'docker exec dnfserver ping -i 0.1 -c 1 dnfserver', 'get_server_ip_cmd', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('获取后台IP命令', 2, 'docker exec dnfserver ping -i 0.1 -c 1 dnfadmin', 'get_da_ip_cmd', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('获取所有镜像命令', 2, 'docker ps -a', 'get_container_list_all_cmd', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('获取所有运行中容器', 2, 'docker ps', 'get_container_list_run_cmd', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('查看docker容器', 2, 'docker inspect {}', 'docker_inspect_cmd', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('停止容器命令', 2, 'docker stop {}', 'stop_container_cmd', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('删除容器命令', 2, 'docker rm -f {}', 'remove_container_cmd', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('frida客户端启动命令', 2, 'docker run -dit --net={} -e CHANNEL={} -e PID={} -e SERVER_IP={} -e WS={} -e SECRET={} -v /data/dnf/server/data/frida/{}:/data --name {} registry.cn-hangzhou.aliyuncs.com/gebilaoyu/frida-client', 'start_frida_client_cmd', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('服务端wss地址', 2, 'ws://{}:8888/fc/ws', 'da_wss_address', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('frida脚本路径', 2, '/data/server/data/frida/{}/frida.js', 'frida_js_path', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('python脚本路径', 2, '/data/server/data/frida/{}/main.py', 'main_python_path', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('引入函数开始标识', 2, '\r\n//--------------------INTRODUCE_FUNCTIONS_BEGIN----------------------\r\n', 'introduce_functions_begin', '立即生效,请勿随便修改', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('引入函数结束标识', 2, '//--------------------INTRODUCE_FUNCTIONS_END----------------------', 'introduce_functions_end', '立即生效,请勿随便修改', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('函数正文开始', 2, '\r\n//--------------------FUNCTION_BEGIN {}, 说明:{}----------------------\r\n', 'function_context_begin', '立即生效,请勿随意修改', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('函数正文结束标识', 2, '//--------------------FUNCTION_END {},说明:{}----------------------', 'function_context_end', '立即生效,请勿随意修改', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('查看docker日志命令', 2, 'docker logs {}', 'docker_log_cmd', '立即生效,请勿随意修改', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('fridaJson配置文件路径', 2, '/data/server/data/frida/{}/frida_conf.json', 'frida_json_path', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('fridaJson默认内容', 2, '{"db_config":{"account":"game","password":"uu5!^%jg"}}', 'frida_json_default_value', '立即生效', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('临时引入函数开始标识', 2, '\r\n //--------------------TEMPORARY_INTRODUCE_FUNCTIONS_BEGIN 以下是临时引入的函数内容,将在保存时删除,请勿编辑此行,将导致函数内容保存异常----------------------\r\n', 'temporary_introduce_functions_begin', '立即生效,请勿随便修改', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('临时引入函数结束标识', 2, '//--------------------TEMPORARY_INTRODUCE_FUNCTIONS_END 以上是临时引入的函数内容,将在保存时删除,请勿编辑此行,将导致函数内容保存异常----------------------', 'temporary_introduce_functions_end', '立即生效,请勿随便修改', 1);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('等级上限', 1, '90', 'max_level', '立即生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('史诗免确认', 3, 'true', 'cancel_epic_ok', '开启后再关闭需要重启服务端生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('允许创建缔造者', 3, 'true', 'enable_creator', '开启后再关闭需要重启服务端生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('开启GM功能', 3, 'false', 'enable_game_master', '开启后再关闭需要重启服务端生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('关闭新账号发送的契约邮件', 3, 'true', 'disable_mobile_rewards', '开启后再关闭需要重启服务端生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('解除角色创建限制', 3, 'true', 'disable_check_create_character_limit', '关闭需要重启服务端生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('赛利亚房间互相可见', 3, 'false', 'share_seria_room', '关闭需要重启服务端生效	', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('关闭副本门口禁止摆摊', 3, 'true', 'Privatestore_IgnoreNearDungeon', '关闭需要重启服务端生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('魔法封印自动解封', 3, 'true', 'auto_unseal_random_option_equipment', '关闭需要重启服务端生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('开启深渊模式', 3, 'true', 'heffPartyTag', '开启深渊模式', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('+13以上强化券无需小退', 3, 'true', 'enhancement_level_13_no_exit ', '关闭需要重启服务端生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('角色登录是否发送欢迎词', 3, 'true', 'enable_user_login_welcome', '立即生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('角色登录的欢迎词内容', 2, '欢迎，%s!', 'enable_user_login_welcome_text', '立即生效，%s是角色名的占位符', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('角色登录是否发送频道公告', 3, 'true', 'enable_user_login_notice', '立即生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('角色登录发送的公告内容', 2, '[%s] 登录游戏', 'enable_user_login_notice_text', '立即生效，%s为角色名的占位符', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('角色退出是否发送频道公告', 3, 'true', 'enable_user_exit_notice', '立即生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('角色退出发送的公告内容', 2, '[%s] 退出游戏', 'enable_user_exit_notice_text', '立即生效，%s为角色名的占位符', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('深渊强制非常困难', 3, 'true', 'startHellPartyVerymiserable', '立即生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('客户端临时提升技能等级', 1, '0', '客户端临时提升技能等级', '立即生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('副本拾取播报', 3, 'true', 'dungeons_add_item_notice', '立即生效', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('副本拾取播报内容', 2, '恭喜玩家[?1]在地下城中获得了[?2] 奖励点券：☆?3☆', 'dungeons_add_item_notice_text', '立即生效，?1角色名 ?2拾取道具名 ?3点券数量', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('副本拾取奖励点券数量', 1, '1', 'dungeons_add_item_notice_cash_cera', '立即生效，0不奖励 1随机奖励点券 1以上奖励设置的数量 ', 0);
+            INSERT INTO da_game_config (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('触发副本拾取播报的物品稀有度', 1, '1', 'dungeons_add_item_notice_equRarity', '立即生效', 0);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
