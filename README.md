@@ -118,27 +118,21 @@
 
 #### docker服务端加后台一键部署教程
 
+- 服务端的最佳兼容系统版本为centos7 x86系统,debian测试也可以跑，其他系统位置
 
 - 整体流程为下载 docker-compose.yaml  编辑环境变量、启动容器编排
 
-- 克隆代码 如果服务器没有git需要安装一下，以centos为例
+- 下载编排文件
 ```shell
-yum install git -y
+yum install wget -y
+mkdir /root/dnf-admin
+cd /root/dnf-admin
+wget https://gitee.com/yuzhanfeng/dnf-admin/releases/download/1.0.3/docker-compose.yaml
 ```
-- 克隆命令
-```shell
-cd /root
-git clone https://gitee.com/yuzhanfeng/dnf-admin.git  
-cd dnf-admin
-```
-- 安装docker,服务器已经安装了直接跳过
-```shell
-yum install docker -y
-```
-- 安装docker-compose,服务器已经安装了直接跳过
-```shell
-yum install docker-compose -y
-```
+
+- 安装 docker和docker-compose,如果服务器已经安装则直接跳过
+    https://www.baidu.com/  搜索：CentOS7安装docker及docker-compose
+    菜鸟教程：https://www.runoob.com/docker/docker-tutorial.html
 
 - 编辑 docker-compose.yaml的内容，配置环境变量，哪些需要改看注释
 
@@ -183,7 +177,7 @@ x-env: &env
 
 - 拉取镜像
 ```shell
-docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/frida-client
+docker pull registry.cn-hangzhou.aliyuncs.com/gebilaoyu/frida-client:latest
 docker-compose pull
 ```
 
@@ -231,7 +225,7 @@ tail -f 这里换成具体日志的位置 比如 /data/dnf/server/log/siroco11/L
 - 后台地址
 
 ```yaml
-http://ip:8888 # 请使用游戏注册的账号密码登录，管理员为第一步环境变量内配置的超级管理员账号，其他游戏账号夜客登录权限为普通用户
+http://你的服务器ip:8888 # 请使用游戏注册的账号密码登录，管理员为第一步环境变量内配置的超级管理员账号，其他游戏账号夜客登录权限为普通用户
 ```
 
 - pvf及等级补丁替换路径
@@ -239,8 +233,11 @@ http://ip:8888 # 请使用游戏注册的账号密码登录，管理员为第一
 ```shell
 /data/dnf/server/data
 ```
+- 登录器
+  如果没有特殊需求直接使用dnf-admin的桌面端，支持注册和登录启动
 
-- 升级当前版本后台到最新版:
+
+- 升级到最新版:
 
 ```shell
 cd /root/dnf-admin
