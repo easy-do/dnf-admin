@@ -30,7 +30,7 @@
 #### 软件架构
 - 服务端：spring boot + mybatisflex + sa-token
 - 前端：ANTD PRO
-- dp插件：
+- 插件： frida & frida-server
 
 #### 特色功能
 
