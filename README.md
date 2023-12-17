@@ -132,7 +132,7 @@ wget https://gitee.com/yuzhanfeng/dnf-admin/releases/download/1.0.3/docker-compo
 
 - 安装 docker和docker-compose,如果服务器已经安装则直接跳过
     https://www.baidu.com/  搜索：CentOS7安装docker及docker-compose
-    菜鸟教程：https://www.runoob.com/docker/docker-tutorial.html
+    docker教程：https://www.runoob.com/docker/docker-tutorial.html
 
 - 编辑 docker-compose.yaml的内容，配置环境变量，哪些需要改看注释
 
