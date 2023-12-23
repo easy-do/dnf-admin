@@ -75,7 +75,7 @@ services:
     <<: *env
     links:
       - dnfmysql
-    # privileged: true
+    privileged: true
     shm_size: 8g
     memswap_limit: -1
     mem_limit: 4g
