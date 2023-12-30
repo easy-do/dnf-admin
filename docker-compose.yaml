@@ -56,8 +56,6 @@ services:
     container_name: dnfmysql
   dnfadmin:
     image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.3
-    depends_on:
-      - dnfmysql
     ports:
       - 8888:8888
     <<: *env
