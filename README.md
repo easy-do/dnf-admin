@@ -3,8 +3,7 @@
 #### 介绍
 - 某不可描述的勇士game后台，本项目为用爱发电，如果觉得不错欢迎分享给身边的朋友。
 - 本项目致力于打造更便捷可动态配置游戏参数、拓展性更强的增强类后台，解决插件脚本配置麻烦，需要到处找教程，小白看了教程很蒙圈的情况，被倒卖者圈钱的情况，会逐步集成常用插件功能。
-- 因近期被恶意举报导致被封，为尽量避免该类事件再次发生,目前已自建交流渠道,地址请看介绍。每个版本的frida研究成果将继续集成于项目中,并承诺永久免费分享。
-- 欢迎兴趣相投的朋友加入一起交流技术
+- 欢迎兴趣相投的朋友加入群组一起交流技术
 - 2023.12.17 正式发布1.0.3版本,全面支持frida动态通信,从本版本开始将全面移除dp2相关功能，使用frida-server注入,感谢【菜逗逗】同学提供的思路和示例代码。
 
 
@@ -13,26 +12,34 @@
 
 - 你们的支持是我更新的动力,如果觉得不错还请点个star，这对我很重要。
 
-- https://github.com/easy-do/dnf-admin
-- https://gitee.com/yuzhanfeng/dnf-admin
-- 常用教程、游戏版本、相关工具：https://www.dafschool.site/
-
-
-- 演示视频: https://www.bilibili.com/video/BV1UH4y1r7Z8/
-- 1.02老版部署教程: https://www.bilibili.com/video/BV1ju4y187SS/
-- 技术交流群组： https://im.easydo.plus/invite/l_7xH88A
-
 - 1.0.3版本现已正式发布，正式移除dp2插件,如果对dp插件依赖较高升级请慎重，相关功能支持变更请查看下方的更新记录&支持功能！！！！！！！！！
-- 演示地址： https://da.easydo.plus/
-- 视频教程： https://www.bilibili.com/video/BV1LN4y1B77b/
+- 在线网页演示地址： https://da.easydo.plus/
+- 最新视频教程： https://www.bilibili.com/video/BV1LN4y1B77b/
+- gitee仓库：https://github.com/easy-do/dnf-admin
+- github仓库 https://gitee.com/yuzhanfeng/dnf-admin
+- 常用教程、游戏版本、其他工具：https://daf.ink/
+- 吹水群1: 154213998  架设和使用遇到问题或意见反馈来此群
+- 吹水群2： https://im.easydo.plus/invite/l_7xH88A
 
+#### 桌面端 & 小白专用vm虚拟机一键端
+
+度盘：https://pan.baidu.com/s/1OXWrKExtj3mNiUReGU_acg?pwd=skqc
+123：
+https://www.123pan.com/s/DUoAjv-JkRRA.html提取码:hqLE
 
 #### 软件架构
-- 服务端：spring boot + mybatisflex + sa-token
+- 服务端：spring boot
 - 前端：ANTD PRO
-- 插件： frida & frida-server
+- 插件：frida
 
 #### 特色功能
+
+- 使用docker容器运行,安装卸载方便,与宿主机隔离,减少垃圾文件污染
+- 按钮级别的权限控制
+- 支持frida在线调试、热更代码
+- frida脚本的在线编辑、方便拆分和组合函数
+- 不间断的长期更新支持、免费试用、代码开源、无后门
+
 
 #### 图片介绍
 
@@ -135,12 +142,16 @@
 - 优化页面加载速度 -2023-12-30
 - 添加CDK管理和兑换 -2024-01-05
 - 增加验证码校验 -2024-01-06
-- 
+- 相关功能代码的优化 -2024-01-07
+- 账号管理增加重置角色创建次数 -2024-01-07
+- 账号管理增加设置角色栏最大 -2024-01-07
+- 角色管理增加开启左右槽 -2024-01-07
+-
 
 #### docker服务端加后台一键部署教程
 
-- 服务端的最佳兼容系统版本为centos7 x86系统,debian系统测试也可以正常跑，其他系统内核是否兼容未知
-
+- 服务端的最佳兼容系统版本为centos7 x86系统,debian系统测试正常，其他系统内核是否兼容未知
+- 所有服务都是使用docker容器云行
 - 整体流程为下载 docker-compose.yaml  编辑环境变量、启动容器编排
 
 - 下载编排文件
@@ -152,8 +163,8 @@ wget https://gitee.com/yuzhanfeng/dnf-admin/releases/download/1.0.3/docker-compo
 ```
 
 - 安装 docker和docker-compose,如果服务器已经安装则直接跳过
-    https://www.baidu.com/  搜索：CentOS7安装docker及docker-compose
-    docker教程：https://www.runoob.com/docker/docker-tutorial.html
+
+推荐安装1panel面板,会自动安装docker,否则自行百度自己系统如何安装docker
 
 - 编辑 docker-compose.yaml的内容，配置环境变量，哪些需要改看注释
 
@@ -237,7 +248,7 @@ docker logs -f dnfadmin
 
 一般看到"server has been started successfully."字样停留不动，并且cpu占用骤降就代表服务端基本启动完成，再过一阵还能看到五国字样
 
-- 服务端的详细日志日志一般存放在 /data/dnf/server/log下, 可以使用命令tail -f查看详细日志 
+- 服务端的详细日志日志一般存放在 /data/dnf/server/log下, 可以使用命令tail -f查看详细日志
 ```shell
 tail -f 这里换成具体日志的位置 比如 /data/dnf/server/log/siroco11/Logxxxxxx.log
 ```
