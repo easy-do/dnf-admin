@@ -163,10 +163,19 @@ https://www.123pan.com/s/DUoAjv-JkRRA.html提取码:hqLE
 - 支持修改角色金币SP、TP、QP、时装币 -2024-02-01
 - 支持账号金库管理 (开通、删除、编辑物品、修改金库格子和金币) -2024-02-02
 - 支持游戏事件查看,可以分析账号角色行为  -2024-02-02
-- 没有意外这应该是年前最后一次大更
+- 机器人功能（50%）,下个大版本更新 - 2024-02-24
+- 移除服务端的统一网关 -2024-02-24
+- 添加一键安装脚本 -2024-02-24
 - 
 
-#### docker服务端加后台一键部署教程
+#### 真 * 一键部署教程
+
+```shell
+bash <(curl -L https://gitee.com/yuzhanfeng/dnf-admin/releases/download/1.0.3/install_dnfadmin.sh)
+```
+
+
+#### docker服务端加后台部署教程
 
 - 服务端的最佳兼容系统版本为centos7 x86系统,debian系统测试正常，其他系统内核是否兼容未知
 - 所有服务都是使用docker容器云行
@@ -208,15 +217,6 @@ x-env: &env
     - AUTO_PUBLIC_IP=false
     # 这里填写你的服务器公网或局域网IP地址 
     - PUBLIC_IP=192.168.123.88
-    # 以下是统一登录器相关配置
-    # 网关的登录账号
-    - GM_ACCOUNT=gm_user
-    # 网关的登录密码
-    - GM_PASSWORD=123456
-    # 网关的通信密钥
-    - GM_CONNECT_KEY=763WXRBW3PFTC3IXPFWH
-    # 网关的登录器版本
-    - GM_LANDER_VERSION=20180307
     # 以下是后台dnf-admin的相关配置
     # 拥有管理员权限的游戏账号
     - ADMIN_USER=123456789
@@ -320,6 +320,7 @@ MYSQL_HOST #游戏数据库ip 默认 dnfmysql
 MYSQL_PORT #游戏数据库端口 默认 3306
 MYSQL_PASS #游戏数据库密码 默认 88888888
 ADMIN_USER #超级管理员对应的游戏账号 默认123456789
+MODE #默认default：与docker服务端配合模式  standalone：独立部署模式  utils：工具模式
 ```
 - 后台端口默认为 8888 使用游戏的账号密码登录
 - 其他教程待补充

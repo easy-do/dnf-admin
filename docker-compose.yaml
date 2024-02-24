@@ -7,8 +7,6 @@ x-env: &env
     - TZ=Asia/Shanghai
     # game账户ip白名单 默认即可
     - ALLOW_IP=172.20.0.%
-    # game账户密码 默认即可
-    - GAME_PASSWORD=uu5!^%jg
     # root账户密码 外网则需要修改
     - MYSQL_ROOT_PASSWORD=88888888
     - MYSQL_PASS=88888888
@@ -22,18 +20,11 @@ x-env: &env
     - AUTO_PUBLIC_IP=false
     # 这里填写你的服务器公网或局域网IP地址
     - PUBLIC_IP=192.168.123.88
-    # 以下是统一登录器相关配置
-    # 网关的登录账号
-    - GM_ACCOUNT=gm_user
-    # 网关的登录密码
-    - GM_PASSWORD=123456
-    # 网关的通信密钥
-    - GM_CONNECT_KEY=763WXRBW3PFTC3IXPFWH
-    # 网关的登录器版本
-    - GM_LANDER_VERSION=20180307
     # 以下是后台dnf-admin的相关配置
     # 拥有管理员权限的游戏账号
     - ADMIN_USER=123456789
+    # 启动模式
+    - MODE=default # default：与docker服务端配合模式  standalone：独立部署模式  utils：工具模式
     # 提高java内存上限，防止读取pvf内存溢出
     - JAVA_OPTS=-Xmx8g -Xms512m
 networks:
@@ -85,8 +76,6 @@ services:
       - dnf
     restart: unless-stopped
     ports:
-      - 7600:7600/tcp       # DnfGateServe 网关
-      - 881:881/tcp         # DnfGateServe 网关
       - 20303:20303/tcp     # df_dbmw_r
       - 20303:20303/udp     # df_dbmw_r
       - 20403:20403/tcp     # df_dbmw_r
@@ -117,5 +106,4 @@ services:
     volumes:
       - /data/dnf/server/data:/data
       - /data/dnf/server/log:/home/neople/game/log
-      - /data/dnf/dp2:/dp2
     container_name: dnfserver
