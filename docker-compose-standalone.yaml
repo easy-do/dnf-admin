@@ -10,7 +10,7 @@ x-env: &env
     # root账户密码
     - MYSQL_PASS=88888888
     # mysql的IP地址
-    - MYSQL_IP=127.0.0.1
+    - MYSQL_HOST=127.0.0.1
     # 拥有管理员权限的游戏账号
     - ADMIN_USER=123456789
     # 启动模式
