@@ -21,7 +21,7 @@ x-env: &env
 
 services:
   dnfadmin:
-    image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.4
+    image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/dnf-admin:1.0.3
     ports:
       - 8888:8888
     <<: *env

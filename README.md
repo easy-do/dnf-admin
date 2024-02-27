@@ -171,7 +171,7 @@ https://www.123pan.com/s/DUoAjv-JkRRA.html提取码:hqLE
 #### 真 * 一键安装脚本
 
 ```shell
-bash <(curl -L https://gitee.com/yuzhanfeng/dnf-admin/releases/download/1.0.3/install_dnfadmin.sh)
+bash <(curl -L https://gitee.com/yuzhanfeng/dnf-admin/releases/download/1.0.4/install_dnfadmin.sh)
 ```
 
 
