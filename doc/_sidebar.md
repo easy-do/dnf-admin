@@ -3,7 +3,12 @@
 * [首页](/)
 
 * dnf-admin
-    * [快速开始](zh-cn/quickstart.md)
+    * [更新记录](zh-cn/deploymen/update_log.md)
+    * [一键安装](zh-cn/deploymen/quickstart.md)
+    * [手动部署](zh-cn/deploymen/manual_deploymen.md)
+    * [windows客户端带登录功能](zh-cn/deploymen/windows.md)
+    * [windows独立版](zh-cn/deploymen/windows_stabdalone.md)
+    * [小白虚拟机一键端](zh-cn/deploymen/white_deploymen.md)
 
 * 机器人
     * [介绍](zh-cn/bot/botreadme.md)
