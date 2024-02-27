@@ -15,3 +15,4 @@
     * [系统api](zh-cn/bot/system_api.md)
     * [脚本V1.0](zh-cn/bot/script_v1.0.md)
     * [脚本v1.0指令](zh-cn/bot/script_v1.0_cmd.md)
+    * [pro版本](zh-cn/bot/bot_pro.md)

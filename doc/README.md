@@ -39,6 +39,24 @@
 #### 使用文档
 http://doc.easydo.plus/
 
+#### 图片介绍
+
+<img src="./zh-cn/img/角色管理1.png">
+<img src="./zh-cn/img/角色管理2.png">
+<img src="./zh-cn/img/角色管理3.png">
+<img src="./zh-cn/img/函数管理1.png">
+<img src="./zh-cn/img/函数管理2.png">
+<img src="./zh-cn/img/frida调试.png">
+<img src="./zh-cn/img/频道列表.png">
+<img src="./zh-cn/img/首页.png">
+<img src="./zh-cn/img/签到.png">
+<img src="./zh-cn/img/物品.png">
+<img src="./zh-cn/img/公告.png">
+<img src="./zh-cn/img/邮件.png">
+<img src="./zh-cn/img/配置.png">
+<img src="./zh-cn/img/机器人菜单.png">
+<img src="./zh-cn/img/群管1.png">
+
 
 #### 其他说明
 
