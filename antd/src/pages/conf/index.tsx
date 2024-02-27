@@ -134,7 +134,7 @@ const ConfList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.DaGameConfig, API.DaGameConfigQo>
-        headerTitle="查询表格"
+        headerTitle="配置列表"
         actionRef={actionRef}
         rowKey="id"
         search={{

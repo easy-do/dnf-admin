@@ -25,4 +25,8 @@ public interface IDaItemService extends IService<DaItemEntity> {
     Long importItemForJson(List<JSONObject> res);
 
     void importItemForMap(Map<Integer, String> itemMap);
+
+    void initItemCache();
+
+    DaItemEntity getItemInfoCache(Long itemId);
 }

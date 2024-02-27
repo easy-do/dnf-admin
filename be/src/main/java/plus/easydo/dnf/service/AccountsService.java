@@ -4,6 +4,8 @@ package plus.easydo.dnf.service;
 import com.mybatisflex.core.paginate.Page;
 import plus.easydo.dnf.dto.RegDto;
 import plus.easydo.dnf.entity.Accounts;
+import plus.easydo.dnf.entity.CashCera;
+import plus.easydo.dnf.entity.CashCeraPoint;
 import plus.easydo.dnf.qo.AccountsQo;
 
 /**
@@ -52,7 +54,7 @@ public interface AccountsService {
      * @author laoyu
      * @date 2023-11-24
      */
-    void enableAcc(Long uid);
+    boolean enableAcc(Long uid);
 
     /**
      * 封禁
@@ -61,7 +63,7 @@ public interface AccountsService {
      * @author laoyu
      * @date 2023-11-24
      */
-    void disableAcc(Long uid);
+    boolean disableAcc(Long uid);
 
 
     /**
@@ -104,4 +106,32 @@ public interface AccountsService {
      * @date 2023-11-29
      */
     boolean resetPassword(Long uid, String password);
+
+    /**
+     * 重置角色创建限制
+     *
+     * @param uid uid
+     * @return boolean
+     * @author laoyu
+     * @date 2024/1/7
+     */
+    boolean resetCreateRole(Long uid);
+
+    /**
+     * 设置角色栏最大
+     *
+     * @param uid uid
+     * @return java.lang.Boolean
+     * @author laoyu
+     * @date 2024/1/7
+     */
+    Boolean setMaxRole(Long uid);
+
+    Long count();
+
+    Boolean openDungeon(Long uid);
+
+    CashCera getCashCera(Long uid);
+
+    CashCeraPoint getCashCeraPoint(Long uid);
 }

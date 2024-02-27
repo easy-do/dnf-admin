@@ -1,6 +1,7 @@
 package plus.easydo.dnf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ public class DaRoleController {
      * @param daRoleQo daRoleQo
      * @return 分页对象
      */
+    @Operation(summary = "分页")
     @SaCheckPermission("role")
     @PostMapping("/page")
     public R<List<DaRole>> pageRole(@RequestBody DaRoleQo daRoleQo) {
@@ -50,6 +52,7 @@ public class DaRoleController {
      * @param id daRole主键
      * @return 角色信息表详情
      */
+    @Operation(summary = "详情")
     @SaCheckPermission("role")
     @GetMapping("/info/{id}")
     public R<DaRole> getRoleInfo(@PathVariable Serializable id) {
@@ -62,6 +65,7 @@ public class DaRoleController {
      * @param daRole 角色信息表
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
+    @Operation(summary = "更新")
     @SaCheckPermission("role.update")
     @PostMapping("/update")
     public R<Boolean> updateRole(@RequestBody DaRole daRole) {
@@ -74,6 +78,7 @@ public class DaRoleController {
      * @param daRole 角色信息表
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
+    @Operation(summary = "添加")
     @SaCheckPermission("role.save")
     @PostMapping("/save")
     public R<Boolean> saveRole(@RequestBody DaRole daRole) {

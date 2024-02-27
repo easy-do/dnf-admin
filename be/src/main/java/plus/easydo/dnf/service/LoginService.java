@@ -2,6 +2,7 @@ package plus.easydo.dnf.service;
 
 import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.json.JSONObject;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Component;
 import plus.easydo.dnf.config.SystemConfig;
 import plus.easydo.dnf.dto.LoginDto;
 import plus.easydo.dnf.entity.Accounts;
+import plus.easydo.dnf.entity.MemberPunishInfo;
 import plus.easydo.dnf.exception.BaseException;
+import plus.easydo.dnf.mapper.MemberPunishInfoMapper;
 import plus.easydo.dnf.vo.CurrentUser;
 
 import java.util.List;
@@ -36,6 +39,9 @@ public class LoginService {
 
     private final SystemConfig systemConfig;
 
+    private final CaptchaService captchaService;
+
+    private final MemberPunishInfoMapper memberPunishInfoMapper;
 
     /**
      * 登录
@@ -46,9 +52,17 @@ public class LoginService {
      * @date 2023/10/14
      */
     public String login(LoginDto loginDto) {
+        if (!captchaService.verify(loginDto.getCaptchaKey(),loginDto.getVerificationCode())) {
+            throw new BaseException("验证码错误。");
+        }
         Accounts accounts = accountsService.getByUserName(loginDto.getUserName());
         if (Objects.isNull(accounts)) {
             throw new BaseException("账号不存在或密码错误");
+        }
+        //校验是否被封号
+        MemberPunishInfo memberPunishInfo = memberPunishInfoMapper.selectOneById(accounts.getUid());
+        if(Objects.nonNull(memberPunishInfo)){
+            throw new BaseException("账号已封停,请联系管理员。");
         }
         String md5Password = SecureUtil.md5().digestHex(loginDto.getPassword());
         if (CharSequenceUtil.equals(md5Password, accounts.getPassword())) {
@@ -86,11 +100,13 @@ public class LoginService {
         Object userInfo = StpUtil.getExtra("userInfo");
         JSONObject userJson = JSONUtil.parseObj(userInfo);
         userJson.remove("password");
+        userJson.set("mode",systemConfig.getMode());
         userJson.set("menu",resourceService.userResource());
         userJson.set("role",roleService.userRoleCodes());
         userJson.set("resource",resourceService.userResourceCodes());
         return JSONUtil.toBean(userJson, CurrentUser.class);
     }
+
 
 
 }

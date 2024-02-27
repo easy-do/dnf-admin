@@ -12,6 +12,10 @@ import lombok.Data;
 @Data
 @Builder
 public class MailItemDto {
+    /**物品id*/
     private Long itemId;
+    /**物品类型*/
+    private Integer itemType;
+    /**物品数量*/
     private Long count;
 }

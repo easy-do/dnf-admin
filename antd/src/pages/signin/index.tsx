@@ -116,7 +116,7 @@ const Signin: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.DaSignInConf, API.DaSignInConfQo>
-        headerTitle="查询表格"
+        headerTitle="配置列表"
         actionRef={actionRef}
         rowKey="id"
         search={{

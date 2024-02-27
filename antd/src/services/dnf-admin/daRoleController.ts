@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 此处后端没有提供注释 GET /api/role/info/${param0} */
+/** 详情 GET /api/role/info/${param0} */
 export async function getRoleInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getRoleInfoParams,
@@ -16,7 +16,7 @@ export async function getRoleInfo(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/role/page */
+/** 分页 POST /api/role/page */
 export async function pageRole(body: API.DaRoleQo, options?: { [key: string]: any }) {
   return request<API.RListDaRole>('/api/role/page', {
     method: 'POST',
@@ -28,7 +28,7 @@ export async function pageRole(body: API.DaRoleQo, options?: { [key: string]: an
   });
 }
 
-/** 此处后端没有提供注释 POST /api/role/save */
+/** 添加 POST /api/role/save */
 export async function saveRole(body: API.DaRole, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/role/save', {
     method: 'POST',
@@ -40,7 +40,7 @@ export async function saveRole(body: API.DaRole, options?: { [key: string]: any 
   });
 }
 
-/** 此处后端没有提供注释 POST /api/role/update */
+/** 更新 POST /api/role/update */
 export async function updateRole(body: API.DaRole, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/role/update', {
     method: 'POST',

@@ -19,10 +19,9 @@ public class CurrentUser {
     private Integer uid;
     private String accountname;
     private String qq;
-    private Integer billing;
-    private String vip;
     private Boolean isAdmin;
     private List<Object> menu;
     private List<String> role;
     private List<String> resource;
+    private String mode;
 }

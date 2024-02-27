@@ -51,7 +51,7 @@ const ItemList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.DaNoticeSendLog, API.PageQo>
-        headerTitle="查询表格"
+        headerTitle="发送记录"
         actionRef={actionRef}
         rowKey="id"
         search={{

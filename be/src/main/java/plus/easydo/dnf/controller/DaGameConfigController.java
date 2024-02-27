@@ -2,6 +2,7 @@ package plus.easydo.dnf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ public class DaGameConfigController {
      * @param gameConfigQo gameConfigQo
      * @return 分页对象
      */
+    @Operation(summary = "分页")
     @SaCheckPermission("conf")
     @PostMapping("/page")
     public R<List<DaGameConfig>> pageConf(@RequestBody DaGameConfigQo gameConfigQo) {
@@ -50,6 +52,7 @@ public class DaGameConfigController {
      * @param id daGameConfig主键
      * @return 游戏配置详情
      */
+    @Operation(summary = "详情")
     @SaCheckLogin
     @GetMapping("/info/{id}")
     public R<DaGameConfig> getConfInfo(@PathVariable Serializable id) {
@@ -62,6 +65,7 @@ public class DaGameConfigController {
      * @param daGameConfig 游戏配置
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
+    @Operation(summary = "添加")
     @SaCheckPermission("conf.save")
     @PostMapping("/save")
     public R<Object> saveConf(@RequestBody DaGameConfig daGameConfig) {
@@ -69,13 +73,11 @@ public class DaGameConfigController {
     }
 
     /**
-     *
-     *
-     *
-     *
+     * 更新
      * @param daGameConfig 游戏配置
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
+    @Operation(summary = "更新")
     @SaCheckPermission("conf.update")
     @PostMapping("/update")
     public R<Object> updateConf(@RequestBody DaGameConfig daGameConfig) {

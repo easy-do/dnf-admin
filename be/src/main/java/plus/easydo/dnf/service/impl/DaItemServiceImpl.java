@@ -6,10 +6,12 @@ import cn.hutool.json.JSONObject;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plus.easydo.dnf.entity.DaItemEntity;
 import plus.easydo.dnf.enums.RarityEnum;
+import plus.easydo.dnf.manager.CacheManager;
 import plus.easydo.dnf.mapper.DaItemMapper;
 import plus.easydo.dnf.qo.DaItemQo;
 import plus.easydo.dnf.service.IDaItemService;
@@ -18,6 +20,8 @@ import plus.easydo.dnf.util.ItemReaderUtil;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static plus.easydo.dnf.entity.table.DaItemEntityTableDef.DA_ITEM_ENTITY;
 
@@ -57,21 +61,27 @@ public class DaItemServiceImpl extends ServiceImpl<DaItemMapper, DaItemEntity> i
     }
 
     public void importItemForJson(JSONObject json) {
-            Long itemId = json.getLong("itemId");
-            String name = json.getStr("name");
+        Long itemId = null;
+        String name = null;
+        try {
+            itemId = json.getLong("itemId");
+            name = json.getStr("name");
             if (CharSequenceUtil.isNotBlank(name)) {
                 DaItemEntity entity = new DaItemEntity();
                 entity.setId(itemId);
                 entity.setName(FToJUtil.FtoJ(name));
                 entity.setType("自动导入");
                 String rarity = json.getStr("rarity");
-                if(CharSequenceUtil.isNotBlank(rarity)){
+                if (CharSequenceUtil.isNotBlank(rarity)) {
                     entity.setRarity(RarityEnum.getByCode(Integer.valueOf(rarity)));
                 }
                 if (!updateById(entity)) {
                     save(entity);
                 }
             }
+        } catch (Exception e) {
+            log.warn("导入物品{},{}失败,继续导入", itemId, name);
+        }
     }
 
     @Override
@@ -83,5 +93,17 @@ public class DaItemServiceImpl extends ServiceImpl<DaItemMapper, DaItemEntity> i
             importItemForJson(res);
         });
         log.info("批量导入物品信息结束=================》");
+    }
+
+    @PostConstruct
+    @Override
+    public void initItemCache() {
+        Map<Long, DaItemEntity> map = list().stream().collect(Collectors.toMap(DaItemEntity::getId, (c) -> c));
+        CacheManager.ITEM_INFO_CACHE.putAll(map);
+    }
+
+    @Override
+    public DaItemEntity getItemInfoCache(Long itemId) {
+        return CacheManager.ITEM_INFO_CACHE.get(itemId);
     }
 }

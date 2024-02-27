@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 此处后端没有提供注释 GET /api/item/downloadTemplate */
+/** 下载导入模板 GET /api/item/downloadTemplate */
 export async function downloadTemplate(options?: { [key: string]: any }) {
   return request<any>('/api/item/downloadTemplate', {
     method: 'GET',
@@ -10,7 +10,7 @@ export async function downloadTemplate(options?: { [key: string]: any }) {
   });
 }
 
-/** 此处后端没有提供注释 POST /api/item/importItem */
+/** 导入 POST /api/item/importItem */
 export async function importItem(body: {}, options?: { [key: string]: any }) {
   return request<any>('/api/item/importItem', {
     method: 'POST',
@@ -22,7 +22,7 @@ export async function importItem(body: {}, options?: { [key: string]: any }) {
   });
 }
 
-/** 此处后端没有提供注释 POST /api/item/importItemFor7z */
+/** 从pvf导出的7z文件导入 POST /api/item/importItemFor7z */
 export async function importItemFor7Z(body: {}, options?: { [key: string]: any }) {
   return request<any>('/api/item/importItemFor7z', {
     method: 'POST',
@@ -34,7 +34,7 @@ export async function importItemFor7Z(body: {}, options?: { [key: string]: any }
   });
 }
 
-/** 此处后端没有提供注释 GET /api/item/list */
+/** 查询所有物品 GET /api/item/list */
 export async function listItem(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.listItemParams,
@@ -49,7 +49,7 @@ export async function listItem(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/item/page */
+/** 分页 POST /api/item/page */
 export async function pageItem(body: API.DaItemQo, options?: { [key: string]: any }) {
   return request<API.RListDaItemEntity>('/api/item/page', {
     method: 'POST',
@@ -61,7 +61,7 @@ export async function pageItem(body: API.DaItemQo, options?: { [key: string]: an
   });
 }
 
-/** 此处后端没有提供注释 POST /api/item/remove */
+/** 删除 POST /api/item/remove */
 export async function removeItem(body: string[], options?: { [key: string]: any }) {
   return request<boolean>('/api/item/remove', {
     method: 'POST',
@@ -73,7 +73,7 @@ export async function removeItem(body: string[], options?: { [key: string]: any 
   });
 }
 
-/** 此处后端没有提供注释 POST /api/item/save */
+/** 添加 POST /api/item/save */
 export async function saveItem(body: API.DaItemEntity, options?: { [key: string]: any }) {
   return request<boolean>('/api/item/save', {
     method: 'POST',
@@ -85,7 +85,7 @@ export async function saveItem(body: API.DaItemEntity, options?: { [key: string]
   });
 }
 
-/** 此处后端没有提供注释 POST /api/item/update */
+/** 更新 POST /api/item/update */
 export async function updateItem(body: API.DaItemEntity, options?: { [key: string]: any }) {
   return request<boolean>('/api/item/update', {
     method: 'POST',

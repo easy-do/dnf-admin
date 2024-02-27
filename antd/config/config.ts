@@ -89,6 +89,42 @@ export default defineConfig({
       component: './fridaScript',
     },
     {
+      path: '/gameRole',
+      component: './gameRole',
+    },
+    {
+      path: '/cdk',
+      component: './cdk',
+    },
+    {
+      path: '/license',
+      component: './license',
+    },
+    {
+      path: '/gameEvent',
+      component: './gameEvent',
+    },
+    {
+      path: '/platformBot',
+      component: './platformBot',
+    },
+    {
+      path: '/botScript',
+      component: './botScript',
+    },
+    {
+      path: '/botMessage',
+      component: './botMessage',
+    },
+    {
+      path: '/botRequest',
+      component: './botRequest',
+    },
+    {
+      path: '/botNotice',
+      component: './botNotice',
+    },
+    {
       component: '404',
     },
   ],

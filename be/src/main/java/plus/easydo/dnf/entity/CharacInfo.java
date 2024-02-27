@@ -1,5 +1,6 @@
 package plus.easydo.dnf.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -28,10 +29,10 @@ import java.time.LocalDateTime;
 @Table(value = "charac_info",  dataSource = "taiwan_cain" ,onSet = MySetListener.class, onInsert = MyInsertListener.class, onUpdate = MyUpdateListener.class)
 public class CharacInfo implements Serializable {
 
-    private Integer mId;
+    private Long mId;
 
     @Id(keyType = KeyType.Auto)
-    private Integer characNo;
+    private Long characNo;
 
     private String characName;
 
@@ -91,12 +92,15 @@ public class CharacInfo implements Serializable {
 
     private Integer maxPremiumFatigue;
 
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastPlayTime;
 
     private Integer dungeonClearPoint;
 
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deleteTime;
 
     private Integer deleteFlag;

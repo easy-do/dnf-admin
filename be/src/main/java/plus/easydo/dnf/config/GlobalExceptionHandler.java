@@ -10,7 +10,9 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.NativeWebRequest;
 import plus.easydo.dnf.exception.BaseException;
+import plus.easydo.dnf.exception.LicenseException;
 import plus.easydo.dnf.vo.DataResult;
 import plus.easydo.dnf.vo.R;
 
@@ -72,7 +74,7 @@ public class GlobalExceptionHandler {
      * @author laoyu
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Object validExceptionHandler(MethodArgumentNotValidException e) {
+    public R<Object> validExceptionHandler(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
         String message;
         message = Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage();
@@ -87,7 +89,7 @@ public class GlobalExceptionHandler {
      * @author laoyu
      */
     @ExceptionHandler(SaTokenException.class)
-    public Object authException(SaTokenException e) {
+    public R<Object> authException(SaTokenException e) {
         return DataResult.fail(HttpStatus.UNAUTHORIZED,e.getMessage());
     }
 
@@ -99,7 +101,7 @@ public class GlobalExceptionHandler {
      * @author laoyu
      */
     @ExceptionHandler(NotLoginException.class)
-    public Object notLoginException(NotLoginException e) {
+    public R<Object> notLoginException(NotLoginException e) {
         return DataResult.fail(HttpStatus.UNAUTHORIZED,"未登录，或授权过期");
     }
 
@@ -111,8 +113,14 @@ public class GlobalExceptionHandler {
      * @author laoyu
      */
     @ExceptionHandler(NotPermissionException.class)
-    public Object notLoginException(NotPermissionException e) {
+    public R<Object> notLoginException(NotPermissionException e) {
         return DataResult.fail(HttpStatus.UNAUTHORIZED,"无接口权限");
+    }
+
+    @ExceptionHandler(LicenseException.class)
+    public R<Object> licenseException(NativeWebRequest request, LicenseException e) {
+        log.error("许可校验失败,请重新授权。");
+        return DataResult.fail("许可校验失败,请重新注册");
     }
 
 }

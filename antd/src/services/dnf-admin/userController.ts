@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 此处后端没有提供注释 GET /api/user/currentUser */
+/** 获取当前用户信息 GET /api/user/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
   return request<API.RCurrentUser>('/api/user/currentUser', {
     method: 'GET',
@@ -10,7 +10,7 @@ export async function currentUser(options?: { [key: string]: any }) {
   });
 }
 
-/** 此处后端没有提供注释 POST /api/user/login */
+/** 登录 POST /api/user/login */
 export async function login(body: API.LoginDto, options?: { [key: string]: any }) {
   return request<API.RString>('/api/user/login', {
     method: 'POST',
@@ -22,7 +22,7 @@ export async function login(body: API.LoginDto, options?: { [key: string]: any }
   });
 }
 
-/** 此处后端没有提供注释 GET /api/user/logout */
+/** 退出 GET /api/user/logout */
 export async function logout(options?: { [key: string]: any }) {
   return request<API.RString>('/api/user/logout', {
     method: 'GET',
@@ -30,7 +30,7 @@ export async function logout(options?: { [key: string]: any }) {
   });
 }
 
-/** 此处后端没有提供注释 POST /api/user/reg */
+/** 注册 POST /api/user/reg */
 export async function reg(body: API.RegDto, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/user/reg', {
     method: 'POST',
@@ -42,7 +42,7 @@ export async function reg(body: API.RegDto, options?: { [key: string]: any }) {
   });
 }
 
-/** 此处后端没有提供注释 GET /api/user/userResource */
+/** 获取当前用户资源信息 GET /api/user/userResource */
 export async function userResource(options?: { [key: string]: any }) {
   return request<API.RListTreeLong>('/api/user/userResource', {
     method: 'GET',

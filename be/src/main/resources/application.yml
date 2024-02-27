@@ -1,6 +1,10 @@
 
 server:
   port: 8888
+  compression:
+    enabled: true
+    min-response-size: 2048
+    mime-types: application/javascript,application/json,application/xml,text/html,text/xml,text/plain,text/css,image/*,text/javascript
 
 spring:
   servlet:
@@ -56,13 +60,40 @@ mybatis-flex:
       password: ${MYSQL_PASS:88888888}
       connectionInitSqls:
         - SET NAMES latin1
+    taiwan_game_event:
+      type: druid
+      url: jdbc:mysql://${MYSQL_HOST:dnfmysql}:${MYSQL_PORT:3306}/taiwan_billing?useUnicode=true&characterEncoding=latin1&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+      username: ${MYSQL_USER:root}
+      password: ${MYSQL_PASS:88888888}
+      connectionInitSqls:
+        - SET NAMES latin1
   configuration:
     call-setters-on-nulls:
 da:
   admin-user: ${ADMIN_USER:123456789}
-  dp-gm-key: ${DP_GM_KEY:123456789}
   admin-role: ${ADMIN_ROLE:admin}
-
+  current-version: 2024.02.27
+  mode: ${MODE:default} # default：与docker服务端配合模式  standalone：独立部署模式  utils：工具模式
+  standalone-disable-resource:
+    - "channel"
+    - "channel.frida"
+    - "tool.restartServer"
+    - "tool.restartDb"
+    - "tool.restartDa"
+    - "tool.generateKeyPem"
+  utils-disable-resource:
+    - "notice"
+    - "notice.sendNotice"
+    - "channel"
+    - "channel.frida"
+    - "gameEvent"
+    - "tool.restartServer"
+    - "tool.startGame"
+    - "tool.restartDb"
+    - "tool.restartDa"
+    - "tool.generateKeyPem"
+    - "gameEvent"
+    - "gameEvent.remove"
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
@@ -113,3 +144,15 @@ knife4j:
   enable: true
   setting:
     language: zh_cn
+
+management:
+  server:
+    port: 8689
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health

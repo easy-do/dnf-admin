@@ -1,4 +1,4 @@
-import { Button, message } from 'antd';
+import { Button, Dropdown, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -6,7 +6,7 @@ import ProTable from '@ant-design/pro-table';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import { PlusOutlined } from '@ant-design/icons';
 import { Access, useAccess } from 'umi';
-import { disableAccounts, enableAccounts, pageAccounts, resetPassword, saveAccounts, updateAccounts } from '@/services/dnf-admin/accountsController';
+import { disableAccounts, enableAccounts, openDungeon, pageAccounts, resetCreateRole, resetPassword, saveAccounts, setMaxRole, updateAccounts } from '@/services/dnf-admin/accountsController';
 import { rechargeBonds } from '@/services/dnf-admin/accountsController';
 
 const Accounts: React.FC = () => {
@@ -131,85 +131,117 @@ const Accounts: React.FC = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
-        <Access accessible={access.hashPre('accounts.update')}>
-          <a
-            key="id"
-            onClick={() => {
-              setCurrentRow(record);
-              handleUpdateModalVisible(true);
-            }}
-          >
-            编辑
-          </a>
-        </Access>
-        ,
-        <Access accessible={access.hashPre('accounts.resetPass')}>
-          <a
-            key="id"
-            onClick={() => {
-              setCurrentRow(record);
-              handleResetPassModalVisible(true);
-            }}
-          >
-            重置密码
-          </a>
-        </Access>
-        ,
-        <Access accessible={access.hashPre('accounts.recharge')}>
-        <a
-          key="id"
-          onClick={() => {
-            setCurrentRow(record);
-            handleRechargeModalVisible(true);
-          }}
-        >
-          充值
-        </a>
-      </Access>
-      ,
-        <Access accessible={access.hashPre('accounts.disable')}>
-          <a
-            key="id"
-            onClick={() => {
-              disableAccounts({ "uid": record.uid }).then(res => {
-                if (res.success) {
-                  message.success(res.message)
-                } else {
-                  message.warn(res.errorMessage)
-                }
-              })
-            }}
-          >
-            封号
-          </a>
-        </Access>
-        ,
-        <Access accessible={access.hashPre('accounts.enable')}>
-          <a
-            key="id"
-            onClick={() => {
-              enableAccounts({ "uid": record.uid }).then(res => {
-                if (res.success) {
-                  message.success(res.message)
-                } else {
-                  message.warn(res.errorMessage)
-                }
-              })
-            }}
-          >
-            解封
-          </a>
-        </Access>
-        ,
-      ],
+      render: (_, record) =>
+        <Dropdown.Button menu={{
+          items: [
+            {
+              key: '1',
+              label: '编辑',
+              disabled: !access.hashPre('accounts.update'),
+              onClick: (e) => {
+                setCurrentRow(record);
+                handleUpdateModalVisible(true);
+              }
+            },
+            {
+              key: '2',
+              disabled: !access.hashPre('accounts.resetPass'),
+              label: '重置密码',
+              onClick: (e) => {
+                setCurrentRow(record);
+                handleResetPassModalVisible(true);
+              }
+            },
+            {
+              key: '3',
+              label: '充值',
+              disabled: !access.hashPre('accounts.recharge'),
+              onClick: (e) => {
+                setCurrentRow(record);
+                handleRechargeModalVisible(true);
+              }
+            },
+            {
+              key: '4',
+              label: '封号',
+              disabled: !access.hashPre('accounts.disable'),
+              onClick: (e) => {
+                disableAccounts({ "uid": record.uid }).then(res => {
+                  if (res.success) {
+                    message.success(res.message)
+                  } else {
+                    message.warn(res.errorMessage)
+                  }
+                })
+              }
+            },
+            {
+              key: '5',
+              label: '解封',
+              disabled: !access.hashPre('accounts.enable'),
+              onClick: (e) => {
+                enableAccounts({ "uid": record.uid }).then(res => {
+                  if (res.success) {
+                    message.success(res.message)
+                  } else {
+                    message.warn(res.errorMessage)
+                  }
+                })
+              }
+            },
+            {
+              key: '6',
+              label: '解除创建角色',
+              disabled: !access.hashPre('accounts.resetCreateRole'),
+              onClick: (e) => {
+                resetCreateRole({ "uid": record.uid }).then(res => {
+                  if (res.success) {
+                    message.success(res.message)
+                  } else {
+                    message.warn(res.errorMessage)
+                  }
+                })
+              }
+            },
+            {
+              key: '7',
+              label: '角色栏最大',
+              disabled: !access.hashPre('accounts.setMaxRole'),
+              onClick: (e) => {
+                setMaxRole({ "uid": record.uid }).then(res => {
+                  if (res.success) {
+                    message.success(res.message)
+                  } else {
+                    message.warn(res.errorMessage)
+                  }
+                })
+              }
+            },
+            {
+              key: '8',
+              label: '全图王者',
+              disabled: !access.hashPre('accounts.openDungeon'),
+              onClick: (e) => {
+                openDungeon({ "uid": record.uid }).then(res => {
+                  if (res.success) {
+                    message.success(res.message)
+                  } else {
+                    message.warn(res.errorMessage)
+                  }
+                })
+              }
+            },
+          ], onClick: (e) => console.log(e)
+        }}>
+          操作
+        </Dropdown.Button>
     },
   ];
 
   return (
     <PageContainer>
       <ProTable<API.Accounts, API.AccountsQo>
-        headerTitle="查询表格"
+        headerTitle="账号列表"
         actionRef={actionRef}
         rowKey="uid"
         search={{

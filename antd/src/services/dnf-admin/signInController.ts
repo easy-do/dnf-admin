@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 此处后端没有提供注释 GET /api/signIn/characSign/${param0} */
+/** pc端签到 GET /api/signIn/characSign/${param0} */
 export async function characSign(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.characSignParams,
@@ -16,7 +16,7 @@ export async function characSign(
   });
 }
 
-/** 此处后端没有提供注释 GET /api/signIn/info/${param0} */
+/** 详情 GET /api/signIn/info/${param0} */
 export async function signInInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.signInInfoParams,
@@ -30,7 +30,7 @@ export async function signInInfo(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/signIn/page */
+/** 分页 POST /api/signIn/page */
 export async function signInPage(body: API.DaSignInConfQo, options?: { [key: string]: any }) {
   return request<API.RListDaSignInConf>('/api/signIn/page', {
     method: 'POST',
@@ -42,7 +42,7 @@ export async function signInPage(body: API.DaSignInConfQo, options?: { [key: str
   });
 }
 
-/** 此处后端没有提供注释 POST /api/signIn/save */
+/** 添加 POST /api/signIn/save */
 export async function saveSignIn(body: API.DaSignInConfDto, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/signIn/save', {
     method: 'POST',
@@ -54,7 +54,7 @@ export async function saveSignIn(body: API.DaSignInConfDto, options?: { [key: st
   });
 }
 
-/** 此处后端没有提供注释 GET /api/signIn/signInList/${param0} */
+/** 获取角色签到列表 GET /api/signIn/signInList/${param0} */
 export async function signList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.signListParams,
@@ -68,7 +68,7 @@ export async function signList(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/signIn/update */
+/** 更新 POST /api/signIn/update */
 export async function updateSignIn(body: API.DaSignInConfDto, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/signIn/update', {
     method: 'POST',

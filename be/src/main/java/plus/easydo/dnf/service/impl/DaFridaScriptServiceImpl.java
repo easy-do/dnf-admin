@@ -38,6 +38,7 @@ public class DaFridaScriptServiceImpl extends ServiceImpl<DaFridaScriptMapper, D
     @Override
     public Page<DaFridaScript> pageFridaScript(FridaScriptQo fridaScriptQo) {
         QueryWrapper query = query()
+                .select(DA_FRIDA_SCRIPT.ID,DA_FRIDA_SCRIPT.SCRIPT_NAME,DA_FRIDA_SCRIPT.REMARK)
                 .and(DA_FRIDA_SCRIPT.SCRIPT_NAME.like(fridaScriptQo.getScriptName()))
                 .and(DA_FRIDA_SCRIPT.REMARK.like(fridaScriptQo.getRemark()));
         return page(new Page<>(fridaScriptQo.getCurrent(), fridaScriptQo.getPageSize()), query);

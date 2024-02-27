@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 此处后端没有提供注释 GET /api/conf/info/${param0} */
+/** 详情 GET /api/conf/info/${param0} */
 export async function getConfInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getConfInfoParams,
@@ -16,7 +16,7 @@ export async function getConfInfo(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/conf/page */
+/** 分页 POST /api/conf/page */
 export async function pageConf(body: API.DaGameConfigQo, options?: { [key: string]: any }) {
   return request<API.RListDaGameConfig>('/api/conf/page', {
     method: 'POST',
@@ -28,7 +28,7 @@ export async function pageConf(body: API.DaGameConfigQo, options?: { [key: strin
   });
 }
 
-/** 此处后端没有提供注释 POST /api/conf/save */
+/** 添加 POST /api/conf/save */
 export async function saveConf(body: API.DaGameConfig, options?: { [key: string]: any }) {
   return request<API.RObject>('/api/conf/save', {
     method: 'POST',
@@ -40,7 +40,7 @@ export async function saveConf(body: API.DaGameConfig, options?: { [key: string]
   });
 }
 
-/** 此处后端没有提供注释 POST /api/conf/update */
+/** 更新 POST /api/conf/update */
 export async function updateConf(body: API.DaGameConfig, options?: { [key: string]: any }) {
   return request<API.RObject>('/api/conf/update', {
     method: 'POST',

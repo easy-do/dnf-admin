@@ -11,11 +11,12 @@ import defaultSettings from '../config/defaultSettings';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/login';
+const licensePath = '/license';
 
 const updateUrlInterceptor = (url: string, options: any) => {
   let authHeader = {};
   const daCustomUrl = localStorage.getItem('daCustomUrl');
-  if(daCustomUrl){
+  if(daCustomUrl && !url.startsWith('http')){
     url = daCustomUrl + url
     authHeader = { Authorization: localStorage.getItem('Authorization') };
   }
@@ -80,7 +81,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
+      if (!initialState?.currentUser && location.pathname !== loginPath && location.pathname !== licensePath) {
         history.push(loginPath);
       }
     },

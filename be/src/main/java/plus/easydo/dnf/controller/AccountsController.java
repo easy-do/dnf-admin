@@ -1,6 +1,7 @@
 package plus.easydo.dnf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +40,7 @@ public class AccountsController {
      * @param regDto
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
+    @Operation(summary = "添加账户")
     @SaCheckPermission("accounts.save")
     @PostMapping("/save")
     public R<Long> saveAccounts(@RequestBody RegDto regDto) {
@@ -52,6 +54,7 @@ public class AccountsController {
      * @param accounts
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
+    @Operation(summary = "编辑账户")
     @SaCheckPermission("accounts.update")
     @PostMapping("/update")
     public R<Boolean> updateAccounts(@RequestBody Accounts accounts) {
@@ -65,6 +68,7 @@ public class AccountsController {
      * @param id accounts主键
      * @return 详情
      */
+    @Operation(summary = "账户详情")
     @SaCheckPermission("accounts")
     @GetMapping("/info/{id}")
     public  R<Accounts> getAccounts(@PathVariable Long id) {
@@ -78,6 +82,7 @@ public class AccountsController {
      * @param page 分页对象
      * @return 分页对象
      */
+    @Operation(summary = "分页")
     @SaCheckPermission("accounts")
     @PostMapping("/page")
     public R<List<Accounts>> pageAccounts(AccountsQo page) {
@@ -91,12 +96,12 @@ public class AccountsController {
      * @return plus.easydo.dnf.vo.R<java.lang.String>
      * @author laoyu
      */
+    @Operation(summary = "解封")
     @SaCheckPermission("accounts.enable")
     @GetMapping("/enable/{uid}")
-    public R<String> enableAccounts(
+    public R<Boolean> enableAccounts(
             @PathVariable(name = "uid") Long uid) {
-        accountsService.enableAcc(uid);
-        return DataResult.ok();
+        return DataResult.ok(accountsService.enableAcc(uid));
     }
 
     /**
@@ -106,12 +111,12 @@ public class AccountsController {
      * @return plus.easydo.dnf.vo.R<java.lang.String>
      * @author laoyu
      */
+    @Operation(summary = "封禁")
     @SaCheckPermission("accounts.disable")
     @GetMapping("/disable/{uid}")
     public R<Boolean> disableAccounts(
             @PathVariable(name = "uid") Long uid) {
-        accountsService.disableAcc(uid);
-        return DataResult.ok();
+        return DataResult.ok(accountsService.disableAcc(uid));
     }
 
     /**
@@ -122,6 +127,7 @@ public class AccountsController {
      * @return plus.easydo.dnf.vo.R<java.lang.Boolean>
      * @author laoyu
      */
+    @Operation(summary = "重置密码")
     @SaCheckPermission("accounts.resetPass")
     @GetMapping("/resetPass/{uid}")
     public R<Boolean> resetPassword(
@@ -141,6 +147,7 @@ public class AccountsController {
      * @author laoyu
      * @date 2023-12-01
      */
+    @Operation(summary = "点券充值")
     @SaCheckPermission("accounts.recharge")
     @GetMapping("/rechargeBonds")
     public R<String> rechargeBonds(
@@ -149,6 +156,50 @@ public class AccountsController {
             @RequestParam(name = "count", defaultValue = "1") Long count ) {
         accountsService.rechargeBonds(type, uid, count);
         return DataResult.ok();
+    }
+
+    /**
+     * 重置角色创建限制
+     *
+     * @param uid uid
+     * @return plus.easydo.dnf.vo.R<java.lang.String>
+     * @author laoyu
+     * @date 2024/1/7
+     */
+    @Operation(summary = "重置角色创建限制")
+    @SaCheckPermission("accounts.resetCreateRole")
+    @GetMapping("/resetCreateRole/{uid}")
+    public R<Boolean> resetCreateRole(@PathVariable(name = "uid") Long uid) {
+        return DataResult.ok(accountsService.resetCreateRole(uid));
+    }
+
+    /**
+     * 设置角色栏最大
+     *
+     * @param uid uid
+     * @return plus.easydo.dnf.vo.R<java.lang.String>
+     * @author laoyu
+     * @date 2024/1/7
+     */
+    @Operation(summary = "设置角色栏最大")
+    @SaCheckPermission("accounts.setMaxRole")
+    @GetMapping("/setMaxRole/{uid}")
+    public R<Boolean> setMaxRole(@PathVariable(name = "uid") Long uid) {
+        return DataResult.ok(accountsService.setMaxRole(uid));
+    }
+    /**
+     * 开启全图王者
+     *
+     * @param uid uid
+     * @return plus.easydo.dnf.vo.R<java.lang.Boolean>
+     * @author laoyu
+     * @date 2024-01-31
+     */
+    @Operation(summary = "开启全图王者")
+    @SaCheckPermission("accounts.openDungeon")
+    @GetMapping("/openDungeon/{uid}")
+    public R<Boolean> openDungeon(@PathVariable(name = "uid") Long uid) {
+        return DataResult.ok(accountsService.openDungeon(uid));
     }
 
 }

@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.json.JSONObject;
 import com.alibaba.excel.EasyExcelFactory;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,7 @@ public class DaItemController {
      * @param file file
      * @throws IOException
      */
+    @Operation(summary = "导入")
     @SaCheckPermission("item.importItem")
     @PostMapping("/importItem")
     public void importItem(@RequestParam("file") MultipartFile file) throws IOException {
@@ -57,6 +59,7 @@ public class DaItemController {
      * @param file file
      * @throws IOException
      */
+    @Operation(summary = "从pvf导出的7z文件导入")
     @SaCheckPermission("item.importItemFor7z")
     @PostMapping("/importItemFor7z")
     public void importItemFor7z(@RequestParam("file") MultipartFile file) throws IOException {
@@ -71,6 +74,7 @@ public class DaItemController {
      * @author laoyu
      * @date 2023/10/29
      */
+    @Operation(summary = "下载导入模板")
     @SaCheckPermission("item")
     @GetMapping("/downloadTemplate")
     public void downloadTemplate(HttpServletResponse response) throws IOException {
@@ -85,6 +89,7 @@ public class DaItemController {
      * @param daItem 物品缓存
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
+    @Operation(summary = "添加")
     @SaCheckPermission("item.save")
     @PostMapping("/save")
     public boolean saveItem(@RequestBody DaItemEntity daItem) {
@@ -98,6 +103,7 @@ public class DaItemController {
      * @param ids 主键
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
+    @Operation(summary = "删除")
     @SaCheckPermission("item.remove")
     @PostMapping("/remove")
     public boolean removeItem(@RequestBody List<String> ids) {
@@ -111,6 +117,7 @@ public class DaItemController {
      * @param daItem 物品缓存
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
+    @Operation(summary = "更新")
     @SaCheckPermission("item.update")
     @PostMapping("/update")
     public boolean updateItem(@RequestBody DaItemEntity daItem) {
@@ -123,6 +130,7 @@ public class DaItemController {
      *
      * @return 所有数据
      */
+    @Operation(summary = "查询所有物品")
     @SaCheckLogin
     @GetMapping("/list")
     public R<List<DaItemEntity>> listItem(@RequestParam(value = "name", required = false)String name) {
@@ -137,6 +145,7 @@ public class DaItemController {
      * @param daItemQo 分页对象
      * @return 分页对象
      */
+    @Operation(summary = "分页")
     @SaCheckPermission("item")
     @PostMapping("/page")
     public R<List<DaItemEntity>> pageItem(@RequestBody DaItemQo daItemQo) {

@@ -10,7 +10,7 @@
     </parent>
     <groupId>plus.easydo</groupId>
     <artifactId>dnf-admin</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.3</version>
     <name>dnf-admin</name>
     <description>dnf-admin</description>
     <properties>
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.23</version>
+            <version>5.8.24</version>
         </dependency>
 
         <dependency>
@@ -64,16 +64,10 @@
             <version>1.7.3</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.mybatis-flex</groupId>-->
-<!--            <artifactId>mybatis-flex-processor</artifactId>-->
-<!--            <version>1.7.0</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
+            <version>8.2.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -103,7 +97,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.23.0</version>
+            <version>1.24.0</version>
         </dependency>
 
         <dependency>
@@ -127,19 +121,38 @@
         <!-- PKCS1密钥支持 -->
         <dependency>
             <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
-            <version>1.69</version>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.77</version>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
-            <artifactId>bcpkix-jdk15on</artifactId>
-            <version>1.69</version>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version>1.77</version>
         </dependency>
 
         <!-- websocket -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>6.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.aviator</groupId>
+            <artifactId>aviator</artifactId>
+            <version>5.4.1</version>
+        </dependency>
+
+        <!--websocket作为客户端-->
+        <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>1.5.5</version>
         </dependency>
 
     </dependencies>

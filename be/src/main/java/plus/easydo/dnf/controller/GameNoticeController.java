@@ -1,6 +1,7 @@
 package plus.easydo.dnf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class GameNoticeController {
     @Autowired
     private IDaNoticeSendLogService daNoticeSendLogService;
 
-
+    @Operation(summary = "发送公告")
     @SaCheckPermission("notice.sendNotice")
     @GetMapping("/sendNotice")
     public R<Object> sendNotice(@RequestParam("message")String message){
@@ -48,6 +49,7 @@ public class GameNoticeController {
      * @author laoyu
      * @date 2023/10/29
      */
+    @Operation(summary = "分页查询公告发送记录")
     @SaCheckPermission("notice")
     @PostMapping("/page")
     public  R<List<DaNoticeSendLog>> pageGameNotice(@RequestBody PageQo pageQo) {

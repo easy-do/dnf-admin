@@ -37,7 +37,7 @@ public class FcWebSocketHandler implements WebSocketHandler {
 
     private static final ConcurrentLinkedDeque<WebSocketSession> CONCURRENT_LINKED_DEQUE = new ConcurrentLinkedDeque<>();
 
-    public static final Map<String, String> CHANNEL_SECRET_MAP = new HashMap<>();
+    private static final Map<String, String> CHANNEL_SECRET_MAP = new HashMap<>();
     private static final Map<String, WebSocketSession> CHANNEL_SESSION_MAP = new HashMap<>();
     private static final Map<String, String> SESSION_CHANNELMAP = new HashMap<>();
     private static final Map<String, Cache<String, String>> CHANNEL_LOG_CACHE = new HashMap<>();
@@ -102,6 +102,10 @@ public class FcWebSocketHandler implements WebSocketHandler {
             Cache<String, String> cache = CHANNEL_LOG_CACHE.get(channel);
             cache.put(LocalDateTimeUtil.format(LocalDateTimeUtil.now(), DatePattern.NORM_DATETIME_MS_PATTERN), log);
         }
+    }
+
+    public static long getSessionCount(){
+        return CONCURRENT_LINKED_DEQUE.size();
     }
 
     /**
@@ -185,7 +189,7 @@ public class FcWebSocketHandler implements WebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         log.info("客户端断开连接:" + session.getId());
         CONCURRENT_LINKED_DEQUE.remove(session);
-        String channel = SESSION_CHANNELMAP.get(session);
+        String channel = SESSION_CHANNELMAP.get(session.getId());
         if (Objects.nonNull(channel)) {
             CHANNEL_SESSION_MAP.remove(channel);
             SESSION_CHANNELMAP.remove(session.getId());

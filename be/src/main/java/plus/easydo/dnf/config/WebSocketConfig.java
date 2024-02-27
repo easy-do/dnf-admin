@@ -6,6 +6,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import plus.easydo.dnf.onebot.websocket.OneBotWebSocketHandler;
 import plus.easydo.dnf.websocket.FcWebSocketHandler;
 
 /**
@@ -22,11 +23,17 @@ public class WebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         //配置handler,拦截器和跨域
         registry.addHandler(fcWebSocketHandler(), "/fc/ws").setAllowedOrigins("*");
+        registry.addHandler(oneBotWebSocketHandler(), "/ws/oneBot").setAllowedOrigins("*");
     }
 
     @Bean
     public WebSocketHandler fcWebSocketHandler() {
         return new FcWebSocketHandler();
+    }
+
+    @Bean
+    public WebSocketHandler oneBotWebSocketHandler() {
+        return new OneBotWebSocketHandler();
     }
 
 //    @Bean

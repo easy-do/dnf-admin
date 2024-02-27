@@ -29,4 +29,9 @@ public class AccountsManager extends ServiceImpl<AccountsMapper, Accounts> {
         QueryWrapper query = query().and(ACCOUNTS.ACCOUNTNAME.eq(userName));
         return exists(query);
     }
+
+    public Accounts getByQq(String qq) {
+        QueryWrapper query = query().and(ACCOUNTS.QQ.eq(qq));
+        return getOne(query);
+    }
 }

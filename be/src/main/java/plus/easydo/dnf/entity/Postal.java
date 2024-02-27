@@ -1,5 +1,7 @@
 package plus.easydo.dnf.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
@@ -34,13 +36,14 @@ public class Postal implements Serializable {
     private Long itemId;
 
     /**发送时间*/
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime occTime;
 
     /**接收的角色*/
-    private Integer receiveCharacNo;
+    private Long receiveCharacNo;
 
     /**发送的角色编号*/
-    private Integer sendCharacNo = 0;
+    private Long sendCharacNo = 0L;
 
     /**发送的角色名*/
     private String sendCharacName;
@@ -82,4 +85,8 @@ public class Postal implements Serializable {
     private Integer letterId;
 
     private Integer deleteFlag = 0;
+
+    /**物品名*/
+    @Column(ignore = true)
+    private String itemName;
 }

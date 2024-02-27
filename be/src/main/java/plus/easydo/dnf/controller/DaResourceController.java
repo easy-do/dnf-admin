@@ -2,6 +2,7 @@ package plus.easydo.dnf.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.tree.Tree;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ public class DaResourceController {
     /**
      * 授权角色资源
      */
+    @Operation(summary = "授权角色资源")
     @SaCheckPermission("role.authRoleResource")
     @PostMapping("/authRoleResource")
     public R<Object> authRoleResource(@RequestBody AuthRoleResourceDto authRoleResourceDto) {
@@ -44,6 +46,7 @@ public class DaResourceController {
     /**
      * 获取所有资源下拉树
      */
+    @Operation(summary = "获取所有资源下拉树")
     @SaCheckPermission("role")
     @GetMapping("/resourceTree")
     public R<List<Tree<Long>>> resourceTree() {
@@ -55,6 +58,7 @@ public class DaResourceController {
     /**
      * 加载对应角色资源列表
      */
+    @Operation(summary = "加载对应角色资源列表")
     @SaCheckPermission("role")
     @GetMapping(value = "/roleResource/{roleId}")
     public R<List<Tree<Long>>> roleResource(@PathVariable("roleId") Long roleId) {
@@ -64,6 +68,7 @@ public class DaResourceController {
     /**
      * 加载对应角色资源id集合
      */
+    @Operation(summary = "加载对应角色资源id集合")
     @SaCheckPermission("role")
     @GetMapping(value = "/roleResourceIds/{roleId}")
     public R<List<Long>> roleResourceIds(@PathVariable("roleId") Long roleId) {

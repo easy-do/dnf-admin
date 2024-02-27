@@ -64,4 +64,17 @@ public class ResultSetUtil {
         return list;
     }
 
+    public static List<String> reToStringList(ResultSet rs) throws SQLException {
+        List<String> list = new ArrayList<>();
+        ResultSetMetaData md = rs.getMetaData();
+        int columnCount = md.getColumnCount();
+        while (rs.next()) {
+            for (int i = 1; i <= columnCount; i++) {
+                Object value = rs.getObject(i);
+                list.add((String) value);
+            }
+        }
+        return list;
+    }
+
 }

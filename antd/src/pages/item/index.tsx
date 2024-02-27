@@ -174,7 +174,7 @@ const ItemList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.DaItemEntity, API.RListDaItemEntity>
-        headerTitle="查询表格"
+        headerTitle="物品列表"
         actionRef={actionRef}
         rowKey="id"
         search={{
@@ -185,7 +185,7 @@ const ItemList: React.FC = () => {
           showSizeChanger: false,
         }}
         toolBarRender={() => [
-          <Access accessible={access.hashPre('conf.save')}>
+          <Access accessible={access.hashPre('item.save')}>
             <Button type="primary" icon={<PlusOutlined />} onClick={() => {
               handleModalVisible(true);
             }}>
@@ -204,7 +204,7 @@ const ItemList: React.FC = () => {
               </Button>
             </Upload>
           </Access>,
-          <Access accessible={access.hashPre('conf.update')}>
+          <Access accessible={access.hashPre('item.update')}>
             <Upload {...zpProps}>
               <Button type="primary" icon={<UploadOutlined />}>
                 pvfUtility7z导入

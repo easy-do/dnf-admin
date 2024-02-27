@@ -19,6 +19,6 @@ public class UserLoginFridaMessageHandler implements FridaMessageHandler{
 
     @Override
     public void handler(String channel, Object data) {
-        signInService.characSign(channel, Integer.valueOf(data.toString()));
+        signInService.characSign(channel, Long.valueOf(data.toString()));
     }
 }

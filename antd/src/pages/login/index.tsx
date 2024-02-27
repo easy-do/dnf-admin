@@ -1,13 +1,14 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { message, Space, Tabs } from 'antd';
-import React, { useState } from 'react';
+import { Input, message, Space, Tabs } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { ProFormText, LoginForm, ModalForm } from '@ant-design/pro-form';
-import { useIntl, history, FormattedMessage, SelectLang, useModel } from 'umi';
+import { useIntl, history, FormattedMessage, SelectLang, useModel, request } from 'umi';
 import Footer from '@/components/Footer';
 import { login, reg } from '@/services/dnf-admin/userController';
 
 import styles from './index.less';
 import Link from 'antd/lib/typography/Link';
+import { generateCaptchaV2 } from '@/services/dnf-admin/captchaController';
 
 
 const Login: React.FC = () => {
@@ -17,6 +18,18 @@ const Login: React.FC = () => {
   const [regModal, handlerRegModal] = useState<boolean>(false);
 
   const intl = useIntl();
+  
+  const [imageData, setImageData] = useState<API.CaptchaVo>();
+
+  const onClickImage = () => {
+    generateCaptchaV2({'key':imageData?.key}).then(res=>{
+      setImageData(res.data);
+    })
+  };
+
+  useEffect(() => {
+    onClickImage();
+  }, []);
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -30,7 +43,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (values: API.LoginDto) => {
     // 登录
-    const res = await login({ ...values });
+    const res = await login({ ...values,captchaKey:imageData?.key });
     if (res.success) {
       localStorage.setItem('Authorization', res.data);
       const defaultLoginSuccessMessage = intl.formatMessage({
@@ -65,8 +78,8 @@ const Login: React.FC = () => {
           }}
           actions={
             <Space>
-              <Link onClick={() => handlerSettingModal(true)} >服务设置 </Link>
-              <Link onClick={() => handlerRegModal(true)} >账号注册 </Link>
+              <Link onClick={() => handlerSettingModal(true)}>服务设置 </Link>
+              <Link onClick={() => handlerRegModal(true)}>账号注册 </Link>
             </Space>
           }
         >
@@ -86,11 +99,8 @@ const Login: React.FC = () => {
               fieldProps={{
                 size: 'large',
                 prefix: <UserOutlined className={styles.prefixIcon} />,
+                placeholder: '用户名: 游戏账户',
               }}
-              placeholder={intl.formatMessage({
-                id: 'pages.login.username.placeholder',
-                defaultMessage: '用户名: 游戏账户',
-              })}
               rules={[
                 {
                   required: true,
@@ -109,10 +119,6 @@ const Login: React.FC = () => {
                 size: 'large',
                 prefix: <LockOutlined className={styles.prefixIcon} />,
               }}
-              placeholder={intl.formatMessage({
-                id: 'pages.login.password.placeholder',
-                defaultMessage: '密码',
-              })}
               rules={[
                 {
                   required: true,
@@ -124,6 +130,32 @@ const Login: React.FC = () => {
                   ),
                 },
               ]}
+            />
+            <ProFormText
+              name="verificationCode"
+              placeholder={'请输入验证码'}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入验证码',
+                },
+              ]}
+              style={{
+                width: '30%',
+                marginRight: 5,
+                padding: '6.5px 11px 6.5px 11px',
+                verticalAlign: 'middle',
+              }}
+            />
+            <img
+              style={{
+                width: '100%',
+                height: '60px',
+                verticalAlign: 'middle',
+                padding: '0px 0px 0px 0px',
+              }}
+              src={imageData?.img}
+              onClick={onClickImage}
             />
           </>
         </LoginForm>
@@ -140,7 +172,6 @@ const Login: React.FC = () => {
             message.success('配置成功');
             handlerSettingModal(false);
           }}
-
         >
           <ProFormText
             name="daCustomUrl"
@@ -149,10 +180,10 @@ const Login: React.FC = () => {
             placeholder={'http://localhost:8888'}
           />
           <ProFormText
-           name="daClientPath"
-           label="客户端地址"
-           initialValue={localStorage.getItem('daClientPath')}
-           placeholder={'客户端根目录'}
+            name="daClientPath"
+            label="客户端地址"
+            initialValue={localStorage.getItem('daClientPath')}
+            placeholder={'客户端根目录'}
           />
         </ModalForm>
         <ModalForm
@@ -162,15 +193,14 @@ const Login: React.FC = () => {
           title="账号注册"
           visible={regModal}
           onVisibleChange={handlerRegModal}
-          onFinish={(values: API.RegDto)=>{
-            reg(values).then((res=>{
-              if(res.success){
-                message.success('注册成功')
-                handlerRegModal(false)
+          onFinish={(values: API.RegDto) => {
+            reg({...values,captchaKey:imageData?.key}).then((res) => {
+              if (res.success) {
+                message.success('注册成功');
+                handlerRegModal(false);
               }
-            }))
-          }
-          }
+            });
+          }}
         >
           <ProFormText
             name="userName"
@@ -178,7 +208,7 @@ const Login: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: '请输入账号'
+                message: '请输入账号',
               },
             ]}
           />
@@ -188,9 +218,36 @@ const Login: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: '请输入密码'
+                message: '请输入密码',
               },
             ]}
+          />
+          <ProFormText
+            label="验证码"
+            name="verificationCode"
+            placeholder={'请输入验证码'}
+            rules={[
+              {
+                required: true,
+                message: '请输入验证码',
+              },
+            ]}
+            style={{
+              width: '30%',
+              marginRight: 5,
+              padding: '6.5px 11px 6.5px 11px',
+              verticalAlign: 'middle',
+            }}
+          />
+          <img
+            style={{
+              width: '50%',
+              height: '60px',
+              verticalAlign: 'middle',
+              padding: '0px 0px 0px 0px',
+            }}
+            src={imageData?.img}
+            onClick={onClickImage}
           />
         </ModalForm>
       </div>

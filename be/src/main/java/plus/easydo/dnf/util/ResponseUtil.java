@@ -23,6 +23,8 @@ public class ResponseUtil {
 
     private static final String FILE_NAME = "attachment;fileName=";
 
+    private static final String FORCE_DOWNLOAD = "application/force-download";
+
 
 
     private ResponseUtil() {
@@ -50,7 +52,7 @@ public class ResponseUtil {
      * @date 2023/2/7
      */
     public static void setFileResponse(HttpServletResponse response) {
-        response.setContentType(FORM_DATA);
+        response.setContentType(FORCE_DOWNLOAD);
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, FILE_NAME
                 + URLEncoder.encode(UUID.fastUUID().toString(), StandardCharsets.UTF_8).replace("\\+", "%20"));
@@ -64,7 +66,7 @@ public class ResponseUtil {
      * @date 2023/2/7
      */
     public static void setFileResponse(HttpServletResponse response,String fileName) {
-        response.setContentType(FORM_DATA);
+        response.setContentType(FORCE_DOWNLOAD);
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, FILE_NAME
                 + URLEncoder.encode(fileName, StandardCharsets.UTF_8).replace("\\+", "%20"));

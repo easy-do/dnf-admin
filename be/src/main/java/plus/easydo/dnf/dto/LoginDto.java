@@ -20,4 +20,6 @@ public class LoginDto {
 
     private String verificationCode;
 
+    private String captchaKey;
+
 }

@@ -15,12 +15,14 @@ import {
 } from '@/services/dnf-admin/daChannelController';
 import { stopFrida } from '@/services/dnf-admin/daChannelController';
 import Modal from 'antd/lib/modal/Modal';
-import Editor from '@monaco-editor/react';
 import ProForm, { ProFormInstance, ProFormItem, ProFormTextArea, } from '@ant-design/pro-form';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import Tabs from 'antd/lib/tabs';
 import { Checkbox, Space } from 'antd';
+import loader from '@monaco-editor/loader';
+import Editor from '@monaco-editor/react';
+loader.config({ paths: { vs: 'https://cdn.staticfile.org/monaco-editor/0.43.0/min/vs' } });
 
 const Channel: React.FC = () => {
   const actionRef = useRef<ActionType>();

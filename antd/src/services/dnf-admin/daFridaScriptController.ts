@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 此处后端没有提供注释 GET /api/fridaScript/getInfo/${param0} */
+/** 详情 GET /api/fridaScript/getInfo/${param0} */
 export async function getFridaScriptInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getFridaScriptInfoParams,
@@ -16,7 +16,7 @@ export async function getFridaScriptInfo(
   });
 }
 
-/** 此处后端没有提供注释 GET /api/fridaScript/list */
+/** 查询所有 GET /api/fridaScript/list */
 export async function listFridaScript(options?: { [key: string]: any }) {
   return request<API.RListDaFridaScript>('/api/fridaScript/list', {
     method: 'GET',
@@ -24,7 +24,7 @@ export async function listFridaScript(options?: { [key: string]: any }) {
   });
 }
 
-/** 此处后端没有提供注释 POST /api/fridaScript/page */
+/** 分页 POST /api/fridaScript/page */
 export async function pageFridaScript(body: API.FridaScriptQo, options?: { [key: string]: any }) {
   return request<API.RListDaFridaScript>('/api/fridaScript/page', {
     method: 'POST',
@@ -36,7 +36,7 @@ export async function pageFridaScript(body: API.FridaScriptQo, options?: { [key:
   });
 }
 
-/** 此处后端没有提供注释 POST /api/fridaScript/save */
+/** 添加 POST /api/fridaScript/save */
 export async function saveFridaScript(body: API.DaFridaScript, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/fridaScript/save', {
     method: 'POST',
@@ -48,7 +48,7 @@ export async function saveFridaScript(body: API.DaFridaScript, options?: { [key:
   });
 }
 
-/** 此处后端没有提供注释 POST /api/fridaScript/update */
+/** 更新 POST /api/fridaScript/update */
 export async function updateFridaScript(body: API.DaFridaScript, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/fridaScript/update', {
     method: 'POST',

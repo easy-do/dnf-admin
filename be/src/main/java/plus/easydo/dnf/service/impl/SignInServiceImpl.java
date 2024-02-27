@@ -23,10 +23,10 @@ import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.manager.DaSignInConfManager;
 import plus.easydo.dnf.manager.DaSignInLogManager;
 import plus.easydo.dnf.qo.DaSignInConfQo;
+import plus.easydo.dnf.service.GameMailService;
 import plus.easydo.dnf.service.GameRoleService;
 import plus.easydo.dnf.service.IDaItemService;
 import plus.easydo.dnf.service.SignInService;
-import plus.easydo.dnf.util.WebSocketUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +53,8 @@ public class SignInServiceImpl implements SignInService {
 
     private final IDaItemService daItemService;
 
+    private final GameMailService gameMailService;
+
     @Override
     public List<DaSignInConf> signList(Integer characNo) {
         return daSignInConfManager.getRoleSignList(characNo);
@@ -60,8 +62,18 @@ public class SignInServiceImpl implements SignInService {
 
     @Override
     @Transactional
-    public boolean pcCharacSign(Integer characNo) {
-        checkUserCharac(characNo);
+    public boolean pcCharacSign(Long characNo) {
+        checkUserCharac(characNo,StpUtil.getLoginIdAsLong());
+        return characSign(characNo);
+    }
+
+    @Override
+    public boolean botCharacSign(Long characNo, Long uid) {
+        checkUserCharac(characNo,uid);
+        return characSign(characNo);
+    }
+
+    private boolean characSign(Long characNo) {
         DaSignInConf signInConf = daSignInConfManager.getByCurrentConf();
         if (Objects.isNull(signInConf)) {
             throw new BaseException("没有找到今日的签到配置");
@@ -74,7 +86,7 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    public void characSign(String channel, Integer characNo) {
+    public void characSign(String channel, Long characNo) {
         DaSignInConf signInConf = daSignInConfManager.getByCurrentConf();
         if (Objects.isNull(signInConf)) {
             log.info("没有找到今日的签到配置.");
@@ -88,8 +100,8 @@ public class SignInServiceImpl implements SignInService {
         saveLogAndSendMail(channel, characNo, signInConf);
     }
 
-    private void checkUserCharac(Integer characNo) {
-        List<CharacInfo> roleList = gameRoleService.roleList(StpUtil.getLoginIdAsInt(), null);
+    private void checkUserCharac(Long characNo,Long uid) {
+        List<CharacInfo> roleList = gameRoleService.roleList(uid, null);
         CharacInfo currentRole = null;
         for (CharacInfo characInfo: roleList) {
             if(characNo.equals(characInfo.getCharacNo())){
@@ -101,7 +113,7 @@ public class SignInServiceImpl implements SignInService {
         }
     }
 
-    private boolean saveLogAndSendMail(String channel, Integer characNo, DaSignInConf signInConf) {
+    private boolean saveLogAndSendMail(String channel, Long characNo, DaSignInConf signInConf) {
         DaSignInLog entity = new DaSignInLog();
         entity.setConfigId(signInConf.getId());
         entity.setSignInRoleId(characNo);
@@ -128,15 +140,15 @@ public class SignInServiceImpl implements SignInService {
         return signInFlag;
     }
 
-    private void sendMail(String channel, Integer characNo, List<SignInConfigDate> current) {
+    private void sendMail(String channel, Long characNo, List<SignInConfigDate> current) {
         List<MailItemDto> itemList = new ArrayList<>();
-        current.forEach(da-> itemList.add(MailItemDto.builder().itemId(da.getItemId()).count(da.getQuantity()).build()));
+        current.forEach(da-> itemList.add(MailItemDto.builder().itemId(da.getItemId()).itemType(da.getItemType()).count(da.getQuantity()).build()));
         SendMailDto dto = new SendMailDto();
         dto.setCharacNo(characNo);
         dto.setTitle("每日签到奖励-dnf-admin");
         dto.setContent("每日签到奖励,请查收. -dnf-admin");
         dto.setItemList(itemList);
-        WebSocketUtil.sendMail(channel,dto);
+        gameMailService.sendMail(dto);
     }
 
     @Override
@@ -162,6 +174,11 @@ public class SignInServiceImpl implements SignInService {
         }
         DaSignInConf entity = dtoToEntity(daSignInConfDto);
         return daSignInConfManager.save(entity);
+    }
+
+    @Override
+    public DaSignInConf getTodaySignConf() {
+        return daSignInConfManager.getByCurrentConf();
     }
 
     private DaSignInConf dtoToEntity(DaSignInConfDto daSignInConfDto) {

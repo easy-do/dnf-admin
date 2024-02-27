@@ -20,4 +20,6 @@ public class RegDto {
 
     private String verificationCode;
 
+    private String captchaKey;
+
 }

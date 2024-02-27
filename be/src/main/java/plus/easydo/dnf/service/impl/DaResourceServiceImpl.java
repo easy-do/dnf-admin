@@ -15,6 +15,7 @@ import plus.easydo.dnf.dto.AuthRoleResourceDto;
 import plus.easydo.dnf.entity.DaResource;
 import plus.easydo.dnf.entity.DaRole;
 import plus.easydo.dnf.entity.DaRoleResource;
+import plus.easydo.dnf.enums.SysTemModeEnum;
 import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.mapper.DaResourceMapper;
 import plus.easydo.dnf.service.IDaResourceService;
@@ -98,6 +99,7 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
             return Collections.emptyList();
         }
         List<DaResource> resourceList = getRoleResourceForType(roles,"M");
+        disableByMode(resourceList);
         return buildResourceTree(resourceList);
     }
 
@@ -108,7 +110,29 @@ public class DaResourceServiceImpl extends ServiceImpl<DaResourceMapper, DaResou
             return Collections.emptyList();
         }
         List<DaResource> resourceList = getRoleResourceList(roles);
+        disableByMode(resourceList);
         return resourceList.stream().map(DaResource::getResourceCode).toList();
+    }
+
+    private void disableByMode(List<DaResource> resourceList) {
+        List<DaResource> removeList = new ArrayList<>();
+        if(SysTemModeEnum.UTILS.getMode().equals(systemConfig.getMode())){
+            List<String> utilsDisableResource = systemConfig.getUtilsDisableResource();
+            resourceList.forEach(resource->{
+                if(Objects.nonNull(resource.getResourceCode()) && utilsDisableResource.contains(resource.getResourceCode())){
+                    removeList.add(resource);
+                }
+            });
+        }
+        if(SysTemModeEnum.STANDALONE.getMode().equals(systemConfig.getMode())){
+            List<String> standaloneDisableResource = systemConfig.getStandaloneDisableResource();
+            resourceList.forEach(resource->{
+                if(Objects.nonNull(resource.getResourceCode()) && standaloneDisableResource.contains(resource.getResourceCode())){
+                    removeList.add(resource);
+                }
+            });
+        }
+        removeList.forEach(resourceList::remove);
     }
 
     /**

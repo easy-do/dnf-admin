@@ -2,6 +2,7 @@ package plus.easydo.dnf.config;
 
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.audit.AuditManager;
+import com.mybatisflex.core.keygen.KeyGeneratorFactory;
 import com.mybatisflex.spring.boot.MyBatisFlexCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ public class MyBatisFlexConfiguration implements MyBatisFlexCustomizer {
 //                logger.info("{},{}ms", auditMessage.getFullSql()
 //                        , auditMessage.getElapsedTime())
 //        );
+        KeyGeneratorFactory.register("UUIDKeyGenerator", new UUIDKeyGenerator());
     }
 
     @Override

@@ -30,7 +30,7 @@ public class Letter implements Serializable {
     @Id(keyType = KeyType.Auto)
     private Integer letterId;
      /**角色id*/
-    private Integer characNo;
+    private Long characNo;
     /**发送的角色id*/
     private Integer sendCharacNo = 1;
     /**发的角色名称*/

@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "da_sign_in_conf", dataSource = "d_taiwan")
+@Table(value = "da_sign_in_conf")
 public class DaSignInConf implements Serializable {
 
     @Id(keyType = KeyType.Auto)

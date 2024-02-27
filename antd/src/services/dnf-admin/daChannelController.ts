@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 此处后端没有提供注释 POST /api/channel/debugFrida */
+/** 发送frida调试信息 POST /api/channel/debugFrida */
 export async function debugFrida(body: API.DebugFridaDto, options?: { [key: string]: any }) {
   return request<API.RString>('/api/channel/debugFrida', {
     method: 'POST',
@@ -14,7 +14,7 @@ export async function debugFrida(body: API.DebugFridaDto, options?: { [key: stri
   });
 }
 
-/** 此处后端没有提供注释 GET /api/channel/getDebugLog/${param0} */
+/** 获取frida的debug日志 GET /api/channel/getDebugLog/${param0} */
 export async function getDebugLog(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getDebugLogParams,
@@ -28,7 +28,7 @@ export async function getDebugLog(
   });
 }
 
-/** 此处后端没有提供注释 GET /api/channel/getFridaLog/${param0} */
+/** 获取frida的容器日志 GET /api/channel/getFridaLog/${param0} */
 export async function getFridaLog(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getFridaLogParams,
@@ -42,7 +42,7 @@ export async function getFridaLog(
   });
 }
 
-/** 此处后端没有提供注释 GET /api/channel/getInfo/${param0} */
+/** 频道详情 GET /api/channel/getInfo/${param0} */
 export async function getChannelInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getChannelInfoParams,
@@ -56,7 +56,7 @@ export async function getChannelInfo(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/channel/page */
+/** 分页查询 POST /api/channel/page */
 export async function pageChannel(body: API.ChannelQo, options?: { [key: string]: any }) {
   return request<API.RListDaChannel>('/api/channel/page', {
     method: 'POST',
@@ -68,7 +68,7 @@ export async function pageChannel(body: API.ChannelQo, options?: { [key: string]
   });
 }
 
-/** 此处后端没有提供注释 GET /api/channel/restartFrida/${param0} */
+/** 重启frida容器 GET /api/channel/restartFrida/${param0} */
 export async function restartFrida(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.restartFridaParams,
@@ -82,7 +82,7 @@ export async function restartFrida(
   });
 }
 
-/** 此处后端没有提供注释 GET /api/channel/stopFrida/${param0} */
+/** 停止frida容器 GET /api/channel/stopFrida/${param0} */
 export async function stopFrida(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.stopFridaParams,
@@ -96,7 +96,7 @@ export async function stopFrida(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/channel/updateFridaJs */
+/** 更新frida脚本 POST /api/channel/updateFridaJs */
 export async function updateFridaJs(body: API.UpdateScriptDto, options?: { [key: string]: any }) {
   return request<API.RListString>('/api/channel/updateFridaJs', {
     method: 'POST',
@@ -108,7 +108,7 @@ export async function updateFridaJs(body: API.UpdateScriptDto, options?: { [key:
   });
 }
 
-/** 此处后端没有提供注释 POST /api/channel/updatePythonScript */
+/** 更新python脚本 POST /api/channel/updatePythonScript */
 export async function updatePythonScript(
   body: API.UpdateScriptDto,
   options?: { [key: string]: any },

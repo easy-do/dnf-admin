@@ -1,6 +1,10 @@
 package plus.easydo.dnf.service;
 
+import com.mybatisflex.core.paginate.Page;
+import plus.easydo.dnf.dto.SendMailDto;
 import plus.easydo.dnf.dto.SignInConfigDate;
+import plus.easydo.dnf.entity.Postal;
+import plus.easydo.dnf.qo.RoleMailPageQo;
 
 /**
  * @author laoyu
@@ -21,4 +25,14 @@ public interface GamePostalService {
      * @date 2023/10/15
      */
     boolean sendSignInRoleMail(Integer roleId, SignInConfigDate configData);
+
+    void sendMail(SendMailDto sendMailDto);
+
+    boolean cleanCharacMail(Long characNo);
+
+    boolean cleanMail();
+
+    Page<Postal> roleMailPage(Long characNo, RoleMailPageQo pageQo);
+
+    boolean removeMail(Long postalId);
 }

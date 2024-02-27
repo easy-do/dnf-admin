@@ -99,7 +99,9 @@ public class DockerUtil {
                 result.put(b.get(b.size() - 2), b.get(1));
             }
         });
-        log.info("获取频道进程信息:{}", result);
+        if(result.isEmpty()){
+            log.info("获取频道进程信息为空,{}", result);
+        }
         return result;
     }
 
@@ -126,7 +128,9 @@ public class DockerUtil {
                 result.add(name);
             }
         });
-        log.info("获取frida容器信息:{}", result);
+        if(result.isEmpty()){
+            log.info("获取frida容器信息为空:{}", result);
+        }
         return result;
     }
 

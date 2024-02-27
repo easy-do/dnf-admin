@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 此处后端没有提供注释 GET /api/fridaFunction/getChildrenFunction/${param0} */
+/** 获取引入的函数列表 GET /api/fridaFunction/getChildrenFunction/${param0} */
 export async function getChildrenFunction(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getChildrenFunctionParams,
@@ -16,7 +16,7 @@ export async function getChildrenFunction(
   });
 }
 
-/** 此处后端没有提供注释 GET /api/fridaFunction/getInfo/${param0} */
+/** 根据frida函数信息主键获取详细信息 GET /api/fridaFunction/getInfo/${param0} */
 export async function getFridaFunctionInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getFridaFunctionInfoParams,
@@ -30,7 +30,7 @@ export async function getFridaFunctionInfo(
   });
 }
 
-/** 此处后端没有提供注释 GET /api/fridaFunction/list */
+/** 查询所有frida函数信息 GET /api/fridaFunction/list */
 export async function listFridaFunction(options?: { [key: string]: any }) {
   return request<API.RListDaFridaFunction>('/api/fridaFunction/list', {
     method: 'GET',
@@ -38,7 +38,7 @@ export async function listFridaFunction(options?: { [key: string]: any }) {
   });
 }
 
-/** 此处后端没有提供注释 POST /api/fridaFunction/page */
+/** 分页查询frida函数信息 POST /api/fridaFunction/page */
 export async function pageFridaFunction(
   body: API.FridaFunctionQo,
   options?: { [key: string]: any },
@@ -53,7 +53,7 @@ export async function pageFridaFunction(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/fridaFunction/save */
+/** 添加frida函数信息 POST /api/fridaFunction/save */
 export async function saveFridaFunction(
   body: API.DaFridaFunction,
   options?: { [key: string]: any },
@@ -68,7 +68,7 @@ export async function saveFridaFunction(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/fridaFunction/update */
+/** 根据主键更新frida函数信息 POST /api/fridaFunction/update */
 export async function updateFridaFunction(
   body: API.DaFridaFunction,
   options?: { [key: string]: any },

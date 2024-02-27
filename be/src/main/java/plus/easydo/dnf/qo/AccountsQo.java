@@ -22,8 +22,6 @@ public class AccountsQo extends PageQo {
 
     private String qq;
 
-    private Integer billing;
-
     private String vip;
 
 }

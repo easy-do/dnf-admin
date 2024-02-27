@@ -1,6 +1,6 @@
 {
   "name": "DNF-ADMIN",
-  "version": "5.2.0",
+  "version": "1.0.3",
   "private": true,
   "main": "main.js",
   "description": "An out-of-box UI solution for enterprise applications",
@@ -69,7 +69,6 @@
     "bizcharts": "^3.5.3-beta.0",
     "bizcharts-plugin-slider": "^2.1.1-beta.1",
     "classnames": "^2.3.0",
-    "gg-editor": "^2.0.2",
     "lodash": "^4.17.0",
     "lodash-decorators": "^6.0.0",
     "moment": "^2.29.0",

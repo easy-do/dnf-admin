@@ -1,11 +1,23 @@
 declare namespace API {
+  type AccountCargo = {
+    money?: number;
+    capacity?: number;
+    cargo?: string[];
+    occTime?: string;
+    mid?: string;
+  };
+
+  type AccountCargoDto = {
+    money?: number;
+    capacity?: number;
+    mid?: string;
+  };
+
   type Accounts = {
     uid?: string;
     accountname?: string;
     password?: string;
     qq?: string;
-    dzuid?: number;
-    billing?: number;
     vip?: string;
     admin?: boolean;
   };
@@ -16,7 +28,6 @@ declare namespace API {
     uid?: string;
     accountname?: string;
     qq?: string;
-    billing?: number;
     vip?: string;
   };
 
@@ -29,6 +40,11 @@ declare namespace API {
     resourceIds: string[];
   };
 
+  type CaptchaVo = {
+    key?: string;
+    img?: string;
+  };
+
   type ChannelQo = {
     current?: number;
     pageSize?: number;
@@ -39,7 +55,7 @@ declare namespace API {
   };
 
   type CharacInfo = {
-    characNo?: number;
+    characNo?: string;
     characName?: string;
     village?: number;
     job?: number;
@@ -93,23 +109,196 @@ declare namespace API {
     vip?: string;
     jobName?: string;
     expertJobName?: string;
+    mid?: string;
+  };
+
+  type CharacInfoQo = {
+    current?: number;
+    pageSize?: number;
+    characNo?: number;
+    characName?: string;
+    online?: boolean;
     mid?: number;
   };
 
   type characSignParams = {
-    characNo: number;
+    characNo: string;
+  };
+
+  type cleanItemsParams = {
+    characNo: string;
+  };
+
+  type cleanMailParams = {
+    characNo: string;
+  };
+
+  type cleanRoleItemParams = {
+    characNo: string;
+    type: string;
+  };
+
+  type createAccountCargoParams = {
+    characNo: string;
   };
 
   type CurrentUser = {
     uid?: number;
     accountname?: string;
     qq?: string;
-    billing?: number;
-    vip?: string;
     isAdmin?: boolean;
     menu?: Record<string, any>[];
     role?: string[];
     resource?: string[];
+    mode?: string;
+  };
+
+  type DaBotConf = {
+    id?: string;
+    botNumber?: string;
+    platform?: string;
+    confKey?: string;
+    confValue?: string;
+    remark?: string;
+  };
+
+  type DaBotEventScript = {
+    id?: string;
+    scriptName?: string;
+    eventType?: string;
+    scriptType?: string;
+    scriptContent?: string;
+    remark?: string;
+  };
+
+  type DaBotEventScriptQo = {
+    current?: number;
+    pageSize?: number;
+    scriptName?: string;
+    eventType?: string;
+    scriptType?: string;
+    remark?: string;
+  };
+
+  type DaBotInfo = {
+    id?: string;
+    botNumber?: string;
+    platform?: string;
+    botSecret?: string;
+    remark?: string;
+    botType?: string;
+    botUrl?: string;
+    lastHeartbeatTime?: string;
+    extData?: string;
+  };
+
+  type DaBotMessage = {
+    id?: string;
+    messageId?: string;
+    platform?: string;
+    groupId?: string;
+    sendUser?: string;
+    selfUser?: string;
+    selfTime?: string;
+    message?: string;
+  };
+
+  type DaBotMessageQo = {
+    current?: number;
+    pageSize?: number;
+    messageId?: string;
+    platform?: string;
+    groupId?: string;
+    sendUser?: string;
+    selfUser?: string;
+    selfTime?: string;
+    message?: string;
+  };
+
+  type DaBotNotice = {
+    id?: string;
+    noticeType?: string;
+    platform?: string;
+    subType?: string;
+    selfUser?: string;
+    groupId?: string;
+    operatorId?: string;
+    userId?: string;
+    selfTime?: string;
+    messageId?: string;
+  };
+
+  type DaBotNoticeQo = {
+    current?: number;
+    pageSize?: number;
+    noticeType?: string;
+    platform?: string;
+    subType?: string;
+    selfUser?: string;
+    groupId?: string;
+    operatorId?: string;
+    userId?: string;
+    selfTime?: string;
+    messageId?: string;
+  };
+
+  type DaBotQo = {
+    current?: number;
+    pageSize?: number;
+    botNumber?: string;
+    platform?: string;
+    remark?: string;
+    botType?: string;
+    botUrl?: string;
+  };
+
+  type DaBotRequest = {
+    id?: string;
+    requestType?: string;
+    platform?: string;
+    groupId?: string;
+    sendUser?: string;
+    selfUser?: string;
+    selfTime?: string;
+    comment?: string;
+    flag?: string;
+  };
+
+  type DaBotRequestQo = {
+    current?: number;
+    pageSize?: number;
+    requestType?: string;
+    platform?: string;
+    groupId?: string;
+    sendUser?: string;
+    selfUser?: string;
+    selfTime?: string;
+    comment?: string;
+    flag?: string;
+  };
+
+  type DaCdk = {
+    cdkCode?: string;
+    cdkType?: number;
+    cdkConf?: string;
+    remark?: string;
+    createTime?: string;
+    status?: boolean;
+    createBy?: string;
+    useTime?: string;
+    useUser?: string;
+    deleteFlag?: boolean;
+    number?: string;
+  };
+
+  type DaCdkQo = {
+    current?: number;
+    pageSize?: number;
+    cdkCode?: string;
+    remark?: string;
+    status?: boolean;
+    createTime?: string;
+    deleteFlag?: boolean;
   };
 
   type DaChannel = {
@@ -158,6 +347,37 @@ declare namespace API {
     confName?: string;
     confType?: number;
     confKey?: string;
+  };
+
+  type DaGameEvent = {
+    id?: string;
+    accountId?: string;
+    fileIndex?: number;
+    fileName?: string;
+    channel?: string;
+    charcaNo?: string;
+    charcaName?: string;
+    level?: number;
+    optionType?: string;
+    param1?: string;
+    param2?: string;
+    param3?: string;
+    clientIp?: string;
+    optionTime?: string;
+    optionInfo?: string;
+  };
+
+  type DaGameEventQo = {
+    current?: number;
+    pageSize?: number;
+    accountId?: string;
+    fileIndex?: number;
+    channel?: string;
+    charcaNo?: string;
+    charcaName?: string;
+    level?: number;
+    optionType?: string;
+    clientIp?: string;
   };
 
   type DaItemEntity = {
@@ -256,8 +476,19 @@ declare namespace API {
     uid: string;
   };
 
+  type EditGameRoleItemDto = {
+    characNo?: string;
+    type?: string;
+    gameItemVo?: GameItemVo;
+  };
+
   type enableAccountsParams = {
     uid: string;
+  };
+
+  type EnableBotScriptDto = {
+    botId?: string;
+    scriptIds?: string[];
   };
 
   type FridaFunctionQo = {
@@ -276,7 +507,59 @@ declare namespace API {
     remark?: string;
   };
 
+  type GameItemVo = {
+    index?: number;
+    sealType?: number;
+    itemType?: number;
+    itemId?: number;
+    itemName?: string;
+    upgrade?: number;
+    quality?: number;
+    durability?: number;
+    enchantment?: number;
+    increaseType?: number;
+    increaseLevel?: number;
+    otherworldly?: number;
+    forgeLevel?: number;
+    ext20to30?: string[];
+    ext33to36?: string[];
+    ext37to50?: string[];
+    ext52toEnd?: string[];
+  };
+
+  type gameRoleInfoParams = {
+    characNo: string;
+  };
+
+  type gameRoleRecoverParams = {
+    characNo: string;
+  };
+
+  type gameRoleRemoveParams = {
+    characNo: string;
+  };
+
+  type generateCaptchaV1Params = {
+    key?: string;
+  };
+
+  type generateCaptchaV2Params = {
+    key?: string;
+  };
+
+  type getAccountCargoParams = {
+    characNo: string;
+  };
+
   type getAccountsParams = {
+    id: string;
+  };
+
+  type getBotConfParams = {
+    botNumber: string;
+  };
+
+  type getCdkInfoParams = {
     id: string;
   };
 
@@ -296,6 +579,10 @@ declare namespace API {
     id: string;
   };
 
+  type getEnableBotScriptParams = {
+    id: string;
+  };
+
   type getFridaFunctionInfoParams = {
     id: string;
   };
@@ -308,8 +595,31 @@ declare namespace API {
     id: Record<string, any>;
   };
 
+  type getOtherDataParams = {
+    characNo: string;
+  };
+
   type getRoleInfoParams = {
     id: Record<string, any>;
+  };
+
+  type getRoleItemParams = {
+    characNo: string;
+    type: string;
+  };
+
+  type infoBotParams = {
+    id: string;
+  };
+
+  type infoBotScriptParams = {
+    id: string;
+  };
+
+  type LicenseDetails = {
+    type?: number;
+    startTime?: string;
+    endTime?: string;
   };
 
   type listItemParams = {
@@ -320,11 +630,51 @@ declare namespace API {
     userName: string;
     password: string;
     verificationCode?: string;
+    captchaKey?: string;
   };
 
   type MailItemDto = {
     itemId?: string;
+    itemType?: number;
     count?: string;
+  };
+
+  type OnlineCountVo = {
+    count?: string;
+    online?: string;
+  };
+
+  type openDungeonParams = {
+    uid: string;
+  };
+
+  type openLeftAndRightParams = {
+    characNo: string;
+  };
+
+  type OtherDataDto = {
+    characNo?: string;
+    win?: number;
+    pvpPoint?: number;
+    pvpGrade?: number;
+    money?: string;
+    sp?: number;
+    tp?: number;
+    qp?: number;
+    avatarCoin?: number;
+    oldData?: OtherDataDto;
+  };
+
+  type OtherDataVo = {
+    characNo?: number;
+    win?: number;
+    pvpPoint?: number;
+    pvpGrade?: number;
+    money?: string;
+    sp?: number;
+    tp?: number;
+    qp?: number;
+    avatarCoin?: number;
   };
 
   type pageAccountsParams = {
@@ -334,6 +684,38 @@ declare namespace API {
   type PageQo = {
     current?: number;
     pageSize?: number;
+  };
+
+  type Postal = {
+    postalId?: string;
+    itemId?: string;
+    occTime?: string;
+    receiveCharacNo?: string;
+    sendCharacNo?: string;
+    sendCharacName?: string;
+    addInfo?: string;
+    endurance?: number;
+    upgrade?: number;
+    seperateUpgrade?: number;
+    amplifyOption?: number;
+    amplifyValue?: number;
+    gold?: string;
+    avataFlag?: number;
+    unlimitFlag?: number;
+    sealFlag?: number;
+    creatureFlag?: number;
+    letterId?: number;
+    deleteFlag?: number;
+    itemName?: string;
+  };
+
+  type RAccountCargo = {
+    code?: number;
+    data?: AccountCargo;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
   };
 
   type RAccounts = {
@@ -354,9 +736,54 @@ declare namespace API {
     total?: string;
   };
 
+  type RCaptchaVo = {
+    code?: number;
+    data?: CaptchaVo;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RCharacInfo = {
+    code?: number;
+    data?: CharacInfo;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
   type RCurrentUser = {
     code?: number;
     data?: CurrentUser;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RDaBotEventScript = {
+    code?: number;
+    data?: DaBotEventScript;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RDaBotInfo = {
+    code?: number;
+    data?: DaBotInfo;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RDaCdk = {
+    code?: number;
+    data?: DaCdk;
     message?: string;
     errorMessage?: string;
     success?: boolean;
@@ -427,6 +854,37 @@ declare namespace API {
     userName: string;
     password: string;
     verificationCode?: string;
+    captchaKey?: string;
+  };
+
+  type RegLicenseDto = {
+    license?: string;
+    verificationCode?: string;
+    captchaKey?: string;
+  };
+
+  type removeAccountCargoParams = {
+    characNo: string;
+  };
+
+  type removeBotConfParams = {
+    id: string;
+  };
+
+  type removeGameEventParams = {
+    id: Record<string, any>;
+  };
+
+  type removeItemsParams = {
+    uiId: string;
+  };
+
+  type removeMailParams = {
+    postalId: string;
+  };
+
+  type resetCreateRoleParams = {
+    uid: string;
   };
 
   type resetPasswordParams = {
@@ -436,6 +894,15 @@ declare namespace API {
 
   type restartFridaParams = {
     id: string;
+  };
+
+  type RLicenseDetails = {
+    code?: number;
+    data?: LicenseDetails;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
   };
 
   type RListAccounts = {
@@ -450,6 +917,69 @@ declare namespace API {
   type RListCharacInfo = {
     code?: number;
     data?: CharacInfo[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RListDaBotConf = {
+    code?: number;
+    data?: DaBotConf[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RListDaBotEventScript = {
+    code?: number;
+    data?: DaBotEventScript[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RListDaBotInfo = {
+    code?: number;
+    data?: DaBotInfo[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RListDaBotMessage = {
+    code?: number;
+    data?: DaBotMessage[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RListDaBotNotice = {
+    code?: number;
+    data?: DaBotNotice[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RListDaBotRequest = {
+    code?: number;
+    data?: DaBotRequest[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RListDaCdk = {
+    code?: number;
+    data?: DaCdk[];
     message?: string;
     errorMessage?: string;
     success?: boolean;
@@ -486,6 +1016,15 @@ declare namespace API {
   type RListDaGameConfig = {
     code?: number;
     data?: DaGameConfig[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RListDaGameEvent = {
+    code?: number;
+    data?: DaGameEvent[];
     message?: string;
     errorMessage?: string;
     success?: boolean;
@@ -555,6 +1094,15 @@ declare namespace API {
     total?: string;
   };
 
+  type RListPostal = {
+    code?: number;
+    data?: Postal[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
   type RListString = {
     code?: number;
     data?: string[];
@@ -567,6 +1115,15 @@ declare namespace API {
   type RListTreeLong = {
     code?: number;
     data?: TreeLong[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RListUserItems = {
+    code?: number;
+    data?: UserItems[];
     message?: string;
     errorMessage?: string;
     success?: boolean;
@@ -591,8 +1148,30 @@ declare namespace API {
     total?: string;
   };
 
+  type roleItemsParams = {
+    characNo: string;
+  };
+
+  type RoleItemVo = {
+    inventory?: GameItemVo[];
+    equipslot?: GameItemVo[];
+    creature?: GameItemVo[];
+    cargo?: GameItemVo[];
+    accountCargo?: GameItemVo[];
+  };
+
   type roleListParams = {
     name?: string;
+  };
+
+  type roleMailPageParams = {
+    characNo: string;
+  };
+
+  type RoleMailPageQo = {
+    current?: number;
+    pageSize?: number;
+    scriptName?: string;
   };
 
   type roleResourceIdsParams = {
@@ -601,6 +1180,33 @@ declare namespace API {
 
   type roleResourceParams = {
     roleId: string;
+  };
+
+  type ROnlineCountVo = {
+    code?: number;
+    data?: OnlineCountVo;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type ROtherDataVo = {
+    code?: number;
+    data?: OtherDataVo;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
+  };
+
+  type RRoleItemVo = {
+    code?: number;
+    data?: RoleItemVo;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: string;
   };
 
   type RString = {
@@ -613,7 +1219,7 @@ declare namespace API {
   };
 
   type SendMailDto = {
-    characNo?: number;
+    characNo?: string;
     title?: string;
     content?: string;
     gold?: string;
@@ -622,6 +1228,10 @@ declare namespace API {
 
   type sendNoticeParams = {
     message: string;
+  };
+
+  type setMaxRoleParams = {
+    uid: string;
   };
 
   type SignInConfigDate = {
@@ -646,9 +1256,9 @@ declare namespace API {
   type TreeLong = {
     name?: { empty?: boolean };
     id?: string;
+    weight?: Record<string, any>;
     parentId?: string;
     config?: TreeNodeConfig;
-    weight?: Record<string, any>;
     empty?: boolean;
   };
 
@@ -665,5 +1275,36 @@ declare namespace API {
     channelId?: string;
     context?: string;
     restartFrida?: boolean;
+  };
+
+  type UseCdkDto = {
+    characNo?: string;
+    cdks?: string[];
+    verificationCode?: string;
+    captchaKey?: string;
+  };
+
+  type UserItems = {
+    uiId?: string;
+    characNo?: string;
+    slot?: number;
+    itId?: string;
+    expireDate?: string;
+    obtainFrom?: number;
+    regDate?: string;
+    ipgAgencyNo?: string;
+    abilityNo?: number;
+    stat?: number;
+    clearAvatarId?: number;
+    jewelSocket?: string[];
+    itemLockKey?: number;
+    toIpgAgencyNo?: string;
+    hiddenOption?: number;
+    emblemEndurance?: number;
+    color1?: number;
+    color2?: number;
+    tradeRestrict?: number;
+    itemName?: string;
+    mtime?: string;
   };
 }

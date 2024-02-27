@@ -24,6 +24,10 @@ public class WebSocketUtil {
     }
 
 
+    public static Long getSessionCount(){
+       return FcWebSocketHandler.getSessionCount();
+    }
+
    public static void sendMail(SendMailDto sendMailDto){
        List<MailItemDto> itemList = sendMailDto.getItemList();
        if(Objects.isNull(itemList) || itemList.isEmpty()){

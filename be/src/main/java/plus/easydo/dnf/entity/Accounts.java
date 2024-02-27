@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "accounts", dataSource = "d_taiwan")
+@Table(value = "accounts")
 public class Accounts implements Serializable {
 
     @Id(keyType = KeyType.Auto)
@@ -32,10 +32,6 @@ public class Accounts implements Serializable {
     private String password;
 
     private String qq;
-
-    private Integer dzuid;
-
-    private Integer billing;
 
     private String vip;
 

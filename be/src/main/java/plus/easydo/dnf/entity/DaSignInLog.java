@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "da_sign_in_log", dataSource = "d_taiwan")
+@Table(value = "da_sign_in_log")
 public class DaSignInLog implements Serializable {
 
     @Id(keyType = KeyType.Auto)
@@ -31,7 +31,7 @@ public class DaSignInLog implements Serializable {
 
     private String dataJson;
 
-    private Integer signInRoleId;
+    private Long signInRoleId;
 
     private LocalDateTime createTime;
 

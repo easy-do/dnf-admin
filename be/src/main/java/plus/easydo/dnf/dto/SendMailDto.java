@@ -13,13 +13,13 @@ import java.util.List;
 @Data
 public class SendMailDto {
 
-    private Integer characNo;
+    private Long characNo;
 
     private String title;
 
     private String content;
 
-    private Long gold;
+    private Long gold = 0L;
 
     private List<MailItemDto> itemList;
 }

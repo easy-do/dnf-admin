@@ -9,7 +9,10 @@ package plus.easydo.dnf.util;
 
 public class DictUtil {
 
-    public static String jobDict = """
+    private DictUtil() {
+    }
+
+    public static final String JOB_DICT = """
             {
               "0": {
                 "0": "鬼剑士",

@@ -1,0 +1,282 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="yuzhanfeng" id="20231229" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            UPDATE da_resource SET parent_id=0, resource_name='系统角色', resource_code='role', resource_path='/role', resource_type='M', order_number=0, url='', icon=NULL, status=1, auth_flag=1, resource_desc='', del_flag=0 WHERE id=15;
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(42, 0, '游戏角色', 'gameRole', '/gameRole', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(43, 42, '编辑角色', 'gameRole.update', 'gameRole.update', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 42);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 43);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20230102" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            CREATE TABLE `da_cdk` (
+                                      `cdk_code` varchar(64) NOT NULL COMMENT 'sdk码',
+                                      `cdk_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'sdk类型 0默认',
+                                      `cdk_conf` longtext NOT NULL COMMENT '配置内容',
+                                      `remark` varchar(255) NOT NULL COMMENT '备注',
+                                      `create_time` datetime NOT NULL COMMENT '创建时间',
+                                      `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态 0未使用 1已使用',
+                                      `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
+                                      `use_time` datetime DEFAULT NULL COMMENT '使用时间',
+                                      `use_user` bigint(20) DEFAULT NULL COMMENT '使用人',
+                                      `delete_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记',
+                                      PRIMARY KEY (`cdk_code`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='cdk配置';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20230103" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(44, 0, 'CDK管理', 'cdk', '/cdk', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(45, 44, '添加CDK', 'cdk.add', 'cdk.add', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(46, 44, '删除CDK', 'cdk.remove', 'cdk.remove', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 44);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 45);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 46);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20230105" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(47, 1, '启动游戏', 'tool.startGame', 'tool.startGame', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 47);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(2, 47);
+        </sql>
+    </changeSet>
+
+    <changeSet author="yuzhanfeng" id="20230107" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(48, 26, '重置创建角色', 'accounts.resetCreateRole', 'accounts.resetCreateRole', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(49, 26, '角色栏最大', 'accounts.setMaxRole', 'accounts.setMaxRole', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(50, 42, '开启左右槽', 'gameRole.openLeftAndRight', 'gameRole.openLeftAndRight', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 48);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 49);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 50);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20230112" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(51, 0, '许可管理', 'license', '/license', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 51);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20230114" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            CREATE TABLE `da_license` (
+                                          `license_key` varchar(100) NOT NULL,
+                                          `license_value` longtext NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='许可信息';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20240129" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(52, 13, '清空邮件', 'tool.cleanMail', 'tool.cleanMail', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 52);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20240131" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(53, 26, '全图王者', 'accounts.openDungeon', 'tool.openDungeon', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 53);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20240202" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            CREATE TABLE `da_game_event` (
+                                             `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                                             `account_id` bigint(20) DEFAULT NULL COMMENT '账户id',
+                                             `file_index` int(11) DEFAULT NULL COMMENT '日志坐标',
+                                             `file_name` varchar(64) DEFAULT NULL COMMENT '日志名称',
+                                             `channel` varchar(32) DEFAULT NULL COMMENT '频道',
+                                             `charca_no` bigint(20) DEFAULT NULL COMMENT '角色id',
+                                             `charca_name` varchar(64) DEFAULT NULL COMMENT '角色名',
+                                             `level` int(3) DEFAULT NULL COMMENT '角色等级',
+                                             `option_type` varchar(32) DEFAULT NULL COMMENT '事件类型',
+                                             `param1` varchar(100) DEFAULT NULL COMMENT '参数1',
+                                             `param2` varchar(100) DEFAULT NULL COMMENT '参数2',
+                                             `client_ip` varchar(32) DEFAULT NULL COMMENT '客户端ip',
+                                             `option_time` datetime DEFAULT NULL COMMENT '发生时间',
+                                             PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='游戏事件';
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(54, 0, '游戏事件', 'gameEvent', '/gameEvent', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(55, 19, '删除日志', 'gameEvent.remove', 'gameEvent.remove', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 54);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 55);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20240202-1" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            UPDATE da_resource SET parent_id=54 WHERE id=55;
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20240203" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            ALTER TABLE d_taiwan.da_game_event ADD param3 varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '参数2';
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20240207" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            CREATE INDEX gcharca_no_IDX USING BTREE ON d_taiwan.da_game_event (charca_no);
+            CREATE INDEX option_type_IDX USING BTREE ON d_taiwan.da_game_event (option_type);
+            CREATE INDEX charca_no_type_IDX USING BTREE ON d_taiwan.da_game_event (charca_no,option_type);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20240222" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(56, 0, '机器人管理', 'botManager', '/botManager', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(57, 56, '机器人', 'platformBot', '/platformBot', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(58, 57, '添加机器人', 'platformBot.add', 'platformBot.add', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(59, 57, '更新机器人', 'platformBot.update', 'platformBot.update', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(60, 57, '删除机器人', 'platformBot.remove', 'platformBot.remove', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(61, 56, '机器人脚本', 'botScript', '/botScript', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(62, 61, '添加机器人脚本', 'botScript.add', 'botScript.add', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(63, 61, '更新机器人脚本', 'botScript.update', 'botScript.update', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(64, 61, '删除机器人脚本', 'botScript.remove', 'botScript.remove', 'F', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(65, 56, '消息记录', 'botMessage', '/botMessage', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(66, 56, '请求记录', 'botRequest', '/botRequest', 'M', 0, '', NULL, 1, 1, '', 0);
+            INSERT INTO da_resource (id, parent_id, resource_name, resource_code, resource_path, resource_type, order_number, url, icon, status, auth_flag, resource_desc, del_flag) VALUES(67, 56, '通知记录', 'botNotice', '/botNotice', 'M', 0, '', NULL, 1, 1, '', 0);
+
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 56);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 57);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 58);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 59);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 60);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 61);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 62);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 63);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 64);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 65);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 66);
+            INSERT INTO da_role_resource (role_id, resource_id) VALUES(1, 67);
+        </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20240225" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            -- d_taiwan.da_bot_conf definition
+
+            CREATE TABLE `da_bot_conf`
+            (
+                `id`         bigint(20)  NOT NULL AUTO_INCREMENT COMMENT '自增id',
+                `bot_number` longtext COMMENT '机器人编码',
+                `platform`   varchar(32)  DEFAULT NULL COMMENT '平台',
+                `conf_key`   varchar(32) NOT NULL COMMENT '配置key',
+                `conf_value` longtext COMMENT '配置参数',
+                `remark`     varchar(255) DEFAULT NULL COMMENT '备注',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              AUTO_INCREMENT = 16
+              DEFAULT CHARSET = utf8 COMMENT ='机器人配置';
+
+
+            -- d_taiwan.da_bot_event_script definition
+
+            CREATE TABLE `da_bot_event_script`
+            (
+                `id`             bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+                `script_name`    varchar(64)  DEFAULT NULL COMMENT '脚本名称',
+                `event_type`     varchar(64)  DEFAULT NULL COMMENT '事件类型',
+                `script_type`    varchar(32)  DEFAULT NULL COMMENT '脚本类型',
+                `script_content` longtext COMMENT '脚本内容',
+                `remark`         varchar(255) DEFAULT NULL COMMENT '备注',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              AUTO_INCREMENT = 2
+              DEFAULT CHARSET = utf8 COMMENT ='机器人脚本';
+
+
+            -- d_taiwan.da_bot_info definition
+
+            CREATE TABLE `da_bot_info`
+            (
+                `id`                  bigint(20)  NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+                `bot_number`          varchar(64) NOT NULL COMMENT '机器人编码',
+                `bot_secret`          varchar(255) DEFAULT NULL COMMENT '机器人秘钥',
+                `remark`              varchar(255) DEFAULT NULL COMMENT '备注',
+                `bot_url`             varchar(255) DEFAULT NULL COMMENT '机器人地址',
+                `last_heartbeat_time` datetime     DEFAULT NULL COMMENT '最后心跳时间',
+                `ext_data`            longtext COMMENT '拓展数据',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              AUTO_INCREMENT = 4
+              DEFAULT CHARSET = utf8 COMMENT ='机器人信息';
+
+
+            -- d_taiwan.da_bot_message definition
+
+            CREATE TABLE `da_bot_message`
+            (
+                `id`         bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+                `message_id` varchar(64) DEFAULT NULL COMMENT '消息id',
+                `group_id`   varchar(19) DEFAULT NULL COMMENT '群组id',
+                `send_user`  varchar(64) DEFAULT NULL COMMENT '发送用户',
+                `self_user`  varchar(64) DEFAULT NULL COMMENT '接收用户',
+                `self_time`  datetime    DEFAULT NULL COMMENT '接收时间',
+                `message`    longtext COMMENT '消息内容',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              AUTO_INCREMENT = 3673
+              DEFAULT CHARSET = utf8 COMMENT ='消息记录';
+
+
+            -- d_taiwan.da_bot_notice definition
+
+            CREATE TABLE `da_bot_notice`
+            (
+                `id`          bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+                `notice_type` varchar(32) DEFAULT NULL COMMENT '通知类型',
+                `sub_type`    varchar(12) DEFAULT NULL COMMENT '子类型',
+                `self_user`   varchar(64) DEFAULT NULL COMMENT '接收用户',
+                `group_id`    varchar(19) DEFAULT NULL COMMENT '群组id',
+                `operator_id` varchar(64) DEFAULT NULL COMMENT '操作人',
+                `user_id`     varchar(64) DEFAULT NULL COMMENT '发生变动人',
+                `self_time`   datetime    DEFAULT NULL COMMENT '接收时间',
+                `message_id`  varchar(32) DEFAULT NULL COMMENT '消息id',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              AUTO_INCREMENT = 116
+              DEFAULT CHARSET = utf8 COMMENT ='通知记录';
+
+
+            -- d_taiwan.da_bot_platform_bind definition
+
+            CREATE TABLE `da_bot_platform_bind`
+            (
+                `bot_number` varchar(32) DEFAULT NULL COMMENT '平台账号',
+                `uid`        bigint(20)  DEFAULT NULL COMMENT '账号id',
+                `role_id`    bigint(20)  DEFAULT NULL COMMENT '角色ID'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8 COMMENT ='游戏与机器人绑定数据';
+
+
+            -- d_taiwan.da_bot_request definition
+
+            CREATE TABLE `da_bot_request`
+            (
+                `id`           bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+                `request_type` varchar(12)  DEFAULT NULL COMMENT '请求类型',
+                `group_id`     varchar(19)  DEFAULT NULL COMMENT '群组id',
+                `send_user`    varchar(64)  DEFAULT NULL COMMENT '发送用户',
+                `self_user`    varchar(64)  DEFAULT NULL COMMENT '接收用户',
+                `self_time`    datetime     DEFAULT NULL COMMENT '接收时间',
+                `comment`      varchar(100) DEFAULT NULL COMMENT '验证信息',
+                `flag`         varchar(64)  DEFAULT NULL COMMENT '请求标识',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              AUTO_INCREMENT = 14
+              DEFAULT CHARSET = utf8 COMMENT ='请求记录';
+
+
+            -- d_taiwan.da_bot_script_bot definition
+
+            CREATE TABLE `da_bot_script_bot`
+            (
+                `script_id`  bigint(20)  DEFAULT NULL COMMENT '脚本id',
+                `bot_number` varchar(65) DEFAULT NULL COMMENT '机器人编码'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8 COMMENT ='机器人与脚本关联表';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

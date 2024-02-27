@@ -15,9 +15,12 @@ import {
   updateFridaFunction,
 } from '@/services/dnf-admin/daFridaFunctionController';
 import Modal from 'antd/lib/modal/Modal';
-import Editor from '@monaco-editor/react';
 import { getFridaFunctionInfo } from '@/services/dnf-admin/daFridaFunctionController';
 import { listFridaFunction } from '@/services/dnf-admin/daFridaFunctionController';
+
+import loader from '@monaco-editor/loader';
+import Editor from '@monaco-editor/react';
+loader.config({ paths: { vs: 'https://cdn.staticfile.org/monaco-editor/0.43.0/min/vs' } });
 
 const ConfList: React.FC = () => {
   const actionRef = useRef<ActionType>();

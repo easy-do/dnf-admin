@@ -1,8 +1,12 @@
 package plus.easydo.dnf.service.impl;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
+import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import plus.easydo.dnf.dto.MailItemDto;
+import plus.easydo.dnf.dto.SendMailDto;
 import plus.easydo.dnf.dto.SignInConfigDate;
 import plus.easydo.dnf.entity.Letter;
 import plus.easydo.dnf.entity.Postal;
@@ -11,8 +15,14 @@ import plus.easydo.dnf.enums.ItemTypeEnum;
 import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.manager.LetterManager;
 import plus.easydo.dnf.manager.PostalManager;
+import plus.easydo.dnf.qo.RoleMailPageQo;
 import plus.easydo.dnf.service.GamePostalService;
 import plus.easydo.dnf.util.Latin1ConvertUtil;
+
+import java.util.List;
+import java.util.Objects;
+
+import static plus.easydo.dnf.entity.table.PostalTableDef.POSTAL;
 
 
 /**
@@ -38,7 +48,7 @@ public class GamePostalServiceImpl implements GamePostalService {
      * @author laoyu
      * @date 2023/10/15
      */
-    public Letter createLetter(Integer characNo){
+    public Letter createLetter(Long characNo){
         //先注册信件主体
         Letter letter = new Letter();
         letter.setCharacNo(characNo);
@@ -62,10 +72,47 @@ public class GamePostalServiceImpl implements GamePostalService {
         return true;
     }
 
-    public void sendPortal(Integer roleId, Long itemId, Integer itemType, Long quantity){
-        Letter letter = createLetter(roleId);
-        sendPortal(letter,roleId,itemId, itemType, quantity);
+    @Override
+    public void sendMail(SendMailDto sendMailDto) {
+        Letter letter = createLetter(sendMailDto.getCharacNo());
+        List<MailItemDto> itemList = sendMailDto.getItemList();
+        if(sendMailDto.getGold() > 0L){
+            //先发送金币邮件
+            sendPortal(letter,sendMailDto.getCharacNo(),0L,0,0L,sendMailDto.getGold());
+        }
+        //发送所有装备
+        if(Objects.nonNull(itemList)){
+            for (MailItemDto mailItemDto:itemList){
+                sendPortal(letter,sendMailDto.getCharacNo(),mailItemDto.getItemId(),mailItemDto.getItemType(),mailItemDto.getCount(),0L);
+            }
+        }
     }
+
+    @Override
+    public boolean cleanCharacMail(Long characNo) {
+        boolean res1 = letterManager.removeByCharacNo(characNo);
+        boolean res2 = postalManager.removeByCharacNo(characNo);
+        return res1 || res2;
+    }
+
+    @Override
+    public boolean cleanMail() {
+        boolean res1 = letterManager.clean();
+        boolean res2 = postalManager.clean();
+        return res1 || res2;
+    }
+
+    @Override
+    public Page<Postal> roleMailPage(Long characNo, RoleMailPageQo pageQo) {
+        QueryWrapper query = QueryWrapper.create().from(POSTAL).and(POSTAL.RECEIVE_CHARAC_NO.eq(characNo));
+        return postalManager.page(new Page<>(pageQo.getCurrent(),pageQo.getPageSize()),query);
+    }
+
+    @Override
+    public boolean removeMail(Long postalId) {
+        return postalManager.removeById(postalId);
+    }
+
 
     /**
      * 为角色发送邮件
@@ -77,7 +124,7 @@ public class GamePostalServiceImpl implements GamePostalService {
      * @author laoyu
      * @date 2023/10/15
      */
-    public void sendPortal(Letter letter,Integer roleId,Long itemId, Integer itemType, Long quantity){
+    public void sendPortal(Letter letter,Long roleId, Long itemId, Integer itemType, Long quantity,Long gold){
         //发送物品
         Postal postal = new Postal();
         //设置信件id
@@ -92,7 +139,7 @@ public class GamePostalServiceImpl implements GamePostalService {
         postal.setEndurance(1);
         //设置收件角色
         postal.setReceiveCharacNo(roleId);
-        postal.setSendCharacNo(0);
+        postal.setSendCharacNo(0L);
         //发件人的姓名
         postal.setSendCharacName(Latin1ConvertUtil.convertLatin1("dnf-admin后台"));
         //增幅
@@ -103,7 +150,7 @@ public class GamePostalServiceImpl implements GamePostalService {
         //锻造
         postal.setSeperateUpgrade(0);
         //金币
-        postal.setGold(0L);
+        postal.setGold(gold);
         // 上限
         postal.setUnlimitFlag(1);
         //打开标记

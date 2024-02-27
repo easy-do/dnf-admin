@@ -1,24 +1,31 @@
 package plus.easydo.dnf.service.impl;
 
-import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.alibaba.druid.pool.DruidDataSource;
 import com.mybatisflex.core.paginate.Page;
-import com.mybatisflex.core.query.QueryChain;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import plus.easydo.dnf.constant.SystemConstant;
 import plus.easydo.dnf.dto.RegDto;
-import plus.easydo.dnf.entity.Accounts;
+import plus.easydo.dnf.entity.*;
 import plus.easydo.dnf.exception.BaseException;
 import plus.easydo.dnf.manager.AccountsManager;
+import plus.easydo.dnf.manager.CashCeraManager;
+import plus.easydo.dnf.manager.CashCeraPointManager;
+import plus.easydo.dnf.manager.CharacViewManager;
+import plus.easydo.dnf.manager.LimitCreateCharacterManager;
+import plus.easydo.dnf.manager.MemberDungeonManager;
+import plus.easydo.dnf.manager.MemberPunishInfoManager;
+import plus.easydo.dnf.mapper.MemberAvatarCoinMapper;
+import plus.easydo.dnf.mapper.MemberInfoMapper;
+import plus.easydo.dnf.mapper.MemberLoginMapper;
+import plus.easydo.dnf.mapper.MemberWhiteAccountMapper;
 import plus.easydo.dnf.qo.AccountsQo;
 import plus.easydo.dnf.service.AccountsService;
+import plus.easydo.dnf.service.CaptchaService;
 import plus.easydo.dnf.util.FlexDataSourceUtil;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Objects;
 
 import static plus.easydo.dnf.entity.table.AccountsTableDef.ACCOUNTS;
@@ -37,6 +44,29 @@ public class AccountsServiceImpl implements AccountsService {
 
     public final FlexDataSourceUtil flexDataSourceUtil;
 
+    private final CaptchaService captchaService;
+
+    private final LimitCreateCharacterManager limitCreateCharacterManager;
+
+    private final MemberPunishInfoManager memberPunishInfoManager;
+
+    private final CharacViewManager characViewManager;
+
+    private final MemberInfoMapper memberInfoMapper;
+
+    private final MemberWhiteAccountMapper memberWhiteAccountMapper;
+
+    private final MemberLoginMapper memberLoginMapper;
+
+    private final MemberAvatarCoinMapper memberAvatarCoinMapper;
+
+    private final CashCeraManager cashCeraManager;
+
+    private final CashCeraPointManager cashCeraPointManager;
+
+    private final MemberDungeonManager memberDungeonManager;
+
+
     @Override
     public Accounts getByUserName(String userName) {
         return accountsManager.getByUserName(userName);
@@ -44,6 +74,9 @@ public class AccountsServiceImpl implements AccountsService {
 
     @Override
     public Long regAcc(RegDto regDto) {
+        if(!captchaService.verify(regDto.getCaptchaKey(),regDto.getVerificationCode())){
+            throw new BaseException("验证码错误。");
+        }
         if (accountsManager.existsByUserName(regDto.getUserName())) {
             throw new BaseException("账号已存在");
         }
@@ -52,72 +85,55 @@ public class AccountsServiceImpl implements AccountsService {
         acc.setPassword(SecureUtil.md5().digestHex(regDto.getPassword()));
         acc.setVip("");
         if (accountsManager.save(acc)) {
-            try {
-                DruidDataSource taiwan = flexDataSourceUtil.getDataSource("d_taiwan");
-                Connection conn = taiwan.getConnection();
-                Statement stat = conn.createStatement();
-                stat.execute("INSERT INTO d_taiwan.member_info(m_id, user_id)VALUES('" + acc.getUid() + "', '" + acc.getUid() + "')");
-                stat.execute("INSERT INTO d_taiwan.member_white_account(m_id)VALUES('" + acc.getUid() + "')");
-                stat.execute("INSERT INTO taiwan_login.member_login(m_id)VALUES('" + acc.getUid() + "')");
-                stat.execute("INSERT INTO taiwan_cain_2nd.member_avatar_coin(m_id)VALUES('" + acc.getUid() + "')");
-                stat.execute("INSERT INTO taiwan_billing.cash_cera(account, cera,mod_tran, mod_date, reg_date)VALUES('" + acc.getUid() + "', 1000, 0, NOW(), NOW())");
-                stat.execute("INSERT INTO taiwan_billing.cash_cera_point(account, cera_point,mod_date, reg_date)VALUES('" + acc.getUid() + "', 0, NOW(), NOW())");
-                stat.close();
-                conn.close();
-            } catch (SQLException e) {
-                throw new BaseException("注册失败:{}", ExceptionUtil.getMessage(e));
-            }
+            memberInfoMapper.insert(MemberInfo.builder().mId(acc.getUid()).userId(acc.getUid()).build(), true);
+            memberWhiteAccountMapper.insert(MemberWhiteAccount.builder().mId(acc.getUid()).build(), true);
+            memberLoginMapper.insert(MemberLogin.builder().mId(acc.getUid()).build(), true);
+            memberAvatarCoinMapper.insert(MemberAvatarCoin.builder().mId(acc.getUid()).build(), true);
+            cashCeraManager.regAccount(acc.getUid());
+            cashCeraPointManager.regAccount(acc.getUid());
         }
         return acc.getUid();
     }
 
     @Override
     public boolean rechargeBonds(Integer type, Long uid, Long count) {
-        try {
-            DruidDataSource taiwanBilling = flexDataSourceUtil.getDataSource("taiwan_billing");
-            Connection conn = taiwanBilling.getConnection();
-            Statement stat = conn.createStatement();
             if (type == 2) {
                 //代币券
-                stat.execute("update taiwan_billing.cash_cera_point SET cera_point = cera_point + 10 where account='" + uid + "';");
+                CashCeraPoint cashCeraPoint = cashCeraPointManager.getById(uid);
+                if (Objects.isNull(cashCeraPoint)) {
+                    throw new BaseException("未找到账号充值信息");
+                }
+                cashCeraPoint.setCeraPoint(cashCeraPoint.getCeraPoint() + count);
+                cashCeraPointManager.updateById(cashCeraPoint);
             } else {
                 //点券
-                stat.execute("update taiwan_billing.cash_cera set cera = cera + " + count + " where account='" + uid + "'");
+                CashCera cashCera = cashCeraManager.getById(uid);
+                if (Objects.isNull(cashCera)) {
+                    throw new BaseException("未找到账号充值信息");
+                }
+                cashCera.setCera(cashCera.getCera() + count);
+                cashCeraManager.updateById(cashCera);
             }
-            stat.close();
-            conn.close();
-        } catch (SQLException e) {
-            throw new BaseException("充值点券失败:{}", ExceptionUtil.getMessage(e));
-        }
-        return false;
+        return true;
     }
 
     @Override
-    public void enableAcc(Long uid) {
-        try {
-            DruidDataSource dTaiwan = flexDataSourceUtil.getDataSource("d_taiwan");
-            Connection conn = dTaiwan.getConnection();
-            Statement stat = conn.createStatement();
-            stat.execute("delete from d_taiwan.member_punish_info where m_id='" + uid + "'");
-            stat.close();
-            conn.close();
-        } catch (SQLException e) {
-            throw new BaseException("解封操作失败:{}", ExceptionUtil.getMessage(e));
-        }
+    public boolean enableAcc(Long uid) {
+        return memberPunishInfoManager.removeById(uid);
     }
 
     @Override
-    public void disableAcc(Long uid) {
-        try {
-            DruidDataSource dTaiwan = flexDataSourceUtil.getDataSource("d_taiwan");
-            Connection conn = dTaiwan.getConnection();
-            Statement stat = conn.createStatement();
-            stat.execute("insert into d_taiwan.member_punish_info (m_id,punish_type,occ_time,punish_value,apply_flag,start_time,end_time,reason) values ('"+uid+"','1',NOW(),'101','2',NOW(), date_sub(NOW(),interval -3650 day),'GM')");
-            stat.close();
-            conn.close();
-        } catch (SQLException e) {
-            throw new BaseException("封禁操作失败:{}", ExceptionUtil.getMessage(e));
-        }
+    public boolean disableAcc(Long uid) {
+        MemberPunishInfo entity = new MemberPunishInfo();
+        entity.setMId(uid);
+        entity.setPunishType(1);
+        entity.setOccTime(LocalDateTimeUtil.now());
+        entity.setPunishValue(101);
+        entity.setApplyFlag(1);
+        entity.setStartTime(LocalDateTimeUtil.now());
+        entity.setEndTime("9999-12-31 23:59:59");
+        entity.setReason("GM");
+        return memberPunishInfoManager.save(entity);
     }
 
     @Override
@@ -129,15 +145,17 @@ public class AccountsServiceImpl implements AccountsService {
     @Override
     public Accounts getById(Long id) {
         Accounts accounts = accountsManager.getById(id);
-        accounts.setPassword("");
+        if(Objects.nonNull(accounts)){
+            accounts.setPassword("");
+        }
         return accounts;
     }
 
     @Override
     public Page<Accounts> page(AccountsQo pageQo) {
         Page<Accounts> page = new Page<>(pageQo.getCurrent(),pageQo.getPageSize());
-        QueryWrapper queryWrapper = QueryChain.create()
-                .select(ACCOUNTS.UID, ACCOUNTS.ACCOUNTNAME, ACCOUNTS.QQ, ACCOUNTS.BILLING, ACCOUNTS.VIP)
+        QueryWrapper queryWrapper = QueryWrapper.create()
+                .select(ACCOUNTS.UID, ACCOUNTS.ACCOUNTNAME, ACCOUNTS.QQ, ACCOUNTS.VIP)
                 .from(ACCOUNTS).where(ACCOUNTS.UID.like(pageQo.getUid())
                         .and(ACCOUNTS.ACCOUNTNAME.like(pageQo.getAccountname()))
                         .and(ACCOUNTS.QQ.like(pageQo.getQq())))
@@ -153,6 +171,50 @@ public class AccountsServiceImpl implements AccountsService {
         }
         accounts.setPassword(SecureUtil.md5().digestHex(password));
         return accountsManager.updateById(accounts);
+    }
+
+    @Override
+    public boolean resetCreateRole(Long uid) {
+        LimitCreateCharacter entity = new LimitCreateCharacter();
+        entity.setMId(uid);
+        entity.setCount(0);
+        boolean res = limitCreateCharacterManager.updateById(entity);
+        if(res){
+            memberPunishInfoManager.removeById(uid);
+        }
+        return res;
+    }
+
+    @Override
+    public Boolean setMaxRole(Long uid) {
+        CharacView entity = new CharacView();
+        entity.setMId(uid);
+        entity.setCharacCount(24);
+        entity.setCharacSlotLimit(24);
+        return characViewManager.updateById(entity);
+    }
+
+    @Override
+    public Long count() {
+        return accountsManager.count();
+    }
+
+    @Override
+    public Boolean openDungeon(Long uid) {
+        MemberDungeon entity = new MemberDungeon();
+        entity.setDungeon(SystemConstant.OPEN_MEMBER_DUNGEON_LEVEL);
+        entity.setMId(uid);
+        return memberDungeonManager.updateById(entity);
+    }
+
+    @Override
+    public CashCera getCashCera(Long uid) {
+        return cashCeraManager.getById(uid);
+    }
+
+    @Override
+    public CashCeraPoint getCashCeraPoint(Long uid) {
+        return cashCeraPointManager.getById(uid);
     }
 }
 

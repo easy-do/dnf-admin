@@ -3,6 +3,7 @@ package plus.easydo.dnf.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.core.lang.tree.Tree;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,12 +39,14 @@ public class UserController {
 
     private final IDaResourceService resourceService;
 
+    @Operation(summary = "登录")
     @SaIgnore
     @PostMapping("/login")
     public R<String> login(@Validated @RequestBody LoginDto loginDto){
         return DataResult.ok(loginService.login(loginDto));
     }
 
+    @Operation(summary = "注册")
     @SaIgnore
     @PostMapping("/reg")
     public R<Boolean> reg(@Validated @RequestBody RegDto regDto){
@@ -51,18 +54,21 @@ public class UserController {
         return DataResult.ok();
     }
 
+    @Operation(summary = "退出")
     @GetMapping("/logout")
     public R<String> logout(){
         loginService.logout();
         return DataResult.ok();
     }
 
+    @Operation(summary = "获取当前用户信息")
     @SaCheckLogin
     @GetMapping("/currentUser")
     public R<CurrentUser> currentUser(){
         return DataResult.ok(loginService.currentUser());
     }
 
+    @Operation(summary = "获取当前用户资源信息")
     @SaCheckLogin
     @GetMapping("/userResource")
     public R<List<Tree<Long>>> userResource(){

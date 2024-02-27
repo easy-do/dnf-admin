@@ -29,12 +29,22 @@ public interface SignInService {
     /**
      * 角色签到 校验请求账户是否有该角色
      *
-     * @param roleId roleId
+     * @param characNo characNo
      * @return boolean
      * @author laoyu
      * @date 2023/10/14
      */
-    boolean pcCharacSign(Integer roleId);
+    boolean pcCharacSign(Long characNo);
+
+    /**
+     * 机器人角色签到
+     *
+     * @param characNo characNo
+     * @return boolean
+     * @author laoyu
+     * @date 2023/10/14
+     */
+    boolean botCharacSign(Long characNo, Long uid);
 
     /**
      * 角色签到 不校验请求账户，内部调用
@@ -43,7 +53,7 @@ public interface SignInService {
      * @author laoyu
      * @date 2023/10/14
      */
-    void characSign(String channel,Integer characNo);
+    void characSign(String channel,Long characNo);
 
     Page<DaSignInConf> signInPage(DaSignInConfQo daSignInConfQo);
 
@@ -52,4 +62,7 @@ public interface SignInService {
     boolean update(DaSignInConfDto daSignInConf);
 
     boolean insert(DaSignInConfDto daSignInConf);
+
+    DaSignInConf getTodaySignConf();
+
 }

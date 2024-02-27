@@ -83,7 +83,7 @@ public class ItemReaderUtil {
                     log.info("ItemReaderUtil.reader: 检测到列表文件,开始读取{}", listFileName);
                     //读取列表文件
                     File stackableListFile = FileUtil.file(parentPath + File.separator + listFileName);
-                    reader = FileUtil.getReader(stackableListFile, CharsetUtil.defaultCharsetName());
+                    reader = FileUtil.getReader(stackableListFile, CharsetUtil.parse(CharsetUtil.UTF_8));
                     String line1;
                     String line2;
                     line1 = reader.readLine();
@@ -160,7 +160,7 @@ public class ItemReaderUtil {
     public static JSONObject reader(String path) throws IOException {
         File file = FileUtil.file(path);
         JSONObject jsonObject = JSONUtil.createObj();
-        BufferedReader reader = FileUtil.getReader(file, CharsetUtil.defaultCharsetName());
+        BufferedReader reader = FileUtil.getReader(file,CharsetUtil.parse(CharsetUtil.UTF_8));
         String line;
         line = reader.readLine();
         String currentKey = null;
