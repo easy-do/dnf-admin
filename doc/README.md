@@ -56,6 +56,7 @@ http://doc.easydo.plus/
 <img src="./zh-cn/img/配置.png">
 <img src="./zh-cn/img/机器人菜单.png">
 <img src="./zh-cn/img/群管1.png">
+<img src="./zh-cn/img/群管2.png">
 
 
 #### 其他说明
