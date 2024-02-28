@@ -1,6 +1,6 @@
 # dnf-admin
 
-#### 介绍
+## 介绍
 - 某不可描述的勇士game后台，本项目为用爱发电，如果觉得不错欢迎分享给身边的朋友。
 - 本项目致力于打造更便捷可动态配置游戏参数、拓展性更强的增强类后台，解决插件脚本配置麻烦，需要到处找教程，小白看了教程很蒙圈的情况，被倒卖者圈钱的情况，会逐步集成常用插件功能。
 - 欢迎兴趣相投的朋友加入群组一起交流技术
@@ -22,12 +22,12 @@
 - TG频道: https://t.me/+jg121NZWl51mZTQ9
 
 
-#### 软件架构
+## 软件架构
 - 服务端：spring boot
 - 前端：ANTD PRO
 - 插件：frida
 
-#### 特色功能
+## 特色功能
 
 - 使用docker容器运行,安装卸载方便,与宿主机隔离,减少垃圾文件污染
 - 按钮级别的权限控制
@@ -36,26 +36,55 @@
 - 不间断的长期更新支持、免费试用、代码开源、无后门
 
 
-#### 使用文档
+## 使用文档
 http://doc.easydo.plus/
 
-#### 图片介绍
+## 图片介绍
+
+#### 角色管理
 
 <img src="./zh-cn/img/角色管理1.png">
+
 <img src="./zh-cn/img/角色管理2.png">
+
 <img src="./zh-cn/img/角色管理3.png">
+
+#### 函数管理
+
 <img src="./zh-cn/img/函数管理1.png">
+
 <img src="./zh-cn/img/函数管理2.png">
+
+#### frida调试
 <img src="./zh-cn/img/frida调试.png">
+
+#### 频道列表
 <img src="./zh-cn/img/频道列表.png">
+
+#### 首页
 <img src="./zh-cn/img/首页.png">
+
+#### 签到
 <img src="./zh-cn/img/签到.png">
+
+#### 物品
 <img src="./zh-cn/img/物品.png">
+
+#### 公告
 <img src="./zh-cn/img/公告.png">
+
+#### 邮件
 <img src="./zh-cn/img/邮件.png">
+
+#### 配置
 <img src="./zh-cn/img/配置.png">
+
+#### 机器人菜单
 <img src="./zh-cn/img/机器人菜单.png">
+
+#### 群管
 <img src="./zh-cn/bot/img/群管1.png">
+
 
 
 
