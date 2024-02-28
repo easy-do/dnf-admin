@@ -30,4 +30,4 @@ pro基础内容永久授权限时优惠只需100,DLC内容暂无报价,接各种
 <img src="../../zh-cn/bot/img/游戏聊天2.png">
 
 #### 3.掉落播报
-<img src="../../zh-cn/bot/img/游戏聊天.jpg">
+<img src="../../zh-cn/bot/img/掉落播报.png">
