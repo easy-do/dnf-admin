@@ -24,3 +24,4 @@
 
 #### 2.Q群与游戏互相聊天
 <img src="../../zh-cn/bot/img/游戏聊天.jpg">
+<img src="../../zh-cn/bot/img/游戏聊天2.png">
