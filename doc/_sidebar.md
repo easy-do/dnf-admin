@@ -16,4 +16,4 @@
     * [免费脚本](zh-cn/bot/script_v1.0.md)
     * [免费脚本指令](zh-cn/bot/script_v1.0_cmd.md)
     * [pro版本](zh-cn/bot/bot_pro.md)
-    * [体验bot功能(开发服)](zh-cn/deploymen/dev_server.md)
+    * [体验bot功能(开发服)](zh-cn/bot/dev_server.md)
