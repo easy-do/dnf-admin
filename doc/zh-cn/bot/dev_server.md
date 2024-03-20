@@ -27,7 +27,3 @@ dnf-admin开发服客户端补丁.7z
 * 注册账号然后登陆
 * 点击首页的启动游戏,稍等片刻游戏便自动登录
 
-### 机器人QQ群
-
-点击链接加入群聊【老于/机器人对接测试】：http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=fCb-0XWASrj_pz-ha0ocr22vDUHp0k2d&authKey=9WA0%2F5xmTUfgSdjko3mxjaJDFt43odBFO%2BhamB9IOH6ZmteOxudkChDSjtniP7RU&noverify=0&group_code=771036941
-
